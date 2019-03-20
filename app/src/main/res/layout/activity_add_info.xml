@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".addInfo">
+
+    <RelativeLayout
+        android:id="@+id/infoView"
+        android:layout_width="353dp"
+        android:layout_height="504dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/customize_border"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <AutoCompleteTextView
+            android:id="@+id/enterInfo"
+            android:layout_width="match_parent"
+            android:layout_height="88dp"
+            android:background="@drawable/customize_border_two"
+            android:completionHint="Enter Information"
+            android:hint="Enter Information"
+            android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title" />
+
+        <AutoCompleteTextView
+            android:id="@+id/plusInfo"
+            android:layout_width="match_parent"
+            android:layout_height="88dp"
+            android:layout_below="@+id/enterInfo"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/customize_border_two"
+            android:completionHint="Enter a date"
+            android:hint="Additional Info"
+            android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title" />
+
+        <Spinner
+            android:id="@+id/dropDownls"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="203dp"
+            android:layout_marginTop="18dp"
+            android:background="@drawable/spinner_border"
+            android:spinnerMode="dialog"
+            android:prompt="@string/dropDownT"
+            />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/doneButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="54dp"
+            android:layout_marginEnd="34dp"
+            android:clickable="true"
+            app:backgroundTint="@color/goodBlue"
+            app:srcCompat="@android:drawable/checkbox_on_background" />
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

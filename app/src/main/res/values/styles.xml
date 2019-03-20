@@ -1,0 +1,25 @@
+<resources>
+
+    <!-- Base application theme. -->
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+
+
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <item name="android:navigationBarColor">@color/superBle</item>
+
+    </style>
+
+    <style name="customTheme" parent="android:Theme.Light">
+        <item name="android:windowTitleBackgroundStyle">@style/WindowTitleBackground</item>
+    </style>
+
+    <style name="WindowTitleBackground">
+        <item name="android:background">@color/teal</item>
+        <item name="android:navigationBarColor">@color/teal</item>
+    </style>
+
+</resources>

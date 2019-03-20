@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#062938</color>
+    <color name="colorPrimaryDark"> #062938</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="cadetBlue">#5F9EA0</color>
+    <color name="gray">#BEBEBE</color>
+    <color name="azure"> #E0EEEE </color>
+    <color name="azureTwo"> #D1EEEE</color>
+    <color name="teal"> #008080</color>
+    <color name="azul"> #C3E4ED</color>
+    <color name="superBle">#062938</color>
+    <color name="goodBlue">#37535f</color>
+    <color name="grayBlue"> #b6ced8</color>
+    <color name="specialMagic">#0d0d29 </color>
+</resources>
