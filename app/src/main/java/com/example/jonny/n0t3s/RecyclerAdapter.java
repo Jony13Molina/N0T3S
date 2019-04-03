@@ -179,7 +179,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+           e.printStackTrace();
         }
 
         return output.toString();
