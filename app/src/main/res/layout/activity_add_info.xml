@@ -26,8 +26,8 @@
             android:layout_width="match_parent"
             android:layout_height="88dp"
             android:background="@drawable/customize_border_two"
-            android:completionHint="Enter Information"
-            android:hint="Enter Information"
+            android:completionHint="Enter Title"
+            android:hint="Enter Title"
             android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title" />
 
         <AutoCompleteTextView
@@ -37,8 +37,8 @@
             android:layout_below="@+id/enterInfo"
             android:layout_marginTop="20dp"
             android:background="@drawable/customize_border_two"
-            android:completionHint="Enter a date"
-            android:hint="Additional Info"
+            android:completionHint="Enter Details"
+            android:hint="Details"
             android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title" />
 
         <Spinner

@@ -28,9 +28,37 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
+            android:padding="10dp"
+            android:background="@drawable/customize_borderthree"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="15dp"
-            android:textSize="30sp" />
+            android:layout_marginTop="10dp"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/itemDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/cardview_default_radius"
+            android:padding="10dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="45dp"
+            android:layout_below="@id/item_info"
+            android:textSize="15sp"
+            />
+
+        <TextView
+            android:id="@+id/itemYear"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:padding="10dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/itemDesc"
+            android:layout_marginTop="60dp"
+            android:textSize="15sp" />
+
+
 
 
     </RelativeLayout>

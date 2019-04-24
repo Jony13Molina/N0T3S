@@ -35,11 +35,14 @@ public class addInfo extends AppCompatActivity implements View.OnClickListener {
     Spinner listDrop;
     FloatingActionButton doneButton;
     FirebaseFirestore myCollection;
-    private static final String Desc = "Description";
+    private static final String Desc = "Title";
     private static final String Det = "Details";
     private static final String Year = "Year";
     FirebaseUser mainUser;
-
+    User user;
+    public String myDetails;
+    public String myTitle;
+    public String myYear;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,78 +63,41 @@ public class addInfo extends AppCompatActivity implements View.OnClickListener {
         doneButton= (FloatingActionButton) findViewById(R.id.doneButton);
         doneButton.setOnClickListener(this);
     }
-    /*public void onClick(View v)
-    {
-        if (v.getId() == R.id.doneButton)
-        {
-            try{
-                //open file for writting
-                OutputStreamWriter out = new OutputStreamWriter(openFileOutput("file.txt", MODE_APPEND));
-                //initializing writing photo name
-                EditText t_Edit = (EditText)findViewById(R.id.enterInfo);
-                String Np_input = t_Edit.getText().toString();
-                //initializing writing phtogragher name
-                EditText p_Edit  = (EditText)findViewById(R.id.plusInfo);
-                String Pn_Edit = p_Edit.getText().toString();
-                //initializing writing year taken
-                //listDrop = (Spinner)findViewById(R.id.dropDownls);
 
-                String  Y_edit = listDrop.getSelectedItem().toString();
-                //writing to file photo name, photographer, and year taken
-                if( !Pn_Edit.equals("") && !Np_input.equals("")){
-                    out.write(Np_input);
-                    out.write(" ");
-                    out.write(Pn_Edit);
-                    out.write(" ");
-                    out.write(Y_edit);
-                    out.write('\n');
-
-                    //close file
-                    out.close();
-                    Toast.makeText(this, "Special Notes Saved!", Toast.LENGTH_LONG).show();
-                    finish();
-                }else{
-                    Toast.makeText(this, "Please don't live any fields blank",Toast.LENGTH_LONG).show();
-                }
-
-
-            }
-            catch(IOException e) {
-                //do something if an IOException occurs.
-                Toast.makeText(this, "Sorry Text could't be added", Toast.LENGTH_LONG).show();
-
-            }
-
-
-
-        }
-    }*/
 
    public void onClick(View v)
    {
+       user = new User();
         if (v.getId() == R.id.doneButton)
         {
 
-                //initializing writing photo name
+                //set descriotion
                 EditText t_Edit = (EditText)findViewById(R.id.enterInfo);
-                String Np_input = t_Edit.getText().toString();
-                //initializing writing phtogragher name
+
+                myTitle = t_Edit.getText().toString();
+                //set details
                 EditText p_Edit  = (EditText)findViewById(R.id.plusInfo);
-                String Pn_Edit = p_Edit.getText().toString();
+                myDetails = p_Edit.getText().toString();
                 //initializing writing year taken
                 //listDrop = (Spinner)findViewById(R.id.dropDownls);
 
-                //get drop down list item
-                String  Y_edit = listDrop.getSelectedItem().toString();
+                //set Year
+                myYear = listDrop.getSelectedItem().toString();
 
-                mainUser = FirebaseAuth.getInstance().getCurrentUser();
+               //set User values
+            user.setTitle(myTitle);
+            user.setDetails(myDetails);
+            user.setYear(myYear);
+
+            mainUser = FirebaseAuth.getInstance().getCurrentUser();
                 //writing to database photo name, photographer, and year taken
-                if( !Pn_Edit.equals("") && !Np_input.equals("")){
+                if( !myTitle.equals("") && !myDetails.equals("")){
                     Map <String, Object> notes = new HashMap<>();
                     //notes.put("userID",mainUser.getUid());
-                    notes.put(Desc, Np_input);
-                    notes.put(Det, Pn_Edit);
-                    notes.put(Year, Y_edit);
+                    notes.put("title", user.getTitle());
+
+                    notes.put("details", user.getDetails());
+                    notes.put("year", user.getYear());
 
 
                     myCollection.collection("users").document(mainUser.getUid()+timeStampMe()).set(notes)

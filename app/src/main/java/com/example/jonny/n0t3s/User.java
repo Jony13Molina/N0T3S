@@ -11,18 +11,26 @@ public class User{
     //global variables for helper class
     public String userID;
     public String name;
-    public Date currLogin;
+    public String title;
+    public String details;
     public String userEmail;
-
+    public String year;
 
     //constructors
-    public User(String myId, String name, Date currLogin, String email)
+    public User(String userID, String name, String details, String title, String userEmail, String year)
     {
-        this.userID = myId;
+        this.userID = userID;
         this.name = name;
-        this.currLogin = currLogin;
-        this.userEmail = email;
+        this.details= details;
+        this.userEmail = userEmail;
+        this.title = title;
+        this.year = year;
 
+    }
+    public User(String title, String details, String year){
+        this.title = title;
+        this.details = details;
+        this.year = year;
     }
 
     public User(String userid)
@@ -35,18 +43,27 @@ public class User{
 
     }
     //setters
-    public void setUserID(String id)
+    public void setUserID(String userID)
     {
-        this.userID = id;
+        this.userID = userID;
     }
     public void setName(String name) {
         this.name = name;
     }
-    public void setUserEmail(String email)
+    public void setTitle(String title)
     {
-        this.userEmail = email;
+        this.title = title;
+    }
+    public void setDetails(String details){
+        this.details = details;
     }
 
+    public void setUserEmail(String email){
+        this.userEmail = email;
+    }
+    public void setYear(String year){
+        this.year =year;
+    }
 
     //getters
     public String getUserID()
@@ -56,14 +73,19 @@ public class User{
     public String getName() {
         return this.name;
     }
-    public String getUserEmail()
+    public String getTitle()
     {
+        return this.title;
+    }
+    public String getDetails()
+    {
+        return this.details;
+    }
+    public String getYear(){
+        return this.year;
+    }
+    public String getUserEmail(){
         return this.userEmail;
     }
-    public String getCurrLogin()
-    {
-        return Calendar.getInstance().getTime().toString();
-    }
-
 
 }
