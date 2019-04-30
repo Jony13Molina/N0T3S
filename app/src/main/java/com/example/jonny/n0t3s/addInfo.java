@@ -100,7 +100,9 @@ public class addInfo extends AppCompatActivity implements View.OnClickListener {
                     notes.put("year", user.getYear());
 
 
-                    myCollection.collection("users").document(mainUser.getUid()+timeStampMe()).set(notes)
+                    user.setUserID(mainUser.getUid());
+
+                    myCollection.collection(user.getUserID()).document(user.getUserID()+timeStampMe()).set(notes)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {

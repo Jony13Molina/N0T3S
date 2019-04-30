@@ -16,6 +16,7 @@ import android.widget.EditText;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.core.Tag;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -30,7 +31,9 @@ public class viewInfo extends AppCompatActivity {
     RecyclerView.LayoutManager layoutManager;
     RecyclerView.Adapter adapter;
     FirebaseFirestore myData;
-
+    FirebaseAuth mainUser;
+    FirebaseUser fireUser;
+    User user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +43,12 @@ public class viewInfo extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recycler_view);
         myData = FirebaseFirestore.getInstance();
+        mainUser = FirebaseAuth.getInstance();
+        fireUser = FirebaseAuth.getInstance().getCurrentUser();
+
         getData();
+
+
         //layoutManager = new LinearLayoutManager(this);
         //recyclerView.setLayoutManager(layoutManager);
 
@@ -52,7 +60,7 @@ public class viewInfo extends AppCompatActivity {
     }
 
     private void getData(){
-        myData.collection("users")
+        myData.collection(fireUser.getUid())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override

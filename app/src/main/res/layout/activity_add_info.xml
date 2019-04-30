@@ -56,15 +56,16 @@
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/doneButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="70dp"
+            android:layout_height="74dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
             android:layout_marginBottom="54dp"
-            android:layout_marginEnd="34dp"
+            android:layout_marginEnd="42dp"
             android:clickable="true"
-            app:backgroundTint="@color/goodBlue"
-            app:srcCompat="@android:drawable/checkbox_on_background" />
+            android:background="@color/delightfulBlue"
+            app:backgroundTint="@color/playfulBlue"
+            app:srcCompat="@android:drawable/ic_menu_send" />
 
     </RelativeLayout>
 
