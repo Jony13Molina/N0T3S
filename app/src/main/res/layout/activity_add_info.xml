@@ -6,67 +6,109 @@
     android:layout_height="match_parent"
     tools:context=".addInfo">
 
-    <RelativeLayout
-        android:id="@+id/infoView"
-        android:layout_width="353dp"
-        android:layout_height="504dp"
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/titleLayout"
+        android:layout_width="360dp"
+        android:layout_height="64dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/customize_border"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout"
+        app:layout_constraintBottom_toTopOf="@+id/detailLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-
-        <AutoCompleteTextView
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/enterInfo"
             android:layout_width="match_parent"
-            android:layout_height="88dp"
-            android:background="@drawable/customize_border_two"
+            android:layout_height="51dp"
+            android:backgroundTintMode="screen"
             android:completionHint="Enter Title"
+            android:drawableStart="@drawable/ic_title"
             android:hint="Enter Title"
-            android:textAppearance="@style/TextAppearance.Widget.AppCompat.Toolbar.Title" />
+            android:imeOptions="actionDone"
+            android:singleLine="true"
+            android:textCursorDrawable="@drawable/cursor_color"
+            app:hintEnabled="true" />
 
-        <AutoCompleteTextView
+
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/detailLayout"
+        android:layout_width="360dp"
+        android:layout_height="69dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="36dp"
+        app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleLayout">
+
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/plusInfo"
             android:layout_width="match_parent"
-            android:layout_height="88dp"
-            android:layout_below="@+id/enterInfo"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/customize_border_two"
-            android:completionHint="Enter Details"
+            android:layout_height="51dp"
+            android:backgroundTintMode="screen"
+            android:drawableStart="@drawable/ic_descritiopn"
             android:hint="Details"
-            android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title" />
+            android:imeOptions="actionDone"
+            android:singleLine="true"
+            android:textCursorDrawable="@drawable/cursor_color"
+            app:hintEnabled="true" />
+    </android.support.design.widget.TextInputLayout>
 
-        <Spinner
-            android:id="@+id/dropDownls"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="203dp"
-            android:layout_marginTop="18dp"
-            android:background="@drawable/spinner_border"
-            android:spinnerMode="dialog"
-            android:prompt="@string/dropDownT"
-            />
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/doneButton"
-            android:layout_width="70dp"
-            android:layout_height="74dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginBottom="54dp"
-            android:layout_marginEnd="42dp"
-            android:clickable="true"
-            android:background="@color/delightfulBlue"
-            app:backgroundTint="@color/playfulBlue"
-            app:srcCompat="@android:drawable/ic_menu_send" />
+    <DatePicker
+        android:id="@+id/datePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="261dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:calendarTextColor="@color/superBle"
+        android:calendarViewShown="false"
+        android:theme="@style/MyDatePickerStyle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detailLayout"
+        app:layout_constraintVertical_bias="0.105" />
 
-    </RelativeLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/doneButton"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/delightfulBlue"
+        android:clickable="true"
+        android:src="@drawable/ic_send_black"
+        app:backgroundTint="@color/delightfulBlue"
+        app:layout_anchor="@id/container"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.945"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/datePicker"
+        app:layout_constraintVertical_bias="0.822"
+        app:rippleColor="@color/superBle" />
+
+
+
+
 
 </android.support.constraint.ConstraintLayout>

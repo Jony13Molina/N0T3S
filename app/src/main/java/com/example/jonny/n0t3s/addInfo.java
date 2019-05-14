@@ -3,6 +3,7 @@ package com.example.jonny.n0t3s;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.provider.MediaStore;
 import android.renderscript.Script;
 import android.support.annotation.NonNull;
@@ -11,9 +12,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -24,9 +28,18 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.TimeZone;
 
 import static io.opencensus.tags.TagValue.MAX_LENGTH;
 
@@ -38,26 +51,35 @@ public class addInfo extends AppCompatActivity implements View.OnClickListener {
     private static final String Desc = "Title";
     private static final String Det = "Details";
     private static final String Year = "Year";
+
     FirebaseUser mainUser;
     User user;
     public String myDetails;
     public String myTitle;
-    public String myYear;
+
+    //variables to get the monthly value.
+    int monthly;
+    String date;
+
+
+    Calendar calendar = Calendar.getInstance();
+    int year = calendar.get(Calendar.YEAR);
+    int month = calendar.get(Calendar.MONTH)+1;
+    int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+
+    DatePicker dp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_info);
         //get a reference of our database
         myCollection = FirebaseFirestore.getInstance();
-        //instantiate our drop down list
-        listDrop = findViewById(R.id.dropDownls);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.Year, android.R.layout.simple_spinner_item);
 
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //apply adapter to Spinner
-        listDrop.setAdapter(adapter);
-        listDrop.setPrompt("SELECT A YEAR!!");
+
+
+        dp = (DatePicker) findViewById(R.id.datePicker);
+
+
 
         //button view
         doneButton= (FloatingActionButton) findViewById(R.id.doneButton);
@@ -82,12 +104,18 @@ public class addInfo extends AppCompatActivity implements View.OnClickListener {
                 //listDrop = (Spinner)findViewById(R.id.dropDownls);
 
                 //set Year
-                myYear = listDrop.getSelectedItem().toString();
+                //myYear = listDrop.getSelectedItem().toString();
+               monthly = dp.getMonth()+1;
+               date = monthly+"/"+dp.getDayOfMonth()+"/"+dp.getYear();
+            //dateText.setText(dateText.getText() + "" +monthly + "/" + dp.getDayOfMonth() + "/"+dp.getYear());
+            dp.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+            //myYear = dp.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
                //set User values
             user.setTitle(myTitle);
             user.setDetails(myDetails);
-            user.setYear(myYear);
+
+            user.setYear(date);
 
             mainUser = FirebaseAuth.getInstance().getCurrentUser();
                 //writing to database photo name, photographer, and year taken
