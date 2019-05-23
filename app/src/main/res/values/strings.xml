@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">N0T3S</string>
     <string name="dropDownT">SELECT A YEAR.....</string>
-
+    <string name="email_Address">Post By:</string>
+    <string name="emailAddress">Post By:</string>
+    <string name="delete">Delete</string>
+    <string name="Sharing">Sharing</string>
 
     <string-array name="Year">
         <item>1979</item>

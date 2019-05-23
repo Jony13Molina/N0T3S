@@ -23,16 +23,15 @@
         <RelativeLayout
             android:id="@+id/titleDesign"
             android:layout_width="match_parent"
-            android:layout_height="73dp"
+            android:layout_height="130dp"
             android:background="@drawable/customize_border_five">
 
             <TextView
                 android:id="@+id/item_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="5dp"
                 android:fontFamily="sans-serif-medium"
                 android:maxLines="20"
                 android:padding="10dp"
@@ -40,12 +39,45 @@
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/item_info">
+
+                <TextView
+                    android:id="@+id/itemNames"
+                    android:layout_width="225dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginEnd="27dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:padding="10dp"
+                    android:paddingBottom="2dp"
+                    android:textSize="15sp"
+                    android:textStyle="italic" />
+
+                <TextView
+                    android:id="@+id/postBy"
+                    android:layout_width="78dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toStartOf="@+id/itemNames"
+                    android:fontFamily="sans-serif-medium"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
+                android:layout_alignParentBottom="true"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/item_info"
-                android:background="@color/superBle" />
+                android:background="@color/superBle"
+
+                />
 
 
         </RelativeLayout>
@@ -54,9 +86,9 @@
         <RelativeLayout
             android:id="@+id/bodydesign"
             android:layout_width="wrap_content"
-            android:layout_height="106dp"
+            android:layout_height="177dp"
             android:layout_below="@+id/titleDesign"
-            android:layout_marginTop="-10dp"
+            android:layout_marginTop="-6dp"
             android:background="@drawable/customize_border_four">
 
             <TextView
@@ -74,22 +106,58 @@
 
 
             <RelativeLayout
+                android:id="@+id/layoutYear"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/itemDesc">
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true">
 
                 <TextView
                     android:id="@+id/itemYear"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
                     android:padding="10dp"
                     android:textSize="15sp"
                     android:textStyle="italic" />
             </RelativeLayout>
 
 
-        </RelativeLayout>
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:layout_alignParentBottom="true"
+                android:background="@drawable/customize_border_five"
+                android:orientation="horizontal">
+
+
+                <ImageView
+                    android:id="@+id/deleteItem"
+                    android:layout_width="501dp"
+                    android:layout_height="30dp"
+                    android:layout_weight=".2"
+                    android:contentDescription="@string/delete"
+                    android:gravity="end"
+                    android:scaleType="fitEnd"
+                    android:src="@drawable/ic_delete" />
+
+                <ImageView
+                    android:id="@+id/shareItem"
+                    android:layout_width="260dp"
+                    android:layout_height="30dp"
+                    android:layout_weight=".2"
+                    android:contentDescription="@string/Sharing"
+                    android:scaleType="fitEnd"
+                    android:src="@drawable/ic_share_black_18dp" />
+
+
+            </LinearLayout>
+            </RelativeLayout>
+
+
+
 
     </RelativeLayout>
 

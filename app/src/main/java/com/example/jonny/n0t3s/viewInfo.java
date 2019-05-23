@@ -43,7 +43,7 @@ public class viewInfo extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recycler_view);
         myData = FirebaseFirestore.getInstance();
-        mainUser = FirebaseAuth.getInstance();
+        //mainUser = FirebaseAuth.getInstance();
         fireUser = FirebaseAuth.getInstance().getCurrentUser();
 
         getData();
@@ -75,7 +75,8 @@ public class viewInfo extends AppCompatActivity {
                                 userList.add(myUser);
 
                             }
-                            adapter = new RecyclerAdapter(userList, getApplicationContext(), myData);
+
+                            adapter = new RecyclerAdapter(userList, viewInfo.this, myData);
                             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
                             recyclerView.setLayoutManager(mLayoutManager);
                             recyclerView.setItemAnimator(new DefaultItemAnimator());

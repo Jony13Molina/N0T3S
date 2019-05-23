@@ -45,18 +45,14 @@ import static io.opencensus.tags.TagValue.MAX_LENGTH;
 
 public class addInfo extends AppCompatActivity implements View.OnClickListener {
 
-    Spinner listDrop;
     FloatingActionButton doneButton;
     FirebaseFirestore myCollection;
-    private static final String Desc = "Title";
-    private static final String Det = "Details";
-    private static final String Year = "Year";
 
     FirebaseUser mainUser;
     User user;
     public String myDetails;
     public String myTitle;
-
+    public String myTime;
     //variables to get the monthly value.
     int monthly;
     String date;
@@ -107,30 +103,36 @@ public class addInfo extends AppCompatActivity implements View.OnClickListener {
                 //myYear = listDrop.getSelectedItem().toString();
                monthly = dp.getMonth()+1;
                date = monthly+"/"+dp.getDayOfMonth()+"/"+dp.getYear();
-            //dateText.setText(dateText.getText() + "" +monthly + "/" + dp.getDayOfMonth() + "/"+dp.getYear());
-            dp.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-            //myYear = dp.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                //dateText.setText(dateText.getText() + "" +monthly + "/" + dp.getDayOfMonth() + "/"+dp.getYear());
+                dp.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+                //myYear = dp.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
                //set User values
-            user.setTitle(myTitle);
-            user.setDetails(myDetails);
+                user.setTitle(myTitle);
+                user.setDetails(myDetails);
 
-            user.setYear(date);
+                user.setYear(date);
 
-            mainUser = FirebaseAuth.getInstance().getCurrentUser();
+                user.settimeStampMe(timeStampMe());
+                myTime = user.gettimeStampMe();
+                mainUser = FirebaseAuth.getInstance().getCurrentUser();
+                user.setEma(mainUser.getEmail());
                 //writing to database photo name, photographer, and year taken
                 if( !myTitle.equals("") && !myDetails.equals("")){
                     Map <String, Object> notes = new HashMap<>();
                     //notes.put("userID",mainUser.getUid());
+
                     notes.put("title", user.getTitle());
 
                     notes.put("details", user.getDetails());
                     notes.put("year", user.getYear());
+                    notes.put("ema", user.getEma());
+                    notes.put("timeStampMe",myTime);
 
 
                     user.setUserID(mainUser.getUid());
 
-                    myCollection.collection(user.getUserID()).document(user.getUserID()+timeStampMe()).set(notes)
+                    myCollection.collection(user.getUserID()).document(user.getUserID()+user.gettimeStampMe()).set(notes)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
@@ -161,13 +163,14 @@ public class addInfo extends AppCompatActivity implements View.OnClickListener {
         }
     }
 
-    ///
+
+    //timeStampMe method
     public static String timeStampMe() {
         Long tsLong = System.currentTimeMillis()/1000;
         String ts = tsLong.toString();
 
+
         return ts;
     }
-
 
 }

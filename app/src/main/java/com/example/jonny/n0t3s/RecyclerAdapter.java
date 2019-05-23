@@ -1,7 +1,9 @@
 package com.example.jonny.n0t3s;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,7 +12,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -32,26 +36,28 @@ import java.util.List;
 import java.util.Objects;
 
 import static android.content.ContentValues.TAG;
+import static com.example.jonny.n0t3s.R.id.deleteItem;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder>{
     public List<User> userNotes;
-    private Context context;
+    private Context myContext;
     List<User> userInfo;
     FirebaseFirestore myCollection;
+    FirebaseUser fireUser;
+    String userPath;
 
 
 
-    DocumentReference userData;
-    User user;
-    public static int atAdapter;
+
+
 
     public RecyclerAdapter(Context context) {
-        this.context = context;
+        myContext = context;
     }
 
-    public RecyclerAdapter(List<User>userNotes, Context cont, FirebaseFirestore myData){
+    public RecyclerAdapter(List<User>userNotes, Context context, FirebaseFirestore myData){
         this.userNotes = userNotes;
-        this.context = cont;
+        this.myContext = context;
         this.myCollection = myData;
 
     }
@@ -59,57 +65,35 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
 
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder  {
 
 
-        private TextView itemTitle, itemDesc, itemYears;
+        private TextView itemTitle, itemDesc, itemYears,itemName, postBy;
 
-        public ViewHolder( View itemView ) {
+        private ImageView deleteIcon, shareIcon;
+
+
+
+        public ViewHolder( View itemView) {
             super(itemView);
             //instiate our views
             itemTitle = (TextView) itemView.findViewById(R.id.item_info);
-            itemDesc = (TextView) itemView.findViewById(R.id.itemDesc);
+            itemDesc  = (TextView) itemView.findViewById(R.id.itemDesc);
             itemYears = (TextView) itemView.findViewById(R.id.itemYear);
-            //atAdapter = getAdapterPosition();
-
-            /*itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    atAdapter = getAdapterPosition();
-
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-
-
-                    alertDialogBuilder.setTitle("Do you want to delete this item?....");
-                    alertDialogBuilder.setPositiveButton("Delete",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog,int which) {
-
-                                   // deleteItem(atAdapter);
-                                    //writeData.remove(String.valueOf(atAdapter));
-
-
-                                    //notifyItemRemoved(atAdapter);
-                                    //notifyItemRangeChanged(atAdapter, writeData.size());
-                                }
+            itemName  = (TextView) itemView.findViewById(R.id.itemNames);
+            postBy    = (TextView) itemView.findViewById(R.id.postBy);
+            //instatiate our imageviews
+            deleteIcon = (ImageView) itemView.findViewById(deleteItem);
+            shareIcon =  (ImageView) itemView.findViewById(R.id.shareItem);
 
 
 
-                            });
 
-                    alertDialogBuilder.setNegativeButton("Cancel",new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface arg0, int arg1)
-                        {
-                        }
-                    });
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
-                }
-            });*/
 
         }
+
+
+
 
 
 
@@ -139,15 +123,54 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
         final int itemListPos = i;
         final User user = userNotes.get(itemListPos);
+        int post = R.string.email_Address;
+
 
 
         viewHolder.itemTitle.setText(user.getTitle());
         viewHolder.itemDesc.setText(user.getDetails());
         viewHolder.itemYears.setText(user.getYear());
+        viewHolder.itemName.setText(user.getEma());
+        viewHolder.postBy.setText(post);
+
+        //deleteicon listener deletes the data
+        viewHolder.deleteIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(myContext);
+                alertDialogBuilder.setTitle("Are you sure you want to delete this note?");
+                alertDialogBuilder.setPositiveButton("Delete",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                fireUser = FirebaseAuth.getInstance().getCurrentUser();
+                                user.setUserID(fireUser.getUid());
+                                userPath = user.getUserID()+user.gettimeStampMe();
+                                itemDelete(user.getUserID(),userPath,itemListPos);
+
+                            }
+                        });
+                alertDialogBuilder.setNegativeButton("Cancel",new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1)
+                    {
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+
+
+
+            }
+        });
+
+
 
 
 
     }
+
 
 
 
@@ -161,7 +184,20 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
 
 
+    private void itemDelete(String id, String path, final int pos){
+        myCollection = FirebaseFirestore.getInstance();
 
+        myCollection.collection(id).document(path).delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        userNotes.remove(pos);
+                        notifyItemRemoved(pos);
+                        notifyItemRangeChanged(pos, userNotes.size());
+                        Toast.makeText(myContext, "Note has been deleted!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
 
 
 

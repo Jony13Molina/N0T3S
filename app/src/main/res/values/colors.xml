@@ -15,4 +15,5 @@
     <color name="specialMagic">#0d0d29 </color>
     <color name="delightfulBlue">#73B1B7</color>
     <color name="playfulBlue">#B0E0E6</color>
+    <color name="plain">#FFFFFF </color>
 </resources>

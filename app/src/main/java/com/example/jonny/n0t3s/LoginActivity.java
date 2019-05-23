@@ -126,7 +126,7 @@ public class LoginActivity extends AppCompatActivity
 
 
                             // set values we know on user model
-                            currUser.setUserEmail(user.getEmail());
+                            currUser.setEma(user.getEmail());
                             currUser.setName(user.getDisplayName());
                             currUser.setUserID(user.getUid());
 

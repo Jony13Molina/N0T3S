@@ -13,24 +13,27 @@ public class User{
     public String name;
     public String title;
     public String details;
-    public String userEmail;
+    public String ema;
     public String year;
+    public String timeStampMe;
 
     //constructors
-    public User(String userID, String name, String details, String title, String userEmail, String year)
+    public User(String userID, String timeStampMe, String details, String title, String email, String year)
     {
         this.userID = userID;
-        this.name = name;
+        this.timeStampMe = timeStampMe;
         this.details= details;
-        this.userEmail = userEmail;
+        this.ema = email;
         this.title = title;
         this.year = year;
 
     }
-    public User(String title, String details, String year){
+    public User(String title, String details, String year,String email, String timeStampMe){
         this.title = title;
         this.details = details;
         this.year = year;
+        this.ema= email;
+        this.timeStampMe = timeStampMe;
     }
 
     public User(String userid)
@@ -57,9 +60,13 @@ public class User{
     public void setDetails(String details){
         this.details = details;
     }
+    public void settimeStampMe(String timeStampMe){
+        this.timeStampMe = timeStampMe;
 
-    public void setUserEmail(String email){
-        this.userEmail = email;
+    }
+
+    public void setEma(String email){
+        this.ema = email;
     }
     public void setYear(String year){
         this.year =year;
@@ -84,8 +91,13 @@ public class User{
     public String getYear(){
         return this.year;
     }
-    public String getUserEmail(){
-        return this.userEmail;
+    public String getEma(){
+        return this.ema;
     }
+    public String gettimeStampMe(){
+        return this.timeStampMe;
+    }
+
+
 
 }
