@@ -32,7 +32,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static android.content.ContentValues.TAG;
@@ -45,6 +47,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     FirebaseFirestore myCollection;
     FirebaseUser fireUser;
     String userPath;
+    String myTime;
 
 
 
@@ -137,7 +140,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         viewHolder.deleteIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v){
-
+                //alert dialog box to handle delete flow
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(myContext);
                 alertDialogBuilder.setTitle("Are you sure you want to delete this note?");
                 alertDialogBuilder.setPositiveButton("Delete",
@@ -165,6 +168,64 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             }
         });
 
+        //shareIcon functionality, this would push to a public list
+        //setting share icon listener
+        viewHolder.shareIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                //alert dialog box to handle delete flow
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(myContext);
+                alertDialogBuilder.setTitle("Do you want to share this note?");
+                alertDialogBuilder.setPositiveButton("Share",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Map<String, Object> notes = new HashMap<>();
+                                //notes.put("userID",mainUser.getUid());
+
+                                notes.put("title", user.getTitle());
+
+                                notes.put("details", user.getDetails());
+                                notes.put("year", user.getYear());
+                                notes.put("ema", user.getEma());
+                                notes.put("timeStampMe",user.gettimeStampMe());
+
+
+                                myCollection.collection("Notes").document(user.getUserID()+user.gettimeStampMe()).set(notes)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Toast.makeText(myContext, "Special Notes Shared", Toast.LENGTH_LONG).show();
+
+
+                                            }
+                                        })
+                                        .addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Toast.makeText(myContext, "ERROR" + e.toString(),
+                                                        Toast.LENGTH_SHORT).show();
+                                                Log.d("TAG", e.toString());
+
+                                            }
+                                        });
+
+
+                            }
+                        });
+                alertDialogBuilder.setNegativeButton("Cancel",new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1)
+                    {
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+
+
+
+            }
+        });
 
 
 
