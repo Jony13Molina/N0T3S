@@ -14,9 +14,11 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,7 +49,7 @@ public class addInfo extends AppCompatActivity implements View.OnClickListener {
 
     FloatingActionButton doneButton;
     FirebaseFirestore myCollection;
-
+    Switch privateTrue;
     FirebaseUser mainUser;
     User user;
     public String myDetails;
@@ -76,7 +78,8 @@ public class addInfo extends AppCompatActivity implements View.OnClickListener {
         dp = (DatePicker) findViewById(R.id.datePicker);
 
 
-
+        //switch view
+        privateTrue = (Switch) findViewById(R.id.privateSwitch);
         //button view
         doneButton= (FloatingActionButton) findViewById(R.id.doneButton);
         doneButton.setOnClickListener(this);
@@ -119,7 +122,7 @@ public class addInfo extends AppCompatActivity implements View.OnClickListener {
                 user.setEma(mainUser.getEmail());
                 //writing to database photo name, photographer, and year taken
                 if( !myTitle.equals("") && !myDetails.equals("")){
-                    Map <String, Object> notes = new HashMap<>();
+                    final Map <String, Object> notes = new HashMap<>();
                     //notes.put("userID",mainUser.getUid());
 
                     notes.put("title", user.getTitle());
@@ -131,25 +134,10 @@ public class addInfo extends AppCompatActivity implements View.OnClickListener {
 
 
                     user.setUserID(mainUser.getUid());
+                    pushData(user.getUserID(), user.gettimeStampMe(), notes);
 
-                    myCollection.collection(user.getUserID()).document(user.getUserID()+user.gettimeStampMe()).set(notes)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    Toast.makeText(addInfo.this, "Special Notes Saved!", Toast.LENGTH_LONG).show();
-                                    finish();
 
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(addInfo.this, "ERROR" + e.toString(),
-                                            Toast.LENGTH_SHORT).show();
-                                    Log.d("TAG", e.toString());
 
-                                }
-                            });
 
                 }else{
                     Toast.makeText(this, "Please don't live any fields blank",Toast.LENGTH_LONG).show();
@@ -164,8 +152,57 @@ public class addInfo extends AppCompatActivity implements View.OnClickListener {
     }
 
 
+    public void pushData(final String id, final String timeStamp,final Map<String, Object> notes ){
+
+
+
+                if(privateTrue.isChecked()) {
+
+                    myCollection.collection(id).document(id+timeStamp).set(notes)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(addInfo.this, "Special Note Saved on Private List!", Toast.LENGTH_LONG).show();
+                                    finish();
+
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(addInfo.this, "ERROR" + e.toString(),
+                                            Toast.LENGTH_SHORT).show();
+                                    Log.d("TAG", e.toString());
+
+                                }
+                            });
+                }else {
+                    myCollection.collection("Notes").document(id + timeStamp).set(notes)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Toast.makeText(addInfo.this, "Special Note Saved on Public List!", Toast.LENGTH_LONG).show();
+                                    finish();
+
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(addInfo.this, "ERROR" + e.toString(),
+                                            Toast.LENGTH_SHORT).show();
+                                    Log.d("TAG", e.toString());
+
+                                }
+                            });
+
+
+                }
+
+    }
+
     //timeStampMe method
-    public static String timeStampMe() {
+    public static String timeStampMe(){
         Long tsLong = System.currentTimeMillis()/1000;
         String ts = tsLong.toString();
 

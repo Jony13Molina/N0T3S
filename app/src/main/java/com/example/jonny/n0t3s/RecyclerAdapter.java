@@ -191,11 +191,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                                 notes.put("timeStampMe",user.gettimeStampMe());
 
 
-                                myCollection.collection("Notes").document(user.getUserID()+user.gettimeStampMe()).set(notes)
+                                myCollection.collection("Notes").document(user.getUserID()).set(notes)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
-                                                Toast.makeText(myContext, "Special Notes Shared", Toast.LENGTH_LONG).show();
+                                                Toast.makeText(myContext, "Special Note Shared", Toast.LENGTH_LONG).show();
 
 
                                             }

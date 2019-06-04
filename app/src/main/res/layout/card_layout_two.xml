@@ -2,7 +2,7 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/card_view"
+    android:id="@+id/card_view_two"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
@@ -27,7 +27,7 @@
             android:background="@drawable/customize_border_six">
 
             <TextView
-                android:id="@+id/item_info"
+                android:id="@+id/noTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -42,12 +42,13 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/item_info"
-                android:orientation="horizontal"
-                >
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginBottom="19dp"
+                android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/postBy"
+                    android:id="@+id/noteBy"
                     android:layout_width="78dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-medium"
@@ -55,7 +56,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/itemNames"
+                    android:id="@+id/noteNames"
                     android:layout_width="225dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="27dp"
@@ -90,7 +91,7 @@
             android:background="@drawable/customize_border_four">
 
             <TextView
-                android:id="@+id/itemDesc"
+                android:id="@+id/noteDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
@@ -105,14 +106,14 @@
 
 
             <RelativeLayout
-                android:id="@+id/layoutYear"
+                android:id="@+id/layoutDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true">
 
                 <TextView
-                    android:id="@+id/itemYear"
+                    android:id="@+id/noteDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
@@ -133,7 +134,7 @@
 
 
                 <ImageView
-                    android:id="@+id/deleteItem"
+                    android:id="@+id/delItem"
                     android:layout_width="501dp"
                     android:layout_height="30dp"
                     android:layout_weight=".2"
@@ -143,17 +144,17 @@
                     android:src="@drawable/ic_delete" />
 
                 <ImageView
-                    android:id="@+id/shareItem"
+                    android:id="@+id/likeItem"
                     android:layout_width="260dp"
                     android:layout_height="30dp"
                     android:layout_weight=".2"
                     android:contentDescription="@string/Sharing"
                     android:scaleType="fitEnd"
-                    android:src="@drawable/ic_share_black_18dp" />
+                    android:src="@drawable/ic_favorite" />
 
 
             </LinearLayout>
-            </RelativeLayout>
+        </RelativeLayout>
 
 
 

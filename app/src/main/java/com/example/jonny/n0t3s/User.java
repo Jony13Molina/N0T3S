@@ -16,6 +16,7 @@ public class User{
     public String ema;
     public String year;
     public String timeStampMe;
+    public boolean statusPrivate = false;
 
     //constructors
     public User(String userID, String timeStampMe, String details, String title, String email, String year)
