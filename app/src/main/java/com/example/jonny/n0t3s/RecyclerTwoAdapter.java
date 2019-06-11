@@ -30,12 +30,13 @@ public class RecyclerTwoAdapter extends RecyclerView.Adapter<RecyclerTwoAdapter.
     private Context myContext;
     List<User> userInfo;
     FirebaseFirestore myCollection;
-    FirebaseUser fireUser;
+    FirebaseUser fireUser= FirebaseAuth.getInstance().getCurrentUser();
     String userPath;
     String pathId;
+    int likeCount;
+    private boolean clicked = true;
 
-
-    public RecyclerTwoAdapter(Context context) {
+    RecyclerTwoAdapter(Context context) {
         myContext = context;
     }
 
@@ -50,7 +51,7 @@ public class RecyclerTwoAdapter extends RecyclerView.Adapter<RecyclerTwoAdapter.
     class ViewHolder extends RecyclerView.ViewHolder {
 
 
-        private TextView itemTitle, itemDesc, itemYears, itemName, postBy;
+        private TextView itemTitle, itemDesc, itemYears, itemName, postBy, likeC;
 
         private ImageView deleteIcon, likeIcon;
 
@@ -66,6 +67,7 @@ public class RecyclerTwoAdapter extends RecyclerView.Adapter<RecyclerTwoAdapter.
             //instatiate our imageviews
             deleteIcon = (ImageView) itemView.findViewById(R.id.delItem);
             likeIcon = (ImageView) itemView.findViewById(R.id.likeItem);
+            likeC = (TextView) itemView.findViewById(R.id.likeCounter);
 
 
         }
@@ -95,17 +97,19 @@ public class RecyclerTwoAdapter extends RecyclerView.Adapter<RecyclerTwoAdapter.
         int post = R.string.email_Address;
 
 
+
         viewHolder.itemTitle.setText(user.getTitle());
         viewHolder.itemDesc.setText(user.getDetails());
         viewHolder.itemYears.setText(user.getYear());
         viewHolder.itemName.setText(user.getEma());
         viewHolder.postBy.setText(post);
+        viewHolder.likeC.setText(user.getLikeCounter());
 
         //deleteicon listener deletes the data
         viewHolder.deleteIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fireUser = FirebaseAuth.getInstance().getCurrentUser();
+                //fireUser = FirebaseAuth.getInstance().getCurrentUser();
 
                 //alert dialog box to handle delete flow
                 Log.d("this is the userID", user.getUserID());
@@ -116,11 +120,14 @@ public class RecyclerTwoAdapter extends RecyclerView.Adapter<RecyclerTwoAdapter.
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    // fireUser = FirebaseAuth.getInstance().getCurrentUser();
+
                                     user.setUserID(fireUser.getUid());
-                                    userPath = user.getUserID() + user.gettimeStampMe();
+                                    userPath = user.gettimeStampMe();
                                     pathId = "Notes";
+
+
                                     itemDelete(pathId, userPath,itemListPos);
+                                    Log.d("DDDD", user.getUserID());
 
                                 }
                             });
@@ -140,15 +147,53 @@ public class RecyclerTwoAdapter extends RecyclerView.Adapter<RecyclerTwoAdapter.
             }
         });
 
-        //shareIcon functionality, this would push to a public list
-        //setting share icon listener
+
+        //set like item code
         viewHolder.likeIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                user.setUserID(fireUser.getUid());
 
+                if (user.getUserID().equals(fireUser.getUid())) {
+
+                    user.setUserLike(true);
+                    if (user.getUserLike()) {
+                        likeCount++;
+                        String countVal = Integer.toString(likeCount);
+                        user.setLikeCounter(countVal);
+
+                        fireUser = FirebaseAuth.getInstance().getCurrentUser();
+
+                        user.setUserID(fireUser.getUid());
+                        userPath = user.gettimeStampMe();
+                        Log.d("timestamo!!!!!!!!!!!!", user.gettimeStampMe());
+                        pathId = "Notes";
+
+                        updateLike(pathId, userPath, countVal);
+
+                        user.setUserLike(false);
+
+                    } else {
+                        likeCount--;
+                        String countVal = Integer.toString(likeCount);
+                        user.setLikeCounter(countVal);
+
+                        fireUser = FirebaseAuth.getInstance().getCurrentUser();
+
+                        user.setUserID(fireUser.getUid());
+                        userPath = user.gettimeStampMe();
+                        pathId = "Notes";
+
+                        updateLike(pathId, userPath, countVal);
+                        user.setUserLike(true);
+
+                    }
+                }
 
 
             }
+
+
         });
 
 
@@ -161,6 +206,12 @@ public class RecyclerTwoAdapter extends RecyclerView.Adapter<RecyclerTwoAdapter.
     }
 
 
+
+    private void updateLike(String id, String path, String likeVal){
+        myCollection = FirebaseFirestore.getInstance();
+
+        myCollection.collection(id).document(path).update("likeCounter", likeVal);
+    }
     private void itemDelete(String id, String path, final int pos) {
         myCollection = FirebaseFirestore.getInstance();
 

@@ -47,7 +47,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     FirebaseFirestore myCollection;
     FirebaseUser fireUser;
     String userPath;
-    String myTime;
+    String likeCount;
 
 
 
@@ -189,9 +189,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                                 notes.put("year", user.getYear());
                                 notes.put("ema", user.getEma());
                                 notes.put("timeStampMe",user.gettimeStampMe());
+                                notes.put("likeCounter",user.getLikeCounter());
+                                notes.put("userLike", user.getUserLike());
 
 
-                                myCollection.collection("Notes").document(user.getUserID()).set(notes)
+                                myCollection.collection("Notes").document(user.gettimeStampMe()).set(notes)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {

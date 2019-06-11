@@ -16,7 +16,8 @@ public class User{
     public String ema;
     public String year;
     public String timeStampMe;
-    public boolean statusPrivate = false;
+    public  String likeCounter = null;
+    public boolean  userLike = false;
 
     //constructors
     public User(String userID, String timeStampMe, String details, String title, String email, String year)
@@ -29,12 +30,14 @@ public class User{
         this.year = year;
 
     }
-    public User(String title, String details, String year,String email, String timeStampMe){
+    public User(String title, String details, String year,String email, String timeStampMe, String likeCounter,String ema){
         this.title = title;
         this.details = details;
         this.year = year;
         this.ema= email;
         this.timeStampMe = timeStampMe;
+        this.likeCounter = likeCounter;
+        this.ema = ema;
     }
 
     public User(String userid)
@@ -65,12 +68,18 @@ public class User{
         this.timeStampMe = timeStampMe;
 
     }
+    public void setLikeCounter(String likeCounter){
+        this.likeCounter =likeCounter;
+    }
 
     public void setEma(String email){
         this.ema = email;
     }
     public void setYear(String year){
         this.year =year;
+    }
+    public void setUserLike(boolean userlike){
+        this.userLike = userlike;
     }
 
     //getters
@@ -98,7 +107,9 @@ public class User{
     public String gettimeStampMe(){
         return this.timeStampMe;
     }
+    public String getLikeCounter(){return this.likeCounter;}
 
-
-
+    public boolean getUserLike() {
+        return userLike;
+    }
 }

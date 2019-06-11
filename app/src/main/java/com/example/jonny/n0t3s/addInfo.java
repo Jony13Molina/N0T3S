@@ -55,6 +55,7 @@ public class addInfo extends AppCompatActivity implements View.OnClickListener {
     public String myDetails;
     public String myTitle;
     public String myTime;
+    public String likeCount;
     //variables to get the monthly value.
     int monthly;
     String date;
@@ -120,6 +121,10 @@ public class addInfo extends AppCompatActivity implements View.OnClickListener {
                 myTime = user.gettimeStampMe();
                 mainUser = FirebaseAuth.getInstance().getCurrentUser();
                 user.setEma(mainUser.getEmail());
+
+                user.setLikeCounter(likeCount);
+                user.setUserLike(false);
+
                 //writing to database photo name, photographer, and year taken
                 if( !myTitle.equals("") && !myDetails.equals("")){
                     final Map <String, Object> notes = new HashMap<>();
@@ -131,10 +136,13 @@ public class addInfo extends AppCompatActivity implements View.OnClickListener {
                     notes.put("year", user.getYear());
                     notes.put("ema", user.getEma());
                     notes.put("timeStampMe",myTime);
+                    notes.put("likeCounter", user.getLikeCounter());
+                    notes.put("userLike",user.getUserLike());
+
 
 
                     user.setUserID(mainUser.getUid());
-                    pushData(user.getUserID(), user.gettimeStampMe(), notes);
+                    pushData(user.getUserID(), user.getUserID()+user.gettimeStampMe(), notes);
 
 
 
@@ -177,7 +185,7 @@ public class addInfo extends AppCompatActivity implements View.OnClickListener {
                                 }
                             });
                 }else {
-                    myCollection.collection("Notes").document(id + timeStamp).set(notes)
+                    myCollection.collection("Notes").document(user.gettimeStampMe()).set(notes)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
