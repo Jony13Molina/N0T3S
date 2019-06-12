@@ -149,7 +149,7 @@
                     android:layout_weight=".2"
                     android:contentDescription="@string/Sharing"
                     android:scaleType="fitEnd"
-                    android:src="@drawable/ic_share_black_18dp" />
+                    android:src="@drawable/ic_share" />
 
 
             </LinearLayout>

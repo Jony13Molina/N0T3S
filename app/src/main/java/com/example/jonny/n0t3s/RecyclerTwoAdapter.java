@@ -141,7 +141,7 @@ public class RecyclerTwoAdapter extends RecyclerView.Adapter<RecyclerTwoAdapter.
 
 
                 }else{
-                    Toast.makeText(myContext, "Can't Delete Posts You Didn't Share", Toast.LENGTH_SHORT).show();
+                    Utils.toastMessage("Can't delete a post you didn't share", myContext);
 
                 }
             }
@@ -223,7 +223,7 @@ public class RecyclerTwoAdapter extends RecyclerView.Adapter<RecyclerTwoAdapter.
                         userNotes.remove(pos);
                         notifyItemRemoved(pos);
                         notifyItemRangeChanged(pos, userNotes.size());
-                        Toast.makeText(myContext, "Note has been deleted!", Toast.LENGTH_SHORT).show();
+                        Utils.toastMessage("Note was deleted", myContext);
                     }
                 });
     }

@@ -197,7 +197,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
-                                                Toast.makeText(myContext, "Special Note Shared", Toast.LENGTH_LONG).show();
+                                              Utils.toastMessage("Special Note Shared", myContext);
 
 
                                             }
@@ -205,9 +205,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                                         .addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
-                                                Toast.makeText(myContext, "ERROR" + e.toString(),
-                                                        Toast.LENGTH_SHORT).show();
-                                                Log.d("TAG", e.toString());
+                                                Utils.toastMessage("Error!!!"+e.toString(), myContext);
+
 
                                             }
                                         });
@@ -257,7 +256,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                         userNotes.remove(pos);
                         notifyItemRemoved(pos);
                         notifyItemRangeChanged(pos, userNotes.size());
-                        Toast.makeText(myContext, "Note has been deleted!", Toast.LENGTH_SHORT).show();
+                        Utils.toastMessage("Note was deleted", myContext);
                     }
                 });
     }

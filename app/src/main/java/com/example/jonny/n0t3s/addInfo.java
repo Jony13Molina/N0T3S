@@ -45,7 +45,7 @@ import java.util.TimeZone;
 
 import static io.opencensus.tags.TagValue.MAX_LENGTH;
 
-public class addInfo extends AppCompatActivity implements View.OnClickListener {
+public class addInfo extends AppCompatActivity implements  View.OnClickListener {
 
     FloatingActionButton doneButton;
     FirebaseFirestore myCollection;
@@ -56,6 +56,9 @@ public class addInfo extends AppCompatActivity implements View.OnClickListener {
     public String myTitle;
     public String myTime;
     public String likeCount;
+    public static String toastMessage;
+    public static String pToastMessage;
+    public static String privateMessage;
     //variables to get the monthly value.
     int monthly;
     String date;
@@ -117,7 +120,7 @@ public class addInfo extends AppCompatActivity implements View.OnClickListener {
 
                 user.setYear(date);
 
-                user.settimeStampMe(timeStampMe());
+                user.settimeStampMe(Utils.timeStampMe());
                 myTime = user.gettimeStampMe();
                 mainUser = FirebaseAuth.getInstance().getCurrentUser();
                 user.setEma(mainUser.getEmail());
@@ -148,7 +151,9 @@ public class addInfo extends AppCompatActivity implements View.OnClickListener {
 
 
                 }else{
-                    Toast.makeText(this, "Please don't live any fields blank",Toast.LENGTH_LONG).show();
+                    toastMessage = "Please don't leave any fileds blank";
+                    Utils.toastMessage( toastMessage, addInfo.this);
+                   // Toast.makeText(this, "Please don't live any fields blank",Toast.LENGTH_LONG).show();
                 }
 
 
@@ -170,7 +175,9 @@ public class addInfo extends AppCompatActivity implements View.OnClickListener {
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    Toast.makeText(addInfo.this, "Special Note Saved on Private List!", Toast.LENGTH_LONG).show();
+                                    pToastMessage = "Special Note Was Saved on Private List";
+                                    Utils.toastMessage(pToastMessage, addInfo.this);
+                                    //Toast.makeText(addInfo.this, "Special Note Saved on Private List!", Toast.LENGTH_LONG).show();
                                     finish();
 
                                 }
@@ -189,7 +196,8 @@ public class addInfo extends AppCompatActivity implements View.OnClickListener {
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
-                                    Toast.makeText(addInfo.this, "Special Note Saved on Public List!", Toast.LENGTH_LONG).show();
+                                    privateMessage = "Special Note Was Saved On Public List";
+                                    Utils.toastMessage(privateMessage, addInfo.this);
                                     finish();
 
                                 }
@@ -209,13 +217,6 @@ public class addInfo extends AppCompatActivity implements View.OnClickListener {
 
     }
 
-    //timeStampMe method
-    public static String timeStampMe(){
-        Long tsLong = System.currentTimeMillis()/1000;
-        String ts = tsLong.toString();
 
-
-        return ts;
-    }
 
 }
