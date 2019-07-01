@@ -34,8 +34,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:contextClickable="true"
-            android:paddingTop="50dp"
-            android:gravity="center_vertical|center"/>
+            android:gravity="center_vertical|center"
+            android:paddingTop="50dp" />
 
 
     </LinearLayout>

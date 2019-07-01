@@ -1,5 +1,6 @@
 package com.example.jonny.n0t3s;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -28,132 +29,106 @@ import com.google.firebase.database.FirebaseDatabase;
 
 
 public class LoginActivity extends AppCompatActivity
-        implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
+        implements LoginView, GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
     SignInButton signIn;
-    TextView statusText;
-    GoogleApiClient myGoogleClient;
-
-    private static final String TAG = "SignInActivity";
+    LoginPresenterImpl myPresenter;
+    loginActionImp myaction;
+    GoogleApiClient myClient, getMyClient;
+    public Context cont = getApplication();
     private static final int RC_SIGN_IN = 9001;
-    private FirebaseAuth authUser;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        authUser = FirebaseAuth.getInstance();
 
-
-
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
-        myGoogleClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this,this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API,gso)
-                .build();
+        myPresenter = new LoginPresenterImpl(this, this);
+        myClient= myPresenter.handleGoogleClient(getApplication(), myClient);
 
         signIn = (SignInButton) findViewById(R.id.sign_in_button);
         signIn.setOnClickListener(this);
+
     }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+        myPresenter.onStart();
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+
+        myPresenter.onDestroy();
+    }
+
+
+
 
     @Override
     public void onClick(View v) {
         switch(v.getId()){
             case R.id.sign_in_button:
-                logIn();
+                mainAccess();
                 break;
         }
+
+
+
+
+
+
+
 
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = authUser.getCurrentUser();
-        //updateUI(currentUser);
+    public void googleClient(){
+        myPresenter.handleGoogleClient(cont, myClient);
     }
 
-    private void logIn(){
-        Intent logInIntent = Auth.GoogleSignInApi.getSignInIntent(myGoogleClient);
-        startActivityForResult(logInIntent, RC_SIGN_IN);
 
+    @Override
+    public void loginRequest(){
+       // getMyClient = myaction.googleLogIn(this);
+        Intent logInIntent = Auth.GoogleSignInApi.getSignInIntent(myClient);
+        startActivityForResult(logInIntent, RC_SIGN_IN);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                // Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                firebaseAuthWithGoogle(account);
-
-            } catch (ApiException e) {
-                // Google Sign In failed, update UI appropriately
-                Log.w(TAG, "Google sign in failed", e);
-            }
-        }
-    }
-
-    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
-
-        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        authUser.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = authUser.getCurrentUser();
-                            DatabaseReference myRef = FirebaseDatabase.getInstance().getReference();
-
-                            User currUser = new User();
-
-
-
-
-
-
-                            //FirebaseUser currUser = FirebaseAuth.getInstance().getCurrentUser();
-
-
-                            // set values we know on user model
-                            currUser.setEma(user.getEmail());
-                            currUser.setName(user.getDisplayName());
-                            currUser.setUserID(user.getUid());
-
-                            // store in users->uid->user info
-
-                            myRef.child("users").child(user.getUid()).setValue(currUser);
-
-                            Intent intent = new Intent(LoginActivity.this,MainActivity.class);
-                            startActivity(intent);
-
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-                        }
-                    }
-                });
+        ActResult(requestCode, resultCode, data);
     }
 
 
+    @Override
+    public void handleLogIn(GoogleSignInAccount account) {
+
+        myPresenter.handleClientSignRequest(account, getApplication());
+    }
+
+    @Override
+    public void ActResult(int rqCode, int rsCode, Intent data){
+        myPresenter.handleActResult(rqCode,rsCode, data,getApplication());
+    }
+
+    @Override
+    public void mainAccess() {
+
+        loginRequest();
+    }
+
+    @Override
+    public void loginError(String error) {
+
+    }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.d(TAG,"onConnectionFailed:"+connectionResult);
-    }
-
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
 
     }
 }
