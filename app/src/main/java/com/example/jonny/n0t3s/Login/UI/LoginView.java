@@ -1,4 +1,4 @@
-package com.example.jonny.n0t3s.Login;
+package com.example.jonny.n0t3s.Login.UI;
 
 import android.content.Context;
 import android.content.Intent;

@@ -1,4 +1,4 @@
-package com.example.jonny.n0t3s.Login;
+package com.example.jonny.n0t3s.Login.UI;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.jonny.n0t3s.Login.LoginPresenterImpl;
+import com.example.jonny.n0t3s.Login.loginActionImp;
 import com.example.jonny.n0t3s.R;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -18,7 +20,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 public class LoginActivity extends AppCompatActivity
         implements LoginView, GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
     SignInButton signIn;
-    LoginPresenterImpl myPresenter;
+    public LoginPresenterImpl myPresenter;
     loginActionImp myaction;
     GoogleApiClient myClient, getMyClient;
     public Context cont = getApplication();
@@ -32,7 +34,7 @@ public class LoginActivity extends AppCompatActivity
         setContentView(R.layout.activity_login);
 
 
-        myPresenter = new LoginPresenterImpl(this, this);
+       myPresenter = new LoginPresenterImpl(this, this);
         myClient= myPresenter.handleGoogleClient(getApplication(), myClient);
 
         signIn = (SignInButton) findViewById(R.id.sign_in_button);

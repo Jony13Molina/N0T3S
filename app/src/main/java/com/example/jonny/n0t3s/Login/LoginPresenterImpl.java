@@ -1,16 +1,13 @@
-package com.example.jonny.n0t3s;
+package com.example.jonny.n0t3s.Login;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 
-import com.google.android.gms.auth.api.Auth;
+import com.example.jonny.n0t3s.Login.UI.LoginView;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.firebase.auth.FirebaseUser;
 
 public class LoginPresenterImpl extends FragmentActivity implements LoginPresenter {
 
@@ -19,7 +16,7 @@ public class LoginPresenterImpl extends FragmentActivity implements LoginPresent
     Context myContext;
     GoogleApiClient client;
 
-    LoginPresenterImpl(LoginView view, Context context){
+    public LoginPresenterImpl(LoginView view, Context context){
         mLoginView = view;
         myContext = context;
 

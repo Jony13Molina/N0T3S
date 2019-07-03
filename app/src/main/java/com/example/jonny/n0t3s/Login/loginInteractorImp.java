@@ -1,11 +1,10 @@
-package com.example.jonny.n0t3s;
+package com.example.jonny.n0t3s.Login;
 
 import android.content.Context;
 import android.content.Intent;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.firebase.auth.FirebaseUser;
 
 public class loginInteractorImp implements loginInteractor {
 
