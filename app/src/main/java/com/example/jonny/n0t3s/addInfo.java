@@ -45,7 +45,7 @@ import java.util.TimeZone;
 
 import static io.opencensus.tags.TagValue.MAX_LENGTH;
 
-public class addInfo extends AppCompatActivity implements  View.OnClickListener {
+public class addInfo extends AppCompatActivity implements  View.OnClickListener, addInfoView {
 
     FloatingActionButton doneButton;
     FirebaseFirestore myCollection;
@@ -59,6 +59,9 @@ public class addInfo extends AppCompatActivity implements  View.OnClickListener 
     public static String toastMessage;
     public static String pToastMessage;
     public static String privateMessage;
+
+
+    public addInfoPresenterImp myPresenter;
     //variables to get the monthly value.
     int monthly;
     String date;
@@ -74,8 +77,8 @@ public class addInfo extends AppCompatActivity implements  View.OnClickListener 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_info);
-        //get a reference of our database
-        myCollection = FirebaseFirestore.getInstance();
+
+        myPresenter = new addInfoPresenterImp(this);
 
 
 
@@ -92,131 +95,61 @@ public class addInfo extends AppCompatActivity implements  View.OnClickListener 
 
    public void onClick(View v)
    {
-       user = new User();
         if (v.getId() == R.id.doneButton)
         {
-
-                //set descriotion
-                EditText t_Edit = (EditText)findViewById(R.id.enterInfo);
-
-                myTitle = t_Edit.getText().toString();
-                //set details
-                EditText p_Edit  = (EditText)findViewById(R.id.plusInfo);
-                myDetails = p_Edit.getText().toString();
-                //initializing writing year taken
-                //listDrop = (Spinner)findViewById(R.id.dropDownls);
-
-                //set Year
-                //myYear = listDrop.getSelectedItem().toString();
-               monthly = dp.getMonth()+1;
-               date = monthly+"/"+dp.getDayOfMonth()+"/"+dp.getYear();
-                //dateText.setText(dateText.getText() + "" +monthly + "/" + dp.getDayOfMonth() + "/"+dp.getYear());
-                dp.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
-                //myYear = dp.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-
-               //set User values
-                user.setTitle(myTitle);
-                user.setDetails(myDetails);
-
-                user.setYear(date);
-
-                user.settimeStampMe(Utils.timeStampMe());
-                myTime = user.gettimeStampMe();
-                mainUser = FirebaseAuth.getInstance().getCurrentUser();
-                user.setEma(mainUser.getEmail());
-
-                user.setLikeCounter(likeCount);
-                user.setUserLike(false);
-
-                //writing to database photo name, photographer, and year taken
-                if( !myTitle.equals("") && !myDetails.equals("")){
-                    final Map <String, Object> notes = new HashMap<>();
-                    //notes.put("userID",mainUser.getUid());
-
-                    notes.put("title", user.getTitle());
-
-                    notes.put("details", user.getDetails());
-                    notes.put("year", user.getYear());
-                    notes.put("ema", user.getEma());
-                    notes.put("timeStampMe",myTime);
-                    notes.put("likeCounter", user.getLikeCounter());
-                    notes.put("userLike",user.getUserLike());
-
-
-
-                    user.setUserID(mainUser.getUid());
-                    pushData(user.getUserID(), user.getUserID()+user.gettimeStampMe(), notes);
-
-
-
-
-                }else{
-                    toastMessage = "Please don't leave any fileds blank";
-                    Utils.toastMessage( toastMessage, addInfo.this);
-                   // Toast.makeText(this, "Please don't live any fields blank",Toast.LENGTH_LONG).show();
-                }
-
-
-
-
-
-
+            pushNotes();
         }
     }
 
 
-    public void pushData(final String id, final String timeStamp,final Map<String, Object> notes ){
+
+
+    @Override
+    public void pushNotes() {
+        //set descriotion
+        EditText t_Edit = (EditText)findViewById(R.id.enterInfo);
+
+        myTitle = t_Edit.getText().toString();
+        //set details
+        EditText p_Edit  = (EditText)findViewById(R.id.plusInfo);
+        myDetails = p_Edit.getText().toString();
+        //initializing writing year taken
+        //listDrop = (Spinner)findViewById(R.id.dropDownls);
+
+        //set Year
+        //myYear = listDrop.getSelectedItem().toString();
+        monthly = dp.getMonth()+1;
+        date = monthly+"/"+dp.getDayOfMonth()+"/"+dp.getYear();
+        //dateText.setText(dateText.getText() + "" +monthly + "/" + dp.getDayOfMonth() + "/"+dp.getYear());
+        dp.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        //myYear = dp.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        User user = new User ();
+        //set User values
+        user.setTitle(myTitle);
+        user.setDetails(myDetails);
+
+        user.setYear(date);
+//
+        user.settimeStampMe(Utils.timeStampMe());
+        myTime = user.gettimeStampMe();
+        mainUser = FirebaseAuth.getInstance().getCurrentUser();
+        user.setEma(mainUser.getEmail());
+
+        user.setLikeCounter(likeCount);
+        user.setUserLike(false);
 
 
 
-                if(privateTrue.isChecked()) {
+        //pushData(mainUser.getUid(), myTime,myUser, privateTrue);
 
-                    myCollection.collection(id).document(id+timeStamp).set(notes)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    pToastMessage = "Special Note Was Saved on Private List";
-                                    Utils.toastMessage(pToastMessage, addInfo.this);
-                                    //Toast.makeText(addInfo.this, "Special Note Saved on Private List!", Toast.LENGTH_LONG).show();
-                                    finish();
-
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(addInfo.this, "ERROR" + e.toString(),
-                                            Toast.LENGTH_SHORT).show();
-                                    Log.d("TAG", e.toString());
-
-                                }
-                            });
-                }else {
-                    myCollection.collection("Notes").document(user.gettimeStampMe()).set(notes)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    privateMessage = "Special Note Was Saved On Public List";
-                                    Utils.toastMessage(privateMessage, addInfo.this);
-                                    finish();
-
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(addInfo.this, "ERROR" + e.toString(),
-                                            Toast.LENGTH_SHORT).show();
-                                    Log.d("TAG", e.toString());
-
-                                }
-                            });
-
-
-                }
+        myPresenter.pushNotes(user, privateTrue);
 
     }
 
+    @Override
+    public void pushData(String id, String timeStampMe, User myUser, Switch mySwitch) {
+        myPresenter.pushData(id, timeStampMe, mySwitch);
 
 
+    }
 }
