@@ -1,4 +1,4 @@
-package com.example.jonny.n0t3s;
+package com.example.jonny.n0t3s.addInfo;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,6 +8,8 @@ import android.util.Log;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.example.jonny.n0t3s.User;
+import com.example.jonny.n0t3s.Utils;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -17,9 +19,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.example.jonny.n0t3s.addInfo.pToastMessage;
-import static com.example.jonny.n0t3s.addInfo.privateMessage;
-import static com.example.jonny.n0t3s.addInfo.toastMessage;
+import static com.example.jonny.n0t3s.addInfo.UI.addInfo.pToastMessage;
+import static com.example.jonny.n0t3s.addInfo.UI.addInfo.privateMessage;
+import static com.example.jonny.n0t3s.addInfo.UI.addInfo.toastMessage;
 
 public class addInfoReposatoryImp extends ContextWrapper implements addInfoResposatory {
 
@@ -29,7 +31,10 @@ public class addInfoReposatoryImp extends ContextWrapper implements addInfoRespo
 
     FirebaseUser mainUser;
     FirebaseFirestore myCollection;
+    User user;
 
+    String myTime;
+    String likeCount;
     public Map < String, Object > notes;
 
     public addInfoReposatoryImp(Context base) {
@@ -40,10 +45,25 @@ public class addInfoReposatoryImp extends ContextWrapper implements addInfoRespo
     }
 
     @Override
-    public void pushNotes( User user, Switch mySwitch) {
+    public void pushNotes( String title, String details, String date, Switch mySwitch) {
 
 
+        User user = new User ();
+        //set User values
+        user.setTitle(title);
+        user.setDetails(details);
+
+        user.setYear(date);
+
+        user.settimeStampMe(Utils.timeStampMe());
+        myTime = user.gettimeStampMe();
         mainUser = FirebaseAuth.getInstance().getCurrentUser();
+        user.setEma(mainUser.getEmail());
+
+        user.setLikeCounter(likeCount);
+        user.setUserLike(false);
+
+
 
 
         //writing to database photo name, photographer, and year taken

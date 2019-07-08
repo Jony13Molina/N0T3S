@@ -23,7 +23,7 @@
         <activity android:name=".MainActivity">
 
         </activity>
-        <activity android:name=".addInfo" />
+        <activity android:name=".addInfo.UI.addInfo" />
         <activity android:name=".viewInfo"></activity>
     </application>
 

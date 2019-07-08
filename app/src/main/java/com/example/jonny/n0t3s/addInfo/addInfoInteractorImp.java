@@ -1,13 +1,11 @@
-package com.example.jonny.n0t3s;
+package com.example.jonny.n0t3s.addInfo;
 
 
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.widget.Switch;
 
-import java.util.Map;
-
-public class addInfoInteractorImp extends ContextWrapper implements addInfoInteractor{
+public class addInfoInteractorImp extends ContextWrapper implements addInfoInteractor {
 
 
     Context context;
@@ -24,9 +22,9 @@ public class addInfoInteractorImp extends ContextWrapper implements addInfoInter
 
 
     @Override
-    public void putNotes( User myUser, Switch mySwitch) {
+    public void putNotes( String title, String details, String date, Switch mySwitch) {
 
-        addInfoRes.pushNotes( myUser, mySwitch);
+        addInfoRes.pushNotes(title, details, date,mySwitch);
 
     }
 

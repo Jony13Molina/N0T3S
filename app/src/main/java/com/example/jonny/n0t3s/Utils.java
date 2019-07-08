@@ -3,7 +3,7 @@ package com.example.jonny.n0t3s;
 import android.content.Context;
 import android.widget.Toast;
 
-class Utils {
+public class Utils {
 
     //-------------------------------------------------------------------------------
     // this is a timestamp method to set a time to our notes for firestore reference

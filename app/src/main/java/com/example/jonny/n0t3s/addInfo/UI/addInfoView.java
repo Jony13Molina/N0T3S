@@ -1,6 +1,8 @@
-package com.example.jonny.n0t3s;
+package com.example.jonny.n0t3s.addInfo.UI;
 
 import android.widget.Switch;
+
+import com.example.jonny.n0t3s.User;
 
 import java.util.Map;
 

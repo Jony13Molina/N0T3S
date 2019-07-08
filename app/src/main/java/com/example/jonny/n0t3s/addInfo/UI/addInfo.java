@@ -1,49 +1,21 @@
-package com.example.jonny.n0t3s;
+package com.example.jonny.n0t3s.addInfo.UI;
 
-import android.content.ActivityNotFoundException;
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.provider.MediaStore;
-import android.renderscript.Script;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Switch;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
+import com.example.jonny.n0t3s.R;
+import com.example.jonny.n0t3s.User;
+import com.example.jonny.n0t3s.addInfo.UI.addInfoView;
+import com.example.jonny.n0t3s.addInfo.addInfoPresenterImp;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.TimeZone;
-
-import static io.opencensus.tags.TagValue.MAX_LENGTH;
 
 public class addInfo extends AppCompatActivity implements  View.OnClickListener, addInfoView {
 
@@ -123,26 +95,12 @@ public class addInfo extends AppCompatActivity implements  View.OnClickListener,
         //dateText.setText(dateText.getText() + "" +monthly + "/" + dp.getDayOfMonth() + "/"+dp.getYear());
         dp.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         //myYear = dp.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        User user = new User ();
-        //set User values
-        user.setTitle(myTitle);
-        user.setDetails(myDetails);
-
-        user.setYear(date);
-//
-        user.settimeStampMe(Utils.timeStampMe());
-        myTime = user.gettimeStampMe();
-        mainUser = FirebaseAuth.getInstance().getCurrentUser();
-        user.setEma(mainUser.getEmail());
-
-        user.setLikeCounter(likeCount);
-        user.setUserLike(false);
 
 
 
         //pushData(mainUser.getUid(), myTime,myUser, privateTrue);
 
-        myPresenter.pushNotes(user, privateTrue);
+        myPresenter.pushNotes(myTitle, myDetails, date, privateTrue);
 
     }
 

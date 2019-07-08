@@ -1,12 +1,11 @@
-package com.example.jonny.n0t3s;
+package com.example.jonny.n0t3s.addInfo;
 
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.widget.Switch;
 
-import com.example.jonny.n0t3s.Login.loginInteractor;
-
-import java.util.Map;
+import com.example.jonny.n0t3s.addInfo.addInfoInteractorImp;
+import com.example.jonny.n0t3s.addInfo.addInfoPresenter;
 
 public class addInfoPresenterImp extends ContextWrapper implements addInfoPresenter {
 
@@ -19,8 +18,8 @@ public class addInfoPresenterImp extends ContextWrapper implements addInfoPresen
     }
 
     @Override
-    public void pushNotes( User myUser, Switch mySwitch) {
-        myInteractor.putNotes(myUser, mySwitch);
+    public void pushNotes( String title, String details, String date,  Switch mySwitch) {
+        myInteractor.putNotes(title, details, date,  mySwitch);
 
     }
 
