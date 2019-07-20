@@ -42,14 +42,16 @@ import static com.example.jonny.n0t3s.R.id.deleteItem;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder>{
     public List<User> userNotes;
+    User user;
     private Context myContext;
-    List<User> userInfo;
     FirebaseFirestore myCollection;
     FirebaseUser fireUser;
     String userPath;
     String likeCount;
 
 
+    RecyclerViewClickListener mListener;
+    RecyclerDeleteListener myListener;
 
 
 
@@ -58,37 +60,43 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         myContext = context;
     }
 
-    public RecyclerAdapter(List<User>userNotes, Context context, FirebaseFirestore myData){
+    public RecyclerAdapter(List<User>userNotes, Context context){
         this.userNotes = userNotes;
         this.myContext = context;
-        this.myCollection = myData;
 
     }
 
 
 
-
-    class ViewHolder extends RecyclerView.ViewHolder  {
-
-
-        private TextView itemTitle, itemDesc, itemYears,itemName, postBy;
-
-        private ImageView deleteIcon, shareIcon;
+    public interface RecyclerViewClickListener {
+        void onClick(View view, int position);
+    }
 
 
+    public interface RecyclerDeleteListener{
+        void onMyClick(View v, int pos);
+    }
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
-        public ViewHolder( View itemView) {
+
+        private TextView itemTitle, itemDesc, itemYears, itemName, postBy;
+
+        private ImageView deleteIcon, shareIcon, check;
+
+        RecyclerViewClickListener mListener;
+
+
+        public ViewHolder(View itemView) {
             super(itemView);
             //instiate our views
             itemTitle = (TextView) itemView.findViewById(R.id.item_info);
-            itemDesc  = (TextView) itemView.findViewById(R.id.itemDesc);
+            itemDesc = (TextView) itemView.findViewById(R.id.itemDesc);
             itemYears = (TextView) itemView.findViewById(R.id.itemYear);
-            itemName  = (TextView) itemView.findViewById(R.id.itemNames);
-            postBy    = (TextView) itemView.findViewById(R.id.postBy);
+            itemName = (TextView) itemView.findViewById(R.id.itemNames);
+            postBy = (TextView) itemView.findViewById(R.id.postBy);
             //instatiate our imageviews
             deleteIcon = (ImageView) itemView.findViewById(deleteItem);
-            shareIcon =  (ImageView) itemView.findViewById(R.id.shareItem);
-
+            shareIcon = (ImageView) itemView.findViewById(R.id.shareItem);
 
 
 
@@ -97,15 +105,27 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
 
 
+    }
 
 
+    public void setCustomButtonListner(RecyclerViewClickListener listener) {
+        this.mListener = listener;
+    }
 
+
+    public void setRecyclerDeleteListener(RecyclerDeleteListener listener){
+        this.myListener = listener;
     }
 
 
 
+    public void setuserNotes( List <User> myUser){
+        this.userNotes = myUser;
+    }
 
-
+    public List <User> getUserNotes(){
+        return userNotes;
+    }
 
     @Override
     public RecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
@@ -121,13 +141,14 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
 
 
+
     @Override
-    public void onBindViewHolder(final ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
 
         final int itemListPos = i;
-        final User user = userNotes.get(itemListPos);
+       // final User user = userNotes.get(itemListPos);
+        setUser( itemListPos);
         int post = R.string.email_Address;
-
 
 
         viewHolder.itemTitle.setText(user.getTitle());
@@ -136,102 +157,41 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         viewHolder.itemName.setText(user.getEma());
         viewHolder.postBy.setText(post);
 
-        //deleteicon listener deletes the data
+
+
         viewHolder.deleteIcon.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
-                //alert dialog box to handle delete flow
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(myContext);
-                alertDialogBuilder.setTitle("Are you sure you want to delete this note?");
-                alertDialogBuilder.setPositiveButton("Delete",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                fireUser = FirebaseAuth.getInstance().getCurrentUser();
-                                user.setUserID(fireUser.getUid());
-                                userPath = user.getUserID()+user.gettimeStampMe();
-                                itemDelete(user.getUserID(),userPath,itemListPos);
-
-                            }
-                        });
-                alertDialogBuilder.setNegativeButton("Cancel",new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface arg0, int arg1)
-                    {
-                    }
-                });
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
-
-
+            public void onClick(View v) {
+                if(myListener != null){
+                    myListener.onMyClick(v, viewHolder.getAdapterPosition());
+                }
 
             }
         });
 
-        //shareIcon functionality, this would push to a public list
-        //setting share icon listener
+
         viewHolder.shareIcon.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
-                //alert dialog box to handle delete flow
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(myContext);
-                alertDialogBuilder.setTitle("Do you want to share this note?");
-                alertDialogBuilder.setPositiveButton("Share",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Map<String, Object> notes = new HashMap<>();
-                                //notes.put("userID",mainUser.getUid());
+            public void onClick(View v) {
 
-                                notes.put("title", user.getTitle());
-
-                                notes.put("details", user.getDetails());
-                                notes.put("year", user.getYear());
-                                notes.put("ema", user.getEma());
-                                notes.put("timeStampMe",user.gettimeStampMe());
-                                notes.put("likeCounter",user.getLikeCounter());
-                                notes.put("userLike", user.getUserLike());
-
-
-                                myCollection.collection("Notes").document(user.gettimeStampMe()).set(notes)
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
-                                              Utils.toastMessage("Special Note Shared", myContext);
-
-
-                                            }
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Utils.toastMessage("Error!!!"+e.toString(), myContext);
-
-
-                                            }
-                                        });
-
-
-                            }
-                        });
-                alertDialogBuilder.setNegativeButton("Cancel",new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface arg0, int arg1)
-                    {
-                    }
-                });
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
-
-
+                if (mListener != null) {
+                    mListener.onClick(v, viewHolder.getAdapterPosition());
+                }
 
             }
         });
+
 
 
 
 
     }
+
+    public User setUser( int pos){
+        user = userNotes.get(pos);
+        return user;
+    }
+
 
 
 
@@ -245,21 +205,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     }
 
 
-
-    private void itemDelete(String id, String path, final int pos){
-        myCollection = FirebaseFirestore.getInstance();
-
-        myCollection.collection(id).document(path).delete()
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        userNotes.remove(pos);
-                        notifyItemRemoved(pos);
-                        notifyItemRangeChanged(pos, userNotes.size());
-                        Utils.toastMessage("Note was deleted", myContext);
-                    }
-                });
-    }
 
 
 

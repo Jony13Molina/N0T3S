@@ -34,4 +34,6 @@ public class addInfoInteractorImp extends ContextWrapper implements addInfoInter
         addInfoRes.pushNoteData(id, timeStamp, mySwitch);
 
     }
+
+
 }
