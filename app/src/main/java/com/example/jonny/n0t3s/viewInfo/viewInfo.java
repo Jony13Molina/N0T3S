@@ -1,35 +1,29 @@
-package com.example.jonny.n0t3s;
+package com.example.jonny.n0t3s.viewInfo;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.EditText;
-import android.widget.Toast;
 
+import com.example.jonny.n0t3s.R;
+import com.example.jonny.n0t3s.User;
+import com.example.jonny.n0t3s.Utils;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.core.Tag;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 public class viewInfo extends AppCompatActivity implements viewInfoView,
@@ -59,7 +53,7 @@ public class viewInfo extends AppCompatActivity implements viewInfoView,
         fireUser = FirebaseAuth.getInstance().getCurrentUser();
 
         myPresenter = new viewPresentImp(this);
-        getDataNotes();
+        myPresenter.getNoteData();
 
 
 
@@ -131,7 +125,7 @@ public class viewInfo extends AppCompatActivity implements viewInfoView,
     }
 
     @Override
-    public void getDataNotes() {
+    public void getDataNotes( ) {
 
 
         myCollection = myPresenter.getNoteData();
@@ -142,17 +136,17 @@ public class viewInfo extends AppCompatActivity implements viewInfoView,
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful()){
 
-                             userList = new ArrayList<>();
+                            userList = new ArrayList<>();
 
                             for(DocumentSnapshot myDoc: task.getResult()){
                                 User myUser = myDoc.toObject(User.class);
                                 myUser.setUserID(myDoc.getId());
                                 userList.add(myUser);
 
-                               // adapter.setuserNotes(userList);
+                                // adapter.setuserNotes(userList);
                             }
 
-                           // adapter.setuserNotes(userList);
+                            // adapter.setuserNotes(userList);
                             adapter = new RecyclerAdapter(userList, viewInfo.this);
                             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
                             recyclerView.setLayoutManager(mLayoutManager);
@@ -167,9 +161,16 @@ public class viewInfo extends AppCompatActivity implements viewInfoView,
                     }
                 });
 
-
-
     }
+
+    public void itemDelete(List<User>userNotes,int pos, RecyclerAdapter adapter, Context cont){
+
+        userNotes.remove(pos);
+        adapter.notifyItemRemoved(pos);
+        adapter.notifyItemRangeChanged(pos, userNotes.size());
+        Utils.toastMessage("Note was deleted", cont);
+    }
+
 
     @Override
     public void onClick(View view, int position) {

@@ -24,7 +24,7 @@
 
         </activity>
         <activity android:name=".addInfo.UI.addInfo" />
-        <activity android:name=".viewInfo"></activity>
+        <activity android:name=".viewInfo.viewInfo"></activity>
     </application>
 
 </manifest>

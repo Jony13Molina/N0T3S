@@ -1,9 +1,9 @@
-package com.example.jonny.n0t3s;
+package com.example.jonny.n0t3s.viewInfo;
 
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.support.v7.widget.RecyclerView;
 
+import com.example.jonny.n0t3s.User;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
@@ -11,12 +11,13 @@ import java.util.List;
 public class viewPresentImp  extends ContextWrapper implements viewPresenter {
 
     Context myCont;
-    viewInfoView mView;
+    viewInfo mView;
     viewInteractorImp myInteractor;
     public viewPresentImp(Context base) {
         super(base);
         myCont = base;
         myInteractor = new viewInteractorImp(myCont);
+        mView = new viewInfo();
     }
 
     @Override
@@ -34,7 +35,7 @@ public class viewPresentImp  extends ContextWrapper implements viewPresenter {
 
     @Override
     public FirebaseFirestore getNoteData() {
-        return myInteractor.getMyData();
+       return myInteractor.getMyData();
 
     }
 

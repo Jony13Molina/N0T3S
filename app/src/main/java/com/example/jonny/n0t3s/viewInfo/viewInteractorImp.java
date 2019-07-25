@@ -1,14 +1,14 @@
-package com.example.jonny.n0t3s;
+package com.example.jonny.n0t3s.viewInfo;
 
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.support.v7.widget.RecyclerView;
 
+import com.example.jonny.n0t3s.User;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
-public class viewInteractorImp extends ContextWrapper implements viewInfoInteractor{
+public class viewInteractorImp extends ContextWrapper implements viewInfoInteractor {
     Context myContext;
     viewReposatoryImp myReposatory;
     viewPresentImp myPresenter;
@@ -41,6 +41,8 @@ public class viewInteractorImp extends ContextWrapper implements viewInfoInterac
         return myReposatory.getData();
 
     }
+
+
 
 
 }
