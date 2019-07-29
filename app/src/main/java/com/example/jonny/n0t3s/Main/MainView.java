@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface MainView {
 
-    
+
     void setLike(int pos);
     void itemDelete(int pos);
     void dataListner();

@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity implements MainView,
         firestoreUpdate.remove();
     }
 
+    //get the data from database to populate our list
     private void getData(){
         myData.collection("Notes")
                 .get()
@@ -128,6 +129,90 @@ public class MainActivity extends AppCompatActivity implements MainView,
     }
 
 
+
+    //Begin Like action and update info
+    @Override
+    public void setLike(int pos) {
+        user = adapter.setUser(pos);
+        myPresenter.setLike(user);
+
+
+
+
+    }
+
+
+    //dekete item from the notes, first check if the user
+    //requesting delete = user who made post
+    @Override
+    public void itemDelete(final int pos) {
+
+        user = adapter.setUser(pos);
+        if (fireUser.getEmail().equals( user.getEma())) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+            alertDialogBuilder.setTitle("Are you sure you want to delete this note?");
+            alertDialogBuilder.setPositiveButton("Delete",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            myPresenter.startDelete(adapter.getUserNotes(), adapter.setUser(pos),adapter, pos);
+
+
+                        }
+                    });
+            alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface arg0, int arg1) {
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+
+        }else{
+            Utils.toastMessage("Can't delete a post you didn't share", MainActivity.this);
+
+        }
+    }
+
+    //listen to changes in the data
+    @Override
+    public void dataListner() {
+        firestoreUpdate = myData.collection("Notes")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.e(TAG, "Listen failed!", e);
+                            return;
+                        }
+                        List<User> userList = new ArrayList<>();
+
+                        for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                            User myUserNotes = doc.toObject(User.class);
+                            myUserNotes.setUserID(doc.getId());
+                            userList.add(myUserNotes);
+                        }
+
+                        adapter = new RecyclerTwoAdapter(userList, MainActivity.this, myData);
+                        adapter.setRecyclerDeleteListener(MainActivity.this);
+                        adapter.setRecyclerButton(MainActivity.this);
+                        recyclerView.setAdapter(adapter);
+                    }
+                });
+    }
+    //delete the note from the list
+    //get the information and data from database first
+    @Override
+    public void deleteNote(List<User>userNotes,int pos, RecyclerTwoAdapter adapter, Context cont) {
+        userNotes.remove(pos);
+        adapter.notifyItemRemoved(pos);
+        adapter.notifyItemRangeChanged(pos, userNotes.size());
+        Utils.toastMessage("Note was deleted", cont);
+    }
+
+
+    //methods that handle view and clicking actions for menu and note
     public void setNavigation()
     {
         BottomNavigationView  bottomNav = findViewById(R.id.navigationView);
@@ -164,82 +249,6 @@ public class MainActivity extends AppCompatActivity implements MainView,
     }
 
 
-
-    @Override
-    public void setLike(int pos) {
-        user = adapter.setUser(pos);
-        myPresenter.setLike(user);
-
-
-
-
-    }
-
-
-    @Override
-    public void itemDelete(final int pos) {
-
-        user = adapter.setUser(pos);
-        if (fireUser.getEmail().equals( user.getEma())) {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
-            alertDialogBuilder.setTitle("Are you sure you want to delete this note?");
-            alertDialogBuilder.setPositiveButton("Delete",
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            myPresenter.startDelete(adapter.getUserNotes(), adapter.setUser(pos),adapter, pos);
-
-
-                        }
-                    });
-            alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface arg0, int arg1) {
-                }
-            });
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
-
-
-        }else{
-            Utils.toastMessage("Can't delete a post you didn't share", MainActivity.this);
-
-        }
-    }
-
-    @Override
-    public void dataListner() {
-        firestoreUpdate = myData.collection("Notes")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                        if (e != null) {
-                            Log.e(TAG, "Listen failed!", e);
-                            return;
-                        }
-                        List<User> userList = new ArrayList<>();
-
-                        for (DocumentSnapshot doc : queryDocumentSnapshots) {
-                            User myUserNotes = doc.toObject(User.class);
-                            myUserNotes.setUserID(doc.getId());
-                            userList.add(myUserNotes);
-                        }
-
-                        adapter = new RecyclerTwoAdapter(userList, MainActivity.this, myData);
-                        adapter.setRecyclerDeleteListener(MainActivity.this);
-                        adapter.setRecyclerButton(MainActivity.this);
-                        recyclerView.setAdapter(adapter);
-                    }
-                });
-    }
-
-    @Override
-    public void deleteNote(List<User>userNotes,int pos, RecyclerTwoAdapter adapter, Context cont) {
-        userNotes.remove(pos);
-        adapter.notifyItemRemoved(pos);
-        adapter.notifyItemRangeChanged(pos, userNotes.size());
-        Utils.toastMessage("Note was deleted", cont);
-    }
 
 
     @Override
