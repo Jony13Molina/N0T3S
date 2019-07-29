@@ -36,10 +36,13 @@ public class RecyclerTwoAdapter extends RecyclerView.Adapter<RecyclerTwoAdapter.
     int likeCount;
     private boolean clicked = true;
 
+    RecyclerLikeButton myLike;
+    RecyclerDeleteButton myDelete;
     RecyclerTwoAdapter(Context context) {
         myContext = context;
     }
 
+    User user;
     public RecyclerTwoAdapter(List<User> userNotes, Context context, FirebaseFirestore myData) {
         this.userNotes = userNotes;
         this.myContext = context;
@@ -48,6 +51,25 @@ public class RecyclerTwoAdapter extends RecyclerView.Adapter<RecyclerTwoAdapter.
     }
 
 
+
+    public interface RecyclerLikeButton {
+        void onClick(View view, int position);
+    }
+
+
+    public interface RecyclerDeleteButton{
+        void onMyClick(View v, int pos);
+    }
+
+
+    public void setRecyclerButton(RecyclerLikeButton listener) {
+        this.myLike = listener;
+    }
+
+
+    public void setRecyclerDeleteListener(RecyclerDeleteButton listener){
+        this.myDelete = listener;
+    }
     class ViewHolder extends RecyclerView.ViewHolder {
 
 
@@ -109,41 +131,11 @@ public class RecyclerTwoAdapter extends RecyclerView.Adapter<RecyclerTwoAdapter.
         viewHolder.deleteIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //fireUser = FirebaseAuth.getInstance().getCurrentUser();
-
-                //alert dialog box to handle delete flow
-                Log.d("this is the userID", user.getUserID());
-                if (fireUser.getEmail().equals( user.getEma())) {
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(myContext);
-                    alertDialogBuilder.setTitle("Are you sure you want to delete this note?");
-                    alertDialogBuilder.setPositiveButton("Delete",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                    user.setUserID(fireUser.getUid());
-                                    userPath = user.gettimeStampMe();
-                                    pathId = "Notes";
-
-
-                                    itemDelete(pathId, userPath,itemListPos);
-                                    Log.d("DDDD", user.getUserID());
-
-                                }
-                            });
-                    alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface arg0, int arg1) {
-                        }
-                    });
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
-
-
-                }else{
-                    Utils.toastMessage("Can't delete a post you didn't share", myContext);
-
+                if(myDelete != null){
+                    myDelete.onMyClick(v, viewHolder.getAdapterPosition());
                 }
+
+
             }
         });
 
@@ -152,43 +144,10 @@ public class RecyclerTwoAdapter extends RecyclerView.Adapter<RecyclerTwoAdapter.
         viewHolder.likeIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                user.setUserID(fireUser.getUid());
-
-                if (user.getUserID().equals(fireUser.getUid())) {
-
-                    user.setUserLike(true);
-                    if (user.getUserLike()) {
-                        likeCount++;
-                        String countVal = Integer.toString(likeCount);
-                        user.setLikeCounter(countVal);
-
-                        fireUser = FirebaseAuth.getInstance().getCurrentUser();
-
-                        user.setUserID(fireUser.getUid());
-                        userPath = user.gettimeStampMe();
-                        Log.d("timestamo!!!!!!!!!!!!", user.gettimeStampMe());
-                        pathId = "Notes";
-
-                        updateLike(pathId, userPath, countVal);
-
-                        user.setUserLike(false);
-
-                    } else {
-                        likeCount--;
-                        String countVal = Integer.toString(likeCount);
-                        user.setLikeCounter(countVal);
-
-                        fireUser = FirebaseAuth.getInstance().getCurrentUser();
-
-                        user.setUserID(fireUser.getUid());
-                        userPath = user.gettimeStampMe();
-                        pathId = "Notes";
-
-                        updateLike(pathId, userPath, countVal);
-                        user.setUserLike(true);
-
-                    }
+                if(myLike != null){
+                    myLike.onClick(v, viewHolder.getAdapterPosition());
                 }
+
 
 
             }
@@ -199,6 +158,13 @@ public class RecyclerTwoAdapter extends RecyclerView.Adapter<RecyclerTwoAdapter.
 
     }
 
+    public User setUser( int pos){
+        user = userNotes.get(pos);
+        return user;
+    }
+    public List <User> getUserNotes(){
+        return userNotes;
+    }
 
     @Override
     public int getItemCount() {
@@ -207,26 +173,7 @@ public class RecyclerTwoAdapter extends RecyclerView.Adapter<RecyclerTwoAdapter.
 
 
 
-    private void updateLike(String id, String path, String likeVal){
-        myCollection = FirebaseFirestore.getInstance();
 
-        myCollection.collection(id).document(path).update("likeCounter", likeVal);
-    }
-    private void itemDelete(String id, String path, final int pos) {
-        myCollection = FirebaseFirestore.getInstance();
-
-
-        myCollection.collection(id).document(path).delete()
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        userNotes.remove(pos);
-                        notifyItemRemoved(pos);
-                        notifyItemRangeChanged(pos, userNotes.size());
-                        Utils.toastMessage("Note was deleted", myContext);
-                    }
-                });
-    }
 }
 
 

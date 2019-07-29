@@ -36,6 +36,7 @@ public class viewInteractorImp extends ContextWrapper implements viewInfoInterac
 
 
 
+
     @Override
     public FirebaseFirestore getMyData(){
         return myReposatory.getData();
