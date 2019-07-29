@@ -6,8 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
-import com.example.jonny.n0t3s.Login.loginAction;
-import com.example.jonny.n0t3s.MainActivity;
+import com.example.jonny.n0t3s.Main.MainActivity;
 import com.example.jonny.n0t3s.R;
 import com.example.jonny.n0t3s.User;
 import com.google.android.gms.auth.api.Auth;

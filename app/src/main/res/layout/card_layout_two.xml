@@ -13,7 +13,7 @@
     android:foreground="?selectableItemBackground"
     app:cardElevation="3dp"
     app:contentPadding="4dp"
-    tools:context=".MainActivity">
+    tools:context=".Main.MainActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"

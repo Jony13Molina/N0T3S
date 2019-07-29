@@ -3,7 +3,6 @@ package com.example.jonny.n0t3s.viewInfo;
 import android.content.Context;
 import android.content.ContextWrapper;
 
-import com.example.jonny.n0t3s.RecyclerTwoAdapter;
 import com.example.jonny.n0t3s.User;
 import com.google.firebase.firestore.FirebaseFirestore;
 

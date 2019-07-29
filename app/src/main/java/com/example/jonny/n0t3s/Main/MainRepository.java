@@ -1,6 +1,6 @@
-package com.example.jonny.n0t3s;
+package com.example.jonny.n0t3s.Main;
 
-import com.example.jonny.n0t3s.viewInfo.RecyclerAdapter;
+import com.example.jonny.n0t3s.User;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;

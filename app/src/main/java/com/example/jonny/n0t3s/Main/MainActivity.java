@@ -1,4 +1,4 @@
-package com.example.jonny.n0t3s;
+package com.example.jonny.n0t3s.Main;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -15,10 +15,12 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.example.jonny.n0t3s.Main.BottomNavigationViewHelper;
+import com.example.jonny.n0t3s.R;
+import com.example.jonny.n0t3s.User;
+import com.example.jonny.n0t3s.Utils;
 import com.example.jonny.n0t3s.addInfo.UI.addInfo;
-import com.example.jonny.n0t3s.viewInfo.RecyclerAdapter;
 import com.example.jonny.n0t3s.viewInfo.viewInfo;
-import com.example.jonny.n0t3s.viewInfo.viewPresentImp;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,7 +38,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 public class MainActivity extends AppCompatActivity implements MainView,
-RecyclerTwoAdapter.RecyclerDeleteButton, RecyclerTwoAdapter.RecyclerLikeButton{
+        RecyclerTwoAdapter.RecyclerDeleteButton, RecyclerTwoAdapter.RecyclerLikeButton{
 
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
