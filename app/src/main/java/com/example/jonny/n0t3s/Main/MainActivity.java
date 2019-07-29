@@ -163,10 +163,7 @@ public class MainActivity extends AppCompatActivity implements MainView,
         });
     }
 
-    @Override
-    public void initDel(int pos) {
 
-    }
 
     @Override
     public void setLike(int pos) {
@@ -178,10 +175,6 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
     }
 
-    @Override
-    public void getDataNotes() {
-
-    }
 
     @Override
     public void itemDelete(final int pos) {

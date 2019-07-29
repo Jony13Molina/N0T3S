@@ -8,9 +8,8 @@ import java.util.List;
 
 public interface MainView {
 
-    void initDel(  int pos);
+    
     void setLike(int pos);
-    void getDataNotes();
     void itemDelete(int pos);
     void dataListner();
     void deleteNote(List<User>userNotes, int pos, RecyclerTwoAdapter adapter, Context cont);
