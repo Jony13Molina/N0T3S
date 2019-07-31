@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
         getData();
 
-       dataListner();
+        dataListner();
 
 
         setNavigation();
@@ -134,6 +134,11 @@ public class MainActivity extends AppCompatActivity implements MainView,
     @Override
     public void setLike(int pos) {
         user = adapter.setUser(pos);
+
+
+
+
+
         myPresenter.setLike(user);
 
 

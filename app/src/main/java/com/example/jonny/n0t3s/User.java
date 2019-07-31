@@ -17,7 +17,7 @@ public class User{
     public String year;
     public String timeStampMe;
     public  String likeCounter = null;
-    public boolean  userLike = false;
+    public boolean  userLike= false;
 
     //constructors
     public User(String userID, String timeStampMe, String details, String title, String email, String year)

@@ -9,6 +9,5 @@ public interface MainInteractor {
 
     void deleteNote(List<User> userList, User user, RecyclerTwoAdapter adapter, int pos);
     void setLike(User user);
-    void updateLike(String id, String path, String likeVal);
     FirebaseFirestore getMyData();
 }

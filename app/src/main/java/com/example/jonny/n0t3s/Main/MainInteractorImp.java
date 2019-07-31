@@ -32,11 +32,7 @@ public class MainInteractorImp extends ContextWrapper implements MainInteractor 
 
     }
 
-    @Override
-    public void updateLike(String id, String path, String likeVal) {
-        myRepo.updateLike(id, path, likeVal);
 
-    }
 
     @Override
     public FirebaseFirestore getMyData() {

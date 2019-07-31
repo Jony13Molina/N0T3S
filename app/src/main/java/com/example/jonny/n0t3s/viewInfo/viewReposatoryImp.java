@@ -71,6 +71,7 @@ public class viewReposatoryImp extends ContextWrapper implements viewReposatory 
         Map<String, Object> notes = new HashMap<>();
         //notes.put("userID",mainUser.getUid());
 
+        user.setUserLike(false);
         notes.put("title", user.getTitle());
         notes.put("details", user.getDetails());
         notes.put("year", user.getYear());

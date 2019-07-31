@@ -62,7 +62,7 @@ public class viewInfo extends AppCompatActivity implements viewInfoView,
 
         //adapter = new RecyclerAdapter(this);
         //recyclerView.setAdapter(adapter);
-
+        getDataNotes();
 
 
     }
