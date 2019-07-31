@@ -21,8 +21,9 @@ public class MainRepositoryImp extends ContextWrapper implements MainRepository 
     String pathId;
     FirebaseFirestore myCollection =  FirebaseFirestore.getInstance();
     int likeCount;
-    int x = 2;
+    User myUser;
     MainActivity myActi;
+    boolean click = true;
     public MainRepositoryImp(Context base) {
         super(base);
         myCont = base;
@@ -55,12 +56,15 @@ public class MainRepositoryImp extends ContextWrapper implements MainRepository 
     @Override
     public void setLike(User user) {
 
+
         user.setUserID(fireUser.getUid());
+
 
         if (user.getUserID().equals(fireUser.getUid())) {
 
-            user.setUserLike(true);
-            if (user.getUserLike()) {
+
+            //click = true;
+            if (click) {
                 likeCount++;
                 String countVal = Integer.toString(likeCount);
                 user.setLikeCounter(countVal);
@@ -73,8 +77,10 @@ public class MainRepositoryImp extends ContextWrapper implements MainRepository 
                 pathId = "Notes";
 
 
-                updateLike(pathId, userPath, countVal, user.getUserLike());
+                click = false;
                 user.setUserLike(false);
+                updateLike(pathId, userPath, countVal, user.getUserLike());
+                //user.setUserLike(false);
 
             } else {
                 likeCount--;
@@ -88,8 +94,11 @@ public class MainRepositoryImp extends ContextWrapper implements MainRepository 
                 pathId = "Notes";
 
 
+
+                //user.setUserLike(true);
+                click = true;
+                user.setUserLike(click);
                 updateLike(pathId, userPath, countVal,user.getUserLike());
-                user.setUserLike(true);
             }
         }
 

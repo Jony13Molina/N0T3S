@@ -137,9 +137,17 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
 
 
+        if (fireUser.getEmail().equals( user.getEma())) {
+
+            Utils.toastMessage("Can't Like Your Own Posts", MainActivity.this);
+        }else{
 
 
-        myPresenter.setLike(user);
+            myPresenter.setLike(user);
+        }
+
+
+
 
 
 
