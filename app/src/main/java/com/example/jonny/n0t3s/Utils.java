@@ -3,6 +3,10 @@ package com.example.jonny.n0t3s;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.example.jonny.n0t3s.Main.MainPresentImp;
+
+import io.opencensus.common.Function;
+
 public class Utils {
 
     //-------------------------------------------------------------------------------
@@ -24,5 +28,8 @@ public class Utils {
         Toast.makeText(currentActivity,message,Toast.LENGTH_SHORT).show();
     }
 
+    //public static void buildAlertDialog(Context cont, Function<>){
+
+    //}
 
 }

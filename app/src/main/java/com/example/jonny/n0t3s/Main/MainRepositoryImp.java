@@ -60,10 +60,13 @@ public class MainRepositoryImp extends ContextWrapper implements MainRepository 
         user.setUserID(fireUser.getUid());
 
 
+        //make sure the person who made the note or post
+        //doesn't like their own note/post
+        //then check for the click and add/subtract accordingly
         if (user.getUserID().equals(fireUser.getUid())) {
 
 
-            //click = true;
+
             if (click) {
                 likeCount++;
                 String countVal = Integer.toString(likeCount);
@@ -71,14 +74,14 @@ public class MainRepositoryImp extends ContextWrapper implements MainRepository 
 
                 fireUser = FirebaseAuth.getInstance().getCurrentUser();
 
-                user.setUserID(fireUser.getUid());
+                //user.setUserID(fireUser.getUid());
                 userPath = user.gettimeStampMe();
                 Log.d("timestamo!!!!!!!!!!!!", user.gettimeStampMe());
                 pathId = "Notes";
 
 
                 click = false;
-                user.setUserLike(false);
+                user.setUserLike(click);
                 updateLike(pathId, userPath, countVal, user.getUserLike());
                 //user.setUserLike(false);
 
@@ -89,7 +92,7 @@ public class MainRepositoryImp extends ContextWrapper implements MainRepository 
 
                 fireUser = FirebaseAuth.getInstance().getCurrentUser();
 
-                user.setUserID(fireUser.getUid());
+                //user.setUserID(fireUser.getUid());
                 userPath = user.gettimeStampMe();
                 pathId = "Notes";
 
