@@ -38,4 +38,9 @@ public class MainInteractorImp extends ContextWrapper implements MainInteractor 
     public FirebaseFirestore getMyData() {
         return myRepo.getMyData();
     }
+
+    @Override
+    public void setLikeData(String id, String path, String likeVal, boolean likeState) {
+        myRepo.updateLike(id, path, likeVal, likeState);
+    }
 }

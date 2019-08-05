@@ -1,7 +1,9 @@
 package com.example.jonny.n0t3s.Main;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -54,7 +56,7 @@ public class MainRepositoryImp extends ContextWrapper implements MainRepository 
     }
 
     @Override
-    public void setLike(User user) {
+    public void setLike(final User user) {
 
 
         user.setUserID(fireUser.getUid());
@@ -67,42 +69,8 @@ public class MainRepositoryImp extends ContextWrapper implements MainRepository 
 
 
 
-            if (click) {
-                likeCount++;
-                String countVal = Integer.toString(likeCount);
-                user.setLikeCounter(countVal);
 
-                fireUser = FirebaseAuth.getInstance().getCurrentUser();
-
-                //user.setUserID(fireUser.getUid());
-                userPath = user.gettimeStampMe();
-                Log.d("timestamo!!!!!!!!!!!!", user.gettimeStampMe());
-                pathId = "Notes";
-
-
-                click = false;
-                user.setUserLike(click);
-                updateLike(pathId, userPath, countVal, user.getUserLike());
-                //user.setUserLike(false);
-
-            } else {
-                likeCount--;
-                String countVal = Integer.toString(likeCount);
-                user.setLikeCounter(countVal);
-
-                fireUser = FirebaseAuth.getInstance().getCurrentUser();
-
-                //user.setUserID(fireUser.getUid());
-                userPath = user.gettimeStampMe();
-                pathId = "Notes";
-
-
-
-                //user.setUserLike(true);
-                click = true;
-                user.setUserLike(click);
-                updateLike(pathId, userPath, countVal,user.getUserLike());
-            }
+            myActi.updateMyLike(user);
         }
 
 

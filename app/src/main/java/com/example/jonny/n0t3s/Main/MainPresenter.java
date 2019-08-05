@@ -10,4 +10,5 @@ public interface MainPresenter {
     void startDelete(List<User> userList, User user, RecyclerTwoAdapter adapter, int pos);
     void setLike(User user);
     FirebaseFirestore getNoteData();
+    void setLikeDatabase(String id, String path, String likeVal, boolean likeState);
 }

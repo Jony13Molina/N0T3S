@@ -35,4 +35,9 @@ public class MainPresentImp extends ContextWrapper implements MainPresenter {
     public FirebaseFirestore getNoteData() {
         return myInteractor.getMyData();
     }
+
+    @Override
+    public void setLikeDatabase(String id, String path, String likeVal, boolean likeState) {
+        myInteractor.setLikeData(id, path, likeVal, likeState);
+    }
 }

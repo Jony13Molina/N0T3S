@@ -49,6 +49,9 @@ public class MainActivity extends AppCompatActivity implements MainView,
     MainPresentImp myPresenter;
     User user;
     RecyclerTwoAdapter adapter;
+    int likeCount;
+    String userPath, pathId;
+    boolean likeState = true;
     private static final String TAG = "MainActivity";
 
 
@@ -142,25 +145,9 @@ public class MainActivity extends AppCompatActivity implements MainView,
             Utils.toastMessage("Can't Like Your Own Posts", MainActivity.this);
         }else{
 
-
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
-            alertDialogBuilder.setTitle("Would you like to apply for this note?");
-            alertDialogBuilder.setPositiveButton("Yes",
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            myPresenter.setLike(user);
+            updateMyLike(user);
 
 
-                        }
-                    });
-            alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface arg0, int arg1) {
-                }
-            });
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
 
         }
 
@@ -241,6 +228,60 @@ public class MainActivity extends AppCompatActivity implements MainView,
         adapter.notifyItemRangeChanged(pos, userNotes.size());
         Utils.toastMessage("Note was deleted", cont);
     }
+
+    @Override
+    public void updateMyLike(User user) {
+
+        if (likeState) {
+
+            likeCount++;
+            final String countVal = Integer.toString(likeCount);
+            user.setLikeCounter(countVal);
+
+
+            fireUser = FirebaseAuth.getInstance().getCurrentUser();
+
+            user.setUserID(fireUser.getUid());
+            userPath = user.gettimeStampMe();
+            //Log.d("timestamo!!!!!!!!!!!!", user.gettimeStampMe());
+            pathId = "Notes";
+
+
+            likeState = false;
+            user.setUserLike(likeState);
+            Log.d(pathId, "this is pathID");
+            Log.d(userPath, "This is tge userPath!!!!!!!!!!!!!!");
+            Log.d(countVal,"this is the likeCount!!!!!!!!!!" );
+            Log.d(String.valueOf(user.getUserLike()), "this is the like false");
+            myPresenter.setLikeDatabase(pathId, userPath, countVal, user.getUserLike());
+            //user.setUserLike(false);
+
+
+
+
+        } else {
+            likeCount--;
+            String countVal = Integer.toString(likeCount);
+            user.setLikeCounter(countVal);
+
+            fireUser = FirebaseAuth.getInstance().getCurrentUser();
+
+            user.setUserID(fireUser.getUid());
+            userPath = user.gettimeStampMe();
+            pathId = "Notes";
+
+
+            //user.setUserLike(true);
+            likeState = true;
+            user.setUserLike(likeState);
+            Log.d(pathId, "this is pathID");
+            Log.d(userPath, "This is tge userPath!!!!!!!!!!!!!!");
+            Log.d(countVal,"this is the likeCount!!!!!!!!!!" );
+            Log.d(String.valueOf(user.getUserLike()), "this is the like false");
+            myPresenter.setLikeDatabase(pathId, userPath, countVal, user.getUserLike());
+        }
+    }
+
 
 
     //methods that handle view and clicking actions for menu and note
