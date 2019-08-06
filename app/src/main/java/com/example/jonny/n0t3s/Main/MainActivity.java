@@ -230,31 +230,46 @@ public class MainActivity extends AppCompatActivity implements MainView,
     }
 
     @Override
-    public void updateMyLike(User user) {
+    public void updateMyLike(final User user) {
 
         if (likeState) {
 
-            likeCount++;
-            final String countVal = Integer.toString(likeCount);
-            user.setLikeCounter(countVal);
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+            alertDialogBuilder.setTitle("Do you want to apply to this post?");
+            alertDialogBuilder.setPositiveButton("Yes",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            likeCount++;
+                            final String countVal = Integer.toString(likeCount);
+                            user.setLikeCounter(countVal);
 
 
-            fireUser = FirebaseAuth.getInstance().getCurrentUser();
+                            fireUser = FirebaseAuth.getInstance().getCurrentUser();
 
-            user.setUserID(fireUser.getUid());
-            userPath = user.gettimeStampMe();
-            //Log.d("timestamo!!!!!!!!!!!!", user.gettimeStampMe());
-            pathId = "Notes";
+                            user.setUserID(fireUser.getUid());
+                            userPath = user.gettimeStampMe();
+                            //Log.d("timestamo!!!!!!!!!!!!", user.gettimeStampMe());
+                            pathId = "Notes";
 
 
-            likeState = false;
-            user.setUserLike(likeState);
-            Log.d(pathId, "this is pathID");
-            Log.d(userPath, "This is tge userPath!!!!!!!!!!!!!!");
-            Log.d(countVal,"this is the likeCount!!!!!!!!!!" );
-            Log.d(String.valueOf(user.getUserLike()), "this is the like false");
-            myPresenter.setLikeDatabase(pathId, userPath, countVal, user.getUserLike());
-            //user.setUserLike(false);
+                            likeState = false;
+                            user.setUserLike(likeState);
+
+                            myPresenter.setLikeDatabase(pathId, userPath, countVal, user.getUserLike());
+
+                        }
+                    });
+            alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface arg0, int arg1) {
+                }
+            });
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+
+
 
 
 
@@ -274,10 +289,6 @@ public class MainActivity extends AppCompatActivity implements MainView,
             //user.setUserLike(true);
             likeState = true;
             user.setUserLike(likeState);
-            Log.d(pathId, "this is pathID");
-            Log.d(userPath, "This is tge userPath!!!!!!!!!!!!!!");
-            Log.d(countVal,"this is the likeCount!!!!!!!!!!" );
-            Log.d(String.valueOf(user.getUserLike()), "this is the like false");
             myPresenter.setLikeDatabase(pathId, userPath, countVal, user.getUserLike());
         }
     }
