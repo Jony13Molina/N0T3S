@@ -2,8 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.jonny.n0t3s">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     <application
         android:allowBackup="true"
+
         android:background="@color/azure"
         android:icon="@mipmap/ic_app_launcher"
         android:label="@string/app_name"
@@ -25,6 +28,17 @@
         </activity>
         <activity android:name=".addInfo.UI.addInfo" />
         <activity android:name=".viewInfo.viewInfo"></activity>
+
+
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+
     </application>
 
 </manifest>

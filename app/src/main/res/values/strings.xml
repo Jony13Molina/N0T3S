@@ -6,6 +6,7 @@
     <string name="delete">Delete</string>
     <string name="Sharing">Sharing</string>
 
+    <string name="messaging_token">This is your token called from get!!!!!! %s</string>
     <string-array name="Year">
         <item>1979</item>
         <item>1980</item>

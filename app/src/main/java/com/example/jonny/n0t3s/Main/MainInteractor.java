@@ -1,5 +1,6 @@
 package com.example.jonny.n0t3s.Main;
 
+import com.example.jonny.n0t3s.Notification;
 import com.example.jonny.n0t3s.User;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -11,4 +12,5 @@ public interface MainInteractor {
     void setLike(User user);
     FirebaseFirestore getMyData();
     void setLikeData(String id, String path, String likeVal, boolean likeState);
+    void setNotification(Notification noti, User user );
 }

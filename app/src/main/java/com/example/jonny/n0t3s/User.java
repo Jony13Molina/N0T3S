@@ -18,6 +18,7 @@ public class User{
     public String timeStampMe;
     public  String likeCounter = null;
     public boolean  userLike= false;
+    public String userToken;
 
     //constructors
     public User(String userID, String timeStampMe, String details, String title, String email, String year)
@@ -81,7 +82,9 @@ public class User{
     public void setUserLike(boolean userlike){
         this.userLike = userlike;
     }
-
+    public void setUserToken(String token){
+        this.userToken = token;
+    }
     //getters
     public String getUserID()
     {
@@ -111,5 +114,8 @@ public class User{
 
     public boolean getUserLike() {
         return userLike;
+    }
+    public String getUserToken(){
+        return this.userToken;
     }
 }

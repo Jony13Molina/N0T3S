@@ -3,6 +3,7 @@ package com.example.jonny.n0t3s.Main;
 import android.content.Context;
 import android.content.ContextWrapper;
 
+import com.example.jonny.n0t3s.Notification;
 import com.example.jonny.n0t3s.User;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -42,5 +43,10 @@ public class MainInteractorImp extends ContextWrapper implements MainInteractor 
     @Override
     public void setLikeData(String id, String path, String likeVal, boolean likeState) {
         myRepo.updateLike(id, path, likeVal, likeState);
+    }
+
+    @Override
+    public void setNotification(Notification noti, User user) {
+        myRepo.storeNotification(noti, user );
     }
 }

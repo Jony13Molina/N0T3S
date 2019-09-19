@@ -14,8 +14,10 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.jonny.n0t3s.Main.BottomNavigationViewHelper;
+import com.example.jonny.n0t3s.Notification;
 import com.example.jonny.n0t3s.R;
 import com.example.jonny.n0t3s.User;
 import com.example.jonny.n0t3s.Utils;
@@ -31,7 +33,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingService;
 
+import com.pusher.pushnotifications.PushNotifications;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,6 +80,15 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
 
         setNavigation();
+
+
+
+
+
+
+
+
+
     }
     @Override
     protected void onStart(){
@@ -90,6 +106,8 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
 
     }
+
+
     //stop the listener when the activity is destroyed
     @Override
     protected void onDestroy() {
@@ -145,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements MainView,
             Utils.toastMessage("Can't Like Your Own Posts", MainActivity.this);
         }else{
 
-            updateMyLike(user);
+            updateMyLike(user, pos);
 
 
 
@@ -230,7 +248,7 @@ public class MainActivity extends AppCompatActivity implements MainView,
     }
 
     @Override
-    public void updateMyLike(final User user) {
+    public void updateMyLike(final User user,final int  pos) {
 
         if (likeState) {
 
@@ -258,6 +276,8 @@ public class MainActivity extends AppCompatActivity implements MainView,
                             user.setUserLike(likeState);
 
                             myPresenter.setLikeDatabase(pathId, userPath, countVal, user.getUserLike());
+                            Notification noti = new Notification();
+                            myPresenter.sendNotification(noti, adapter.setUser(pos));
 
                         }
                     });
@@ -343,6 +363,23 @@ public class MainActivity extends AppCompatActivity implements MainView,
     @Override
     public void onMyClick(View v, int pos) {
         itemDelete(pos);
+
+    }
+
+    public void setTopic(String myTopic){
+
+        FirebaseMessaging.getInstance().subscribeToTopic(myTopic)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        //String msg = getString(R.string.msg_subscribed);
+                        if (!task.isSuccessful()) {
+                          //  msg = getString(R.string.msg_subscribe_failed);
+                        }
+                       // Log.d(TAG, msg);
+                        //Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
 
     }
 }

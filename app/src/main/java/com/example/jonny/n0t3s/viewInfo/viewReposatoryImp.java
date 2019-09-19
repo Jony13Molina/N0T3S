@@ -1,7 +1,9 @@
 package com.example.jonny.n0t3s.viewInfo;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,6 +26,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,9 +40,11 @@ public class viewReposatoryImp extends ContextWrapper implements viewReposatory 
 
     FirebaseUser fireUser = FirebaseAuth.getInstance().getCurrentUser();
     User user;
-    Context myContext;
+    public static Context myContext;
     String userPath;
 
+    String myToken;
+    SharedPreferences mSharedPref;
     List<User> myUserList;
     List<User> userList;
     RecyclerAdapter myAdapter;
@@ -50,6 +56,22 @@ public class viewReposatoryImp extends ContextWrapper implements viewReposatory 
         myContext = base;
         myView = new viewInfo();
 
+    }
+
+    public void setToken(){
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener((Activity) myContext,  new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult instanceIdResult) {
+                myToken = instanceIdResult.getToken();
+                Log.e("Token",myToken);
+
+                mSharedPref =
+                        myContext.getSharedPreferences(myContext.getPackageName(), Activity.MODE_PRIVATE);
+                SharedPreferences.Editor editor = mSharedPref.edit();
+                editor.putString("token",myToken);
+                editor.commit();
+            }
+        });
     }
 
     //delete note at position
@@ -71,6 +93,11 @@ public class viewReposatoryImp extends ContextWrapper implements viewReposatory 
         Map<String, Object> notes = new HashMap<>();
         //notes.put("userID",mainUser.getUid());
 
+
+        setToken();
+
+
+        notes.put("token", user.getUserToken());
         user.setUserLike(false);
         notes.put("title", user.getTitle());
         notes.put("details", user.getDetails());
@@ -80,6 +107,10 @@ public class viewReposatoryImp extends ContextWrapper implements viewReposatory 
         notes.put("likeCounter", user.getLikeCounter());
         notes.put("userLike", user.getUserLike());
 
+        mSharedPref =
+                myContext.getSharedPreferences(myContext.getPackageName(), Activity.MODE_PRIVATE);
+        String toekn = mSharedPref.getString("token", myToken);
+        notes.put("token", toekn);
 
         myCollection.collection("Notes").document(user.gettimeStampMe()).set(notes)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
