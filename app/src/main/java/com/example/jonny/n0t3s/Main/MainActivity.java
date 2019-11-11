@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +17,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.jonny.n0t3s.BuildConfig;
 import com.example.jonny.n0t3s.Main.BottomNavigationViewHelper;
 import com.example.jonny.n0t3s.Notification;
 import com.example.jonny.n0t3s.R;
@@ -24,6 +30,7 @@ import com.example.jonny.n0t3s.Utils;
 import com.example.jonny.n0t3s.addInfo.UI.addInfo;
 import com.example.jonny.n0t3s.viewInfo.viewInfo;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -39,10 +46,18 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 
 import com.pusher.pushnotifications.PushNotifications;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nullable;
+
+import static android.content.ContentValues.TAG;
 
 public class MainActivity extends AppCompatActivity implements MainView,
         RecyclerTwoAdapter.RecyclerDeleteButton, RecyclerTwoAdapter.RecyclerLikeButton{
@@ -60,6 +75,14 @@ public class MainActivity extends AppCompatActivity implements MainView,
     String userPath, pathId;
     boolean likeState = true;
     private static final String TAG = "MainActivity";
+
+    private static final String sharedPref = "token";
+
+
+
+    final private String myServerKey = BuildConfig.ApiKey;
+    final private String jsonContent = "application/json";
+    final private String fcmSendAdress = BuildConfig.FcmAdress;
 
 
     @Override
@@ -83,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
 
 
+        setToken();
 
 
 
@@ -158,12 +182,16 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
 
 
+
         if (fireUser.getEmail().equals( user.getEma())) {
 
             Utils.toastMessage("Can't Like Your Own Posts", MainActivity.this);
         }else{
 
+
+
             updateMyLike(user, pos);
+
 
 
 
@@ -279,6 +307,8 @@ public class MainActivity extends AppCompatActivity implements MainView,
                             Notification noti = new Notification();
                             myPresenter.sendNotification(noti, adapter.setUser(pos));
 
+
+
                         }
                     });
             alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -352,8 +382,33 @@ public class MainActivity extends AppCompatActivity implements MainView,
     }
 
 
+    public void setToken(){
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+
+                        SharedPreferences settings = getApplicationContext().
+                                getSharedPreferences(sharedPref, Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = settings.edit();
+                        editor.putString("token", token);
+                        editor.commit();
+
+                    }
+                });
+
+    }
 
 
+    //onClick methods for the actions on the notes card
+    //specifically like and delete
     @Override
     public void onClick(View view, int position) {
         setLike(position);
@@ -366,20 +421,12 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
     }
 
-    public void setTopic(String myTopic){
 
-        FirebaseMessaging.getInstance().subscribeToTopic(myTopic)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        //String msg = getString(R.string.msg_subscribed);
-                        if (!task.isSuccessful()) {
-                          //  msg = getString(R.string.msg_subscribe_failed);
-                        }
-                       // Log.d(TAG, msg);
-                        //Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-                    }
-                });
 
-    }
+    //methods to send message
+
+
+
+
+
 }
