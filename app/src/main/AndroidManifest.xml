@@ -4,34 +4,19 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+
     <application
         android:allowBackup="true"
-
         android:background="@color/azure"
         android:icon="@mipmap/ic_app_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_app_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Login.UI.LoginActivity"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-        </activity>
-
-        <activity android:name=".Main.MainActivity">
-
-        </activity>
-        <activity android:name=".addInfo.UI.addInfo" />
-        <activity android:name=".viewInfo.viewInfo"></activity>
-
-
         <service
             android:name=".MyFirebaseMessagingService"
+            android:enabled="true"
+            android:exported="true"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -39,6 +24,18 @@
             </intent-filter>
         </service>
 
+        <activity
+            android:name=".Login.UI.LoginActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Main.MainActivity"></activity>
+        <activity android:name=".addInfo.UI.addInfo" />
+        <activity android:name=".viewInfo.viewInfo" />
     </application>
 
 </manifest>
