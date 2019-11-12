@@ -13,16 +13,6 @@
         android:roundIcon="@mipmap/ic_app_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service
-            android:name=".MyFirebaseMessagingService"
-            android:enabled="true"
-            android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-            </intent-filter>
-        </service>
 
         <activity
             android:name=".Login.UI.LoginActivity"
@@ -36,6 +26,21 @@
         <activity android:name=".Main.MainActivity"></activity>
         <activity android:name=".addInfo.UI.addInfo" />
         <activity android:name=".viewInfo.viewInfo" />
+
+        <service
+            android:name=".MYFireBaseMessagingService"
+            android:permission="com.google.android.c2dm.permission.SEND"
+            android:enabled="true"
+            android:exported="true"
+            >
+
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
+
+
     </application>
 
 </manifest>

@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -118,10 +119,18 @@ public class addInfoReposatoryImp extends ContextWrapper implements addInfoRespo
 
 
             user.setUserID(mainUser.getUid());
+
+            FirebaseMessaging.getInstance().subscribeToTopic("/topics/"+user.gettimeStampMe()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_LONG).show();
+                }
+            });
             pushNoteData(user.getUserID(), user.gettimeStampMe(),mySwitch);
 
+
         }else{
-        toastMessage = "Please don't leave any fileds blank";
+        toastMessage = "Please don't leave any fields blank";
         Utils.toastMessage( toastMessage, cont);
         // Toast.makeText(this, "Please don't live any fields blank",Toast.LENGTH_LONG).show();
     }
