@@ -3,7 +3,7 @@ package com.example.jonny.n0t3s.Login;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
+import androidx.fragment.app.FragmentActivity;
 
 import com.example.jonny.n0t3s.Login.UI.LoginView;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;

@@ -1,13 +1,8 @@
 package com.example.jonny.n0t3s.addInfo.UI;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -15,15 +10,9 @@ import android.widget.Switch;
 
 import com.example.jonny.n0t3s.R;
 import com.example.jonny.n0t3s.User;
-import com.example.jonny.n0t3s.addInfo.UI.addInfoView;
 import com.example.jonny.n0t3s.addInfo.addInfoPresenterImp;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.Calendar;
 

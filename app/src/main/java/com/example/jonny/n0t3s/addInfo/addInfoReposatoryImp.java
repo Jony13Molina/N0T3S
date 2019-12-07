@@ -4,19 +4,15 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.SharedPreferences;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import com.example.jonny.n0t3s.R;
 import com.example.jonny.n0t3s.User;
 import com.example.jonny.n0t3s.Utils;
-import com.example.jonny.n0t3s.addInfo.UI.addInfo;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -27,7 +23,6 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import java.util.HashMap;
 import java.util.Map;
 
-import static android.content.ContentValues.TAG;
 import static com.example.jonny.n0t3s.addInfo.UI.addInfo.pToastMessage;
 import static com.example.jonny.n0t3s.addInfo.UI.addInfo.privateMessage;
 import static com.example.jonny.n0t3s.addInfo.UI.addInfo.toastMessage;
@@ -120,10 +115,10 @@ public class addInfoReposatoryImp extends ContextWrapper implements addInfoRespo
 
             user.setUserID(mainUser.getUid());
 
-            FirebaseMessaging.getInstance().subscribeToTopic("/topics/"+user.gettimeStampMe()).addOnSuccessListener(new OnSuccessListener<Void>() {
+            FirebaseMessaging.getInstance().subscribeToTopic("/topics/userID").addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
-                    Toast.makeText(getApplicationContext(),"Success",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),"Success"+user.gettimeStampMe(),Toast.LENGTH_LONG).show();
                 }
             });
             pushNoteData(user.getUserID(), user.gettimeStampMe(),mySwitch);
@@ -150,7 +145,6 @@ public class addInfoReposatoryImp extends ContextWrapper implements addInfoRespo
                             public void onSuccess(Void aVoid) {
                                 pToastMessage = "Special Note Was Saved on Private List";
                                 Utils.toastMessage(pToastMessage, cont);
-                                //Toast.makeText(addInfo.this, "Special Note Saved on Private List!", Toast.LENGTH_LONG).show();
                                 ((Activity) cont).finish();
 
                             }
