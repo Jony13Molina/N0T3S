@@ -76,14 +76,14 @@ public class viewReposatoryImp extends ContextWrapper implements viewReposatory 
 
     //share notes
     @Override
-    public void shareThisNote(User user) {
+    public void shareThisNote(User user,String moneyInput) {
 
         Map<String, Object> notes = new HashMap<>();
         //notes.put("userID",mainUser.getUid());
 
 
         setToken();
-
+        Log.e("money amount 1000000", moneyInput);
 
         notes.put("token", user.getUserToken());
         user.setUserLike(false);
@@ -93,7 +93,10 @@ public class viewReposatoryImp extends ContextWrapper implements viewReposatory 
         notes.put("ema", user.getEma());
         notes.put("timeStampMe", user.gettimeStampMe());
         notes.put("likeCounter", user.getLikeCounter());
+        notes.put("money",  moneyInput);
         notes.put("userLike", user.getUserLike());
+
+
 
         mSharedPref =
                 myContext.getSharedPreferences(myContext.getPackageName(), Activity.MODE_PRIVATE);

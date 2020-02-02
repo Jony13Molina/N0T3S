@@ -22,9 +22,9 @@ public class addInfoInteractorImp extends ContextWrapper implements addInfoInter
 
 
     @Override
-    public void putNotes( String title, String details, String date, Switch mySwitch) {
+    public void putNotes( String title, String details, String money, String date, Switch mySwitch) {
 
-        addInfoRes.pushNotes(title, details, date,mySwitch);
+        addInfoRes.pushNotes(title, details, money,date,mySwitch);
 
     }
 

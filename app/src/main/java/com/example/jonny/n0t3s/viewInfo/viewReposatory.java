@@ -11,7 +11,7 @@ public interface viewReposatory {
 
     void deleteNoteAt(List<User> userNotes, User user, RecyclerAdapter adapter, int pos);
 
-    void shareThisNote(User user);
+    void shareThisNote(User user,String moneyInput);
 
     void itemDelete(List<User> userNotes, String id, String path, int pos, RecyclerAdapter adapter);
 

@@ -17,12 +17,17 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.jonny.n0t3s.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import org.apache.http.Consts;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import static android.content.ContentValues.TAG;
@@ -31,32 +36,16 @@ public class MyFirebaseMessagingSevice extends FirebaseMessagingService {
 
 
 
+
+    Map<String, String> myData = new HashMap<>();
     private final String CHANNEL_ID = "channel_id";
 
 
-    //generating new token for the messaging
-    /*@Override
-    public void onNewToken(String msgToken){
-        FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w(TAG, "getInstanceId failed", task.getException());
-                            return;
-                        }
-                        // Get new Instance ID token
-                        String token = task.getResult().getToken();
-                    }
-                });
-        Log.i(TAG, "this is the token called from onNewToken"+msgToken);
-    }*/
 
-    //----------This Section is where the Messaging service functions take action--------------\\
     @Override
     public void onMessageReceived(RemoteMessage msgRemote){
         final Intent myIntent = new Intent(this, MainActivity.class);
-        NotificationManager myNotificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+
         //generating the msgID
         int msgNotiID = new Random().nextInt(3000);
 
@@ -65,23 +54,27 @@ public class MyFirebaseMessagingSevice extends FirebaseMessagingService {
         //check of the SDK version is 26 or higher
         //if it is we need to set up the channel else no need to set up channel
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            setNotiChannel(myNotificationManager);
-        }
 
-        myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
+        myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this , 0, myIntent,
-                PendingIntent.FLAG_CANCEL_CURRENT);
+                PendingIntent.FLAG_ONE_SHOT);
 
         Bitmap notiIcon= BitmapFactory.decodeResource(getResources(),
                 R.drawable.ic_notificationlogo);
+
+
+
+        myData = msgRemote.getData();
+        String title = myData.get("title");
+        String msg = myData.get("message");
 
         Uri notificationSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_notificationlogo)
                 .setLargeIcon(notiIcon)
-                .setContentTitle(msgRemote.getData().get("title"))
-                .setContentText(msgRemote.getData().get("message"))
+                .setContentTitle(title)
+                .setContentText(msg)
                 .setAutoCancel(true)
                 .setSound(notificationSoundUri)
                 .setContentIntent(pendingIntent);
@@ -91,8 +84,12 @@ public class MyFirebaseMessagingSevice extends FirebaseMessagingService {
             notificationBuilder.setColor(ContextCompat.getColor(getApplicationContext(),
                     R.color.cadetBlue));
         }
+        NotificationManager myNotificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         myNotificationManager.notify(msgNotiID, notificationBuilder.build());
 
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            setNotiChannel(myNotificationManager);
+        }
 
     }
 
@@ -113,8 +110,7 @@ public class MyFirebaseMessagingSevice extends FirebaseMessagingService {
     }
 
 
-
-
-
-
 }
+
+
+

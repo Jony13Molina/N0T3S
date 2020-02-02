@@ -21,6 +21,11 @@ public interface loginAction {
     void carrySignIn(GoogleSignInAccount account, Context context);
 
     void authUser();
+    void fireSignMe(String email, String password, Context cont);
+    void registerAccount(String email, String password, Context cont);
+    boolean checkConnection(Context cont);
+
+    void resetPass(Context cont);
 
 
 }

@@ -71,7 +71,26 @@ public class LoginPresenterImpl extends FragmentActivity implements LoginPresent
     }
 
 
+    @Override
+    public void fireLogIn(String email, String password, Context cont){
+        mLoginInteractor.fireSignIn(email, password, cont);
+    }
 
+
+
+    @Override
+    public void registerUser(String email, String password, Context cont){
+        mLoginInteractor.registerAccount(email, password, cont);
+    }
+
+    @Override
+    public void checkConnectivity(Context cont){
+        mLoginInteractor.checkConnection(cont);
+    }
+    @Override
+    public void resetPass(Context cont){
+        mLoginInteractor.resetPass(cont);
+    }
 
 
 

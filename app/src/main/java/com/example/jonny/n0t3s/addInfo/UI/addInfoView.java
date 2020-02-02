@@ -13,5 +13,5 @@ public interface addInfoView {
 
 
 
-    void pushData(String id, String timeStMe, User myUser, Switch mySwitch);
+    void pushData(String id, String timeStMe, User myUser,  Switch mySwitch);
 }

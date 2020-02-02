@@ -7,7 +7,7 @@ import java.util.Map;
 public interface addInfoPresenter {
 
 
-    void pushNotes(String title, String details, String date, Switch mySwitch);
+    void pushNotes(String title, String details,String money, String date, Switch mySwitch);
 
     void pushData(String id, String timeStamp, Switch mySwitch);
 }

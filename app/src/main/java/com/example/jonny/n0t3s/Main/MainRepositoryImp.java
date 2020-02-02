@@ -169,7 +169,9 @@ public class MainRepositoryImp extends ContextWrapper implements MainRepository 
                         jsonNotification(noti.getSenderNoti(), noti.getMessageNoti(),token);
 
 
-                        myCollection.collection("Notification").document(user.gettimeStampMe()).set(notifications)
+                        myCollection.collection("Notification").document(
+                                user.gettimeStampMe()).
+                                collection("applicants").document(fireUser.getEmail()).set(notifications)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
@@ -226,12 +228,13 @@ public class MainRepositoryImp extends ContextWrapper implements MainRepository 
             jsonNotiMsg.put("title", NOTI_TITLE);
             jsonNotiMsg.put("body", NOTI_MESSAGE);
 
+
             Log.d("You are in here", NOTI_TITLE);
 
             jsonNoti.put("to",NOTI_TOPIC);
 
             jsonNoti.put("notification", jsonNotiMsg);
-            Log.d("Also Look Here", jsonNotiMsg.toString());
+
             Log.d("This is the json noti", jsonNoti.toString());
         } catch (JSONException e) {
             Log.e(TAG, "onCreate: " + e.getMessage() );
@@ -278,6 +281,8 @@ public class MainRepositoryImp extends ContextWrapper implements MainRepository 
 
 
     }
+
+
 
 
 

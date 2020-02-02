@@ -5,7 +5,8 @@
     <string name="emailAddress">Post By:</string>
     <string name="delete">Delete</string>
     <string name="Sharing">Sharing</string>
-
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
     <string name="messaging_token">This is your token called from get!!!!!! %s</string>
     <string-array name="Year">
         <item>1979</item>

@@ -18,8 +18,8 @@ public class addInfoPresenterImp extends ContextWrapper implements addInfoPresen
     }
 
     @Override
-    public void pushNotes( String title, String details, String date,  Switch mySwitch) {
-        myInteractor.putNotes(title, details, date,  mySwitch);
+    public void pushNotes( String title, String details, String date,String money,  Switch mySwitch) {
+        myInteractor.putNotes(title, details, date, money,mySwitch);
 
     }
 

@@ -4,159 +4,217 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="170dp"
     android:layout_margin="5dp"
     android:clickable="true"
     android:focusable="true"
-    app:cardBackgroundColor="@color/superBle"
-    app:cardCornerRadius="10dp"
     android:foreground="?selectableItemBackground"
-    app:cardElevation="3dp"
+    app:cardBackgroundColor="@color/plain"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="5dp"
     app:contentPadding="4dp"
     tools:context=".Main.MainActivity">
 
+
     <RelativeLayout
+        android:id="@+id/bodyDesign"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/customize_border_four">
+        android:layout_gravity="end"
+        android:paddingStart="0dp"
+        android:paddingLeft="20dp"
+        android:paddingEnd="0dp"
+        android:paddingRight="20dp">
 
         <RelativeLayout
-            android:id="@+id/titleDesign"
-            android:layout_width="match_parent"
-            android:layout_height="130dp"
-            android:background="@drawable/customize_border_six">
-
-            <TextView
-                android:id="@+id/item_info"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:fontFamily="sans-serif-medium"
-                android:maxLines="20"
-                android:padding="10dp"
-                android:paddingBottom="2dp"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/item_info"
-                android:orientation="horizontal"
-                >
-
-                <TextView
-                    android:id="@+id/postBy"
-                    android:layout_width="78dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-medium"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/itemNames"
-                    android:layout_width="225dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="27dp"
-                    android:fontFamily="sans-serif-medium"
-                    android:padding="10dp"
-                    android:paddingBottom="2dp"
-                    android:textSize="15sp"
-                    android:textStyle="italic" />
-
-            </LinearLayout>
-
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentStart="true"
-                android:background="@color/superBle"
-
-                />
-
+            android:id="@+id/frameDesign"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/gradientsix"
+            android:orientation="vertical">
 
         </RelativeLayout>
 
 
         <RelativeLayout
-            android:id="@+id/bodydesign"
-            android:layout_width="wrap_content"
-            android:layout_height="177dp"
-            android:layout_below="@+id/titleDesign"
-            android:layout_marginTop="-6dp"
-            android:background="@drawable/customize_border_four">
+            android:id="@+id/title"
+            android:layout_width="370dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="6dp"
+            android:paddingStart="0dp"
+            android:paddingLeft="20dp"
+            android:paddingEnd="0dp"
+            android:paddingRight="20dp">
+
+
+            <TextView
+                android:id="@+id/item_info"
+                android:layout_width="333dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="11dp"
+                android:layout_marginTop="3dp"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:gravity="start"
+                android:maxLines="30"
+                android:padding="5dp"
+                android:paddingBottom="2dp"
+                android:textAlignment="textStart"
+                android:textColor="@color/strongGold"
+                android:textFontWeight="3"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/postBy"
+                android:layout_width="70dp"
+                android:layout_height="20dp"
+                android:layout_below="@+id/item_info"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="-2dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="307dp"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:textAlignment="textEnd"
+                android:textColor="@color/strongGold"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/itemNames"
+                android:layout_width="172dp"
+                android:layout_height="20dp"
+                android:layout_below="@+id/item_info"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="135dp"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:gravity="center_horizontal"
+                android:maxLines="30"
+                android:paddingStart="0dp"
+                android:paddingLeft="0dp"
+                android:textColor="@color/strongGold"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/itemYear"
+                android:layout_width="88dp"
+                android:layout_height="40dp"
+                android:layout_alignTop="@+id/itemNames"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="233dp"
+                android:layout_marginLeft="-2dp"
+                android:layout_marginTop="-11dp"
+                android:layout_marginEnd="33dp"
+                android:layout_toRightOf="@+id/itemNames"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:gravity="center_horizontal"
+                android:padding="10dp"
+                android:textAlignment="center"
+                android:textColor="@color/strongGold"
+                android:textSize="12sp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/body"
+            android:layout_width="375dp"
+            android:layout_height="74dp"
+            android:layout_below="@+id/title"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="0dp"
+            android:paddingStart="0dp"
+            android:paddingLeft="20dp"
+            android:paddingEnd="0dp"
+            android:paddingRight="20dp">
 
             <TextView
                 android:id="@+id/itemDesc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="360dp"
+                android:layout_height="62dp"
+                android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="5dp"
-                android:maxLines="30"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="5dp"
+                android:fontFamily="@string/common_google_play_services_updating_text"
+                android:maxLines="40"
                 android:padding="10dp"
                 android:paddingTop="5dp"
                 android:paddingBottom="10dp"
-                android:textSize="15sp"
-                android:textStyle="italic" />
+                android:textAlignment="textStart"
+                android:textColor="@color/nightBlack"
+                android:textSize="12sp" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="380dp"
+            android:layout_height="26dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="-1dp"
+            android:layout_marginBottom="-1dp"
+            android:orientation="horizontal"
+            android:scaleType="fitEnd">
 
 
             <RelativeLayout
-                android:id="@+id/layoutYear"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_centerVertical="true">
-
-                <TextView
-                    android:id="@+id/itemYear"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:padding="10dp"
-                    android:textSize="15sp"
-                    android:textStyle="italic" />
-            </RelativeLayout>
-
-
-            <LinearLayout
-
-                android:layout_width="match_parent"
-                android:layout_height="49dp"
+                android:id="@+id/delLayout"
+                android:layout_width="174dp"
+                android:layout_height="25dp"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:background="@drawable/customize_border_six"
-                android:orientation="horizontal">
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="2dp"
+                android:background="@drawable/gradientfive"
+                android:orientation="horizontal"
+                android:scaleType="fitEnd">
 
 
                 <ImageView
                     android:id="@+id/deleteItem"
-                    android:layout_width="501dp"
-                    android:layout_height="30dp"
-                    android:layout_weight=".2"
-                    android:contentDescription="@string/delete"
-                    android:gravity="end"
-                    android:scaleType="fitEnd"
-                    android:src="@drawable/ic_delete" />
-
-                <ImageView
-                    android:id="@+id/shareItem"
-                    android:layout_width="260dp"
-                    android:layout_height="30dp"
-                    android:layout_weight=".2"
+                    android:layout_width="79dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="2dp"
                     android:contentDescription="@string/Sharing"
+                    android:gravity="right"
                     android:scaleType="fitEnd"
-                    android:src="@drawable/ic_share" />
+                    android:src="@drawable/ic_complete_circle"
+                    android:textStyle="italic" />
 
 
-            </LinearLayout>
             </RelativeLayout>
 
+            <ImageView
+                android:id="@+id/shareItem"
+                android:layout_width="184dp"
+                android:layout_height="25dp"
+                android:layout_marginEnd="2dp"
+                android:layout_marginBottom="2dp"
+                android:layout_toStartOf="@+id/likeLayout"
+                android:layout_weight=".2"
+                android:background="@drawable/gradientfive"
+                android:contentDescription="@string/delete"
+                android:gravity="right"
+                android:paddingStart="0dp"
+                android:paddingEnd="10dp"
+                android:scaleType="fitEnd"
+                android:src="@drawable/ic_share" />
 
-
+        </RelativeLayout>
 
     </RelativeLayout>
 

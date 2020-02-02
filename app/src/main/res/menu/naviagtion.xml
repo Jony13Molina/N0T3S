@@ -1,19 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/menu_top"
+        android:checkableBehavior="none" >
 
-    <item
-        android:id="@+id/navigation_info"
-        android:icon="@mipmap/info_ic"
-        android:title="New" />
+        <item android:id="@+id/newNote"
+            android:icon="@mipmap/add_item"
+            android:title="New" />
+        <item android:id="@+id/privateList"
+            android:icon="@mipmap/ic_listpriva"
+            android:title="Personal List" />
 
-    <item
-        android:id="@+id/navigation_viewInfo"
-        android:icon="@mipmap/alist_ic"
-        android:title="List"/>
+        <item android:id="@+id/completeList"
+            android:icon="@mipmap/ic_done"
+            android:title="Completed Chores" />
+    </group>
 
-    <item
-        android:id="@+id/navigation_exit"
-        android:icon="@mipmap/exit_ic"
-        android:title="Exit"/>
+    <group
+        android:id="@+id/menu_center"
+        android:checkableBehavior="none">
+
+        <item android:id="@+id/applicantsID"
+            android:icon="@mipmap/ic_user"
+            android:title="Applicants/Applications" />
+        <item android:id="@+id/topUsers"
+            android:icon="@mipmap/ic_topusers"
+            android:title="Top Users" />
+
+        <item android:id="@+id/exitApp"
+            android:title="LogOut"
+            android:icon="@mipmap/exit_ic"/>
+
+    </group>
+
 
 </menu>

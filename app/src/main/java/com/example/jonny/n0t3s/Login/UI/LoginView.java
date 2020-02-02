@@ -24,5 +24,12 @@ public interface LoginView {
 
     void loginError(String error);
 
+    void registerUser();
+
+    void fireLogin();
+
+    void checkConnection();
+
+    void resetPassword();
 
 }

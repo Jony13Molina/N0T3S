@@ -18,4 +18,9 @@ public interface LoginPresenter {
     void onStart();
     void onCreate();
 
+    void fireLogIn(String email, String password,Context cont);
+    void registerUser(String email, String password, Context cont);
+    void checkConnectivity(Context cont);
+    void resetPass(Context cont);
+
 }

@@ -1,8 +1,13 @@
 package com.example.jonny.n0t3s.addInfo.UI;
 
+import com.example.jonny.n0t3s.Login.UI.LoginActivity;
+import com.example.jonny.n0t3s.Utils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -25,11 +30,12 @@ public class addInfo extends AppCompatActivity implements  View.OnClickListener,
     User user;
     public String myDetails;
     public String myTitle;
-    public String myTime;
+    public String myMoney;
     public String likeCount;
     public static String toastMessage;
     public static String pToastMessage;
     public static String privateMessage;
+
 
 
     private static final String TAG = "addInfo";
@@ -39,10 +45,11 @@ public class addInfo extends AppCompatActivity implements  View.OnClickListener,
     String date;
 
 
+
     Calendar calendar = Calendar.getInstance();
-    int year = calendar.get(Calendar.YEAR);
-    int month = calendar.get(Calendar.MONTH)+1;
-    int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+    int year;
+    int month;
+    int dayOfMonth;
 
     DatePicker dp;
     @Override
@@ -54,7 +61,7 @@ public class addInfo extends AppCompatActivity implements  View.OnClickListener,
 
 
 
-        dp = (DatePicker) findViewById(R.id.datePicker);
+       // dp = (DatePicker) findViewById(R.id.datePicker);
 
 
         //switch view
@@ -63,6 +70,16 @@ public class addInfo extends AppCompatActivity implements  View.OnClickListener,
         doneButton= (FloatingActionButton) findViewById(R.id.doneButton);
         doneButton.setOnClickListener(this);
 
+        final EditText dateEdit = (EditText)findViewById(R.id.dateInfo);
+        dateEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setDate(dateEdit);
+
+
+
+            }
+        });
 
 
     }
@@ -74,6 +91,7 @@ public class addInfo extends AppCompatActivity implements  View.OnClickListener,
         {
             pushNotes();
         }
+
     }
 
 
@@ -82,6 +100,10 @@ public class addInfo extends AppCompatActivity implements  View.OnClickListener,
 
     @Override
     public void pushNotes() {
+
+
+
+
         //set descriotion
         EditText t_Edit = (EditText)findViewById(R.id.enterInfo);
 
@@ -89,28 +111,64 @@ public class addInfo extends AppCompatActivity implements  View.OnClickListener,
         //set details
         EditText p_Edit  = (EditText)findViewById(R.id.plusInfo);
         myDetails = p_Edit.getText().toString();
+
+        EditText m_Edit = (EditText)findViewById(R.id.moneyInfo);
+        myMoney = m_Edit.getText().toString();
+
+        EditText d_edit = (EditText) findViewById(R.id.dateInfo);
+        date = d_edit.getText().toString();
         //initializing writing year taken
         //listDrop = (Spinner)findViewById(R.id.dropDownls);
-
         //set Year
         //myYear = listDrop.getSelectedItem().toString();
-        monthly = dp.getMonth()+1;
-        date = monthly+"/"+dp.getDayOfMonth()+"/"+dp.getYear();
+       // monthly = dp.getMonth()+1;
+        //date = monthly+"/"+dp.getDayOfMonth()+"/"+dp.getYear();
         //dateText.setText(dateText.getText() + "" +monthly + "/" + dp.getDayOfMonth() + "/"+dp.getYear());
-        dp.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        //dp.updateDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         //myYear = dp.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
 
 
         //pushData(mainUser.getUid(), myTime,myUser, privateTrue);
 
-        myPresenter.pushNotes(myTitle, myDetails, date, privateTrue);
+        myPresenter.pushNotes(myTitle, myDetails, date, myMoney,privateTrue);
 
     }
 
     @Override
     public void pushData(String id, String timeStampMe, User myUser, Switch mySwitch) {
         myPresenter.pushData(id, timeStampMe, mySwitch);
+
+
+    }
+
+    public void setDate(final EditText dateText ){
+
+
+
+
+        // Get Current Date
+        final Calendar c = Calendar.getInstance();
+        year = c.get(Calendar.YEAR);
+        month = c.get(Calendar.MONTH);
+        dayOfMonth = c.get(Calendar.DAY_OF_MONTH);
+
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+
+                        dateText.setText( (monthOfYear+1) +"-"+ dayOfMonth + "-" + year);
+
+
+                    }
+                }, year, month, dayOfMonth);
+        datePickerDialog.show();
+
+
 
 
     }

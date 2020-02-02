@@ -53,4 +53,20 @@ public class loginInteractorImp implements loginInteractor {
     public void getCurrUser(){
         myLoginAction.authUser();
     }
+    @Override
+    public void fireSignIn(String email, String password, Context  cont){
+        myLoginAction.fireSignMe(email, password, cont);
+    }
+    @Override
+    public void registerAccount(String email, String password, Context cont){
+        myLoginAction.registerAccount(email, password, cont);
+    }
+    @Override
+    public void checkConnection(Context cont){
+        myLoginAction.checkConnection(cont);
+    }
+    @Override
+    public void resetPass(Context cont){
+        myLoginAction.resetPass(cont);
+    }
 }

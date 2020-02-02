@@ -28,8 +28,8 @@ public class viewPresentImp  extends ContextWrapper implements viewPresenter {
 
 
     @Override
-    public void shareNote(User user) {
-        myInteractor.shareNote(user);
+    public void shareNote(User user, String infoAmount) {
+        myInteractor.shareNote(user,infoAmount);
 
     }
 

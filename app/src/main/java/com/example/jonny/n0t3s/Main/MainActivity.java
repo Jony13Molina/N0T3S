@@ -6,15 +6,28 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import androidx.annotation.NonNull;
+
+import com.example.jonny.n0t3s.tabView;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.res.Configuration;
 import android.os.Bundle;
+
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.jonny.n0t3s.BuildConfig;
 import com.example.jonny.n0t3s.Notification;
@@ -25,8 +38,10 @@ import com.example.jonny.n0t3s.addInfo.UI.addInfo;
 import com.example.jonny.n0t3s.viewInfo.viewInfo;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -36,15 +51,20 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
+import java.lang.reflect.Array;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
+import static android.content.ContentValues.TAG;
+
 public class MainActivity extends AppCompatActivity implements MainView,
         RecyclerTwoAdapter.RecyclerDeleteButton, RecyclerTwoAdapter.RecyclerLikeButton{
 
     RecyclerView recyclerView;
+    NavigationView myview;
     RecyclerView.LayoutManager layoutManager;
     FirebaseFirestore myData;
     FirebaseAuth mainUser;
@@ -53,18 +73,25 @@ public class MainActivity extends AppCompatActivity implements MainView,
     MainPresentImp myPresenter;
     User user;
     RecyclerTwoAdapter adapter;
-    int likeCount;
+     String countVal;
+     int likeCount;
     String userPath, pathId;
     boolean likeState = true;
     private static final String TAG = "MainActivity";
 
     private static final String sharedPref = "token";
 
-
+    List <String> myLikes = new ArrayList<>();
 
     final private String myServerKey = BuildConfig.ApiKey;
     final private String jsonContent = "application/json";
     final private String fcmSendAdress = BuildConfig.FcmAdress;
+
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle toggle;
+    private TextView userName;
+    private View headerView;
+
 
 
     @Override
@@ -79,12 +106,26 @@ public class MainActivity extends AppCompatActivity implements MainView,
         fireUser = FirebaseAuth.getInstance().getCurrentUser();
         myPresenter = new MainPresentImp(this);
 
+
+        //variables for the drawer
+        NavigationView myView = findViewById(R.id.nav_view);
+
+        Toolbar toolbar = findViewById(R.id.toolbar_main);
+        setSupportActionBar(toolbar);
+        headerView = myView.getHeaderView(0);
+        userName = headerView.findViewById(R.id.nav_header_textView);
+
+
+        setNavigation(toolbar,myView,recyclerView);
+
+
+
+        setUserName();
         getData();
 
         dataListner();
 
 
-        setNavigation();
 
 
 
@@ -259,109 +300,112 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
     @Override
     public void updateMyLike(final User user,final int  pos) {
-
-        if (likeState) {
-
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
-            alertDialogBuilder.setTitle("Do you want to apply to this post?");
-            alertDialogBuilder.setPositiveButton("Yes",
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                            likeCount++;
-                            final String countVal = Integer.toString(likeCount);
-                            user.setLikeCounter(countVal);
+        user.setUserLike(likeState);
 
 
-                            fireUser = FirebaseAuth.getInstance().getCurrentUser();
+        fireUser = FirebaseAuth.getInstance().getCurrentUser();
 
-                            user.setUserID(fireUser.getUid());
-                            userPath = user.gettimeStampMe();
-                            //Log.d("timestamo!!!!!!!!!!!!", user.gettimeStampMe());
-                            pathId = "Notes";
-
-
-                            likeState = false;
-                            user.setUserLike(likeState);
-
-                            myPresenter.setLikeDatabase(pathId, userPath, countVal, user.getUserLike());
-                            Notification noti = new Notification();
-                            myPresenter.sendNotification(noti, adapter.setUser(pos));
-
-
-
-                        }
-                    });
-            alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface arg0, int arg1) {
-                }
-            });
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
+        user.setUserID(fireUser.getUid());
+        userPath = user.gettimeStampMe();
+        //Log.d("timestamo!!!!!!!!!!!!", user.gettimeStampMe());
+        pathId = "Notes";
 
 
 
 
 
-
-        } else {
-            likeCount--;
-            String countVal = Integer.toString(likeCount);
-            user.setLikeCounter(countVal);
-
-            fireUser = FirebaseAuth.getInstance().getCurrentUser();
-
-            user.setUserID(fireUser.getUid());
-            userPath = user.gettimeStampMe();
-            pathId = "Notes";
+       final DocumentReference myReference = myData.collection("Notification").document(user.gettimeStampMe()).
+                collection("applicants").document(fireUser.getEmail());
 
 
-            //user.setUserLike(true);
-            likeState = true;
-            user.setUserLike(likeState);
-            myPresenter.setLikeDatabase(pathId, userPath, countVal, user.getUserLike());
-        }
+       myReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+           @Override
+           public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+               if(documentSnapshot.exists()){
+                  /* Log.d("Document exists", myReference.toString());
+                   likeCount--;
+
+                   String countVal = Integer.toString(likeCount);
+                   user.setLikeCounter(countVal);
+
+                   fireUser = FirebaseAuth.getInstance().getCurrentUser();
+
+                   user.setUserID(fireUser.getUid());
+                   userPath = user.gettimeStampMe();
+
+
+                   //user.setUserLike(true);
+                   likeState = true;
+                   user.setUserLike(likeState);
+                   myPresenter.setLikeDatabase(pathId, userPath, countVal, user.getUserLike());
+
+                    */
+
+
+                   ///
+
+
+                   Utils.toastMessage("You Have Already Liked This Post", MainActivity.this);
+
+               }else{
+
+
+                   myData.collection("Notification").document(user.gettimeStampMe())
+                           .collection("applicants").document(fireUser.getEmail()).delete();
+                   AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
+                   alertDialogBuilder.setTitle("Are you interested in this post?");
+                   alertDialogBuilder.setPositiveButton("Yes",
+                           new DialogInterface.OnClickListener() {
+                               @Override
+                               public void onClick(DialogInterface dialog, int which) {
+
+                                   likeCount++;
+
+                               countVal = Integer.toString(likeCount);
+                                   user.setLikeCounter(countVal);
+
+
+                                   likeState = false;
+                                   user.setUserLike(likeState);
+
+                                   myPresenter.setLikeDatabase(pathId, userPath, countVal, user.getUserLike());
+                                   Notification noti = new Notification();
+                                   myPresenter.sendNotification(noti, adapter.setUser(pos));
+
+
+                                   myLikes.add(fireUser.getEmail());
+
+                               }
+                           });
+                   alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                       @Override
+                       public void onClick(DialogInterface arg0, int arg1) {
+                       }
+                   });
+                   AlertDialog alertDialog = alertDialogBuilder.create();
+                   alertDialog.show();
+
+                   Log.d("else it doesnt exists", "dont exit");
+               }
+           }
+       });
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
 
 
     //methods that handle view and clicking actions for menu and note
-    public void setNavigation()
-    {
-        BottomNavigationView  bottomNav = findViewById(R.id.navigationView);
-        BottomNavigationViewHelper.removeShiftMode(bottomNav);
-
-        bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                Intent next_activity = null;
-                switch (menuItem.getItemId()) {
-                    case R.id.navigation_info:
-                        //transition to input notes
-                        next_activity = new Intent(MainActivity.this, addInfo.class);
-                        startActivity(next_activity);
-                        break;
-
-                    case R.id.navigation_viewInfo:
-                        //transition to Viewing info class
-                        Intent intent = new Intent(MainActivity.this, viewInfo.class);
-                        startActivity(intent);
-                        break;
-
-                    case R.id.navigation_exit:
-                        //close app
-                        finish();
-                        System.exit(0);
-                        break;
-
-
-                }
-                return true;
-            }
-        });
-    }
 
 
     public void setToken(){
@@ -405,7 +449,125 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
 
 
-    //methods to send message
+    //methods for drawer
+    public void setNavigation(Toolbar toolbar, NavigationView myView,final RecyclerView rView) {
+
+
+        //setting the hamburger icon open close
+        drawerLayout = findViewById(R.id.drawer_layout);
+        toggle = new ActionBarDrawerToggle(this, drawerLayout,
+                toolbar, R.string.drawer_open, R.string.drawer_close) {
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+
+            }
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+
+
+
+            }
+        };
+
+
+        //makes hamburger icon clickable and add the
+        drawerLayout.addDrawerListener(toggle);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+        myView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+
+                Intent next_activity = null;
+                switch (menuItem.getItemId()) {
+                    case R.id.newNote:
+                        //transition to input notes
+                        next_activity = new Intent(MainActivity.this, addInfo.class);
+                        startActivity(next_activity);
+                        break;
+
+                    case R.id.privateList:
+                        //transition to Viewing info class
+                        next_activity = new Intent(MainActivity.this, viewInfo.class);
+                        startActivity(next_activity);
+                        break;
+
+                    case R.id.applicantsID:
+                        next_activity = new Intent(MainActivity.this, tabView.class);
+                        startActivity(next_activity);
+                        break;
+
+                    case R.id.exitApp:
+                        //close app
+                        finish();
+                        System.exit(0);
+                        break;
+
+
+                }
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                    return true;
+
+
+            }
+        });
+
+
+
+    }
+
+
+
+
+
+
+
+
+    //navigation drawer
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        toggle.syncState();
+    }
+    @Override
+    public void onConfigurationChanged(Configuration newCon){
+        super.onConfigurationChanged(newCon);
+        toggle.onConfigurationChanged(newCon);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        if(toggle.onOptionsItemSelected(item)){
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    //on back button pressed do nothing
+
+    //setting up the click listner
+    @Override
+    public void onBackPressed() {
+        //do nothing
+
+    }
+
+    //set username
+    //method to get the user name from firebase and then to set it on to the textview
+    public void setUserName(){
+        mainUser = FirebaseAuth.getInstance();
+        fireUser = mainUser.getCurrentUser();
+
+         userName.setText(fireUser.getEmail());
+    }
+
+
+
+
 
 
 

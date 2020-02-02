@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface viewPresenter {
     void startDelete(List<User>userList, User user, RecyclerAdapter adapter, int pos);
-    void shareNote(User user);
+    void shareNote(User user,String infoAMount);
     FirebaseFirestore getNoteData();
 
 

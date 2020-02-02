@@ -13,6 +13,10 @@ public interface loginInteractor {
     void actRes(int rqCode, int rsCode, Intent data, Context cont);
     void doSignIn(GoogleSignInAccount account, Context cont);
     void getCurrUser();
+    void fireSignIn(String email, String password, Context cont);
+    void registerAccount(String email, String password, Context cont);
+    void checkConnection(Context cont);
+    void resetPass(Context cont);
 
 
 }

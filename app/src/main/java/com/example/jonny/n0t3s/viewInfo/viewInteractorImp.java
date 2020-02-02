@@ -29,8 +29,8 @@ public class viewInteractorImp extends ContextWrapper implements viewInfoInterac
     }
 
     @Override
-    public void shareNote(User user) {
-        myReposatory.shareThisNote(user);
+    public void shareNote(User user, String moneyInfo) {
+        myReposatory.shareThisNote(user,moneyInfo);
 
     }
 

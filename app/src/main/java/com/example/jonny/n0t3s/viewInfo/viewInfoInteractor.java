@@ -11,7 +11,7 @@ public interface viewInfoInteractor {
 
 
     void deleteNote(List<User>userList, User user, RecyclerAdapter adapter, int pos);
-    void shareNote(User user);
+    void shareNote(User user, String moneyAmount);
     FirebaseFirestore getMyData();
 
 

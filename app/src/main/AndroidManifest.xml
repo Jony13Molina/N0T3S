@@ -4,8 +4,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -14,22 +14,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_n0t3slogon_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <meta-data android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_notificationlogo">
+        android:theme="@style/AppBaseTheme">
+        <activity android:name=".tabView"></activity>
 
-        </meta-data>
-        <service
-            android:name=".Main.MyFirebaseMessagingSevice"
-            android:enabled="true"
-            android:exported="true"
-            android:permission="com.google.android.c2dm.permission.SEND">
-
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-            </intent-filter>
-        </service>
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_notificationlogo"></meta-data>
 
         <activity
             android:name=".Login.UI.LoginActivity"
@@ -43,6 +33,15 @@
         <activity android:name=".Main.MainActivity" />
         <activity android:name=".addInfo.UI.addInfo" />
         <activity android:name=".viewInfo.viewInfo" />
+
+        <service
+            android:name=".Main.MyFirebaseMessagingSevice"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

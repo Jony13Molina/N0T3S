@@ -40,8 +40,8 @@ public class addInfoReposatoryImp extends ContextWrapper implements addInfoRespo
     SharedPreferences mSharedPref;
     User user = new User ();
 
-    String myTime;
-    String likeCount;
+    String myTime;;
+    String likeCount = "0";
     public Map < String, Object > notes  = new HashMap<>();
 
     public addInfoReposatoryImp(Context base) {
@@ -70,7 +70,7 @@ public class addInfoReposatoryImp extends ContextWrapper implements addInfoRespo
 
 
     @Override
-    public void pushNotes( String title, String details, String date, Switch mySwitch) {
+    public void pushNotes( String title, String details, String date,String money, Switch mySwitch) {
 
 
 
@@ -85,6 +85,7 @@ public class addInfoReposatoryImp extends ContextWrapper implements addInfoRespo
         mainUser = FirebaseAuth.getInstance().getCurrentUser();
         user.setEma(mainUser.getEmail());
 
+        user.setMoneyAmount(money);
         user.setLikeCounter(likeCount);
         user.setUserLike(false);
 
@@ -104,6 +105,7 @@ public class addInfoReposatoryImp extends ContextWrapper implements addInfoRespo
             notes.put("ema", user.getEma());
             notes.put("timeStampMe", user.gettimeStampMe());
             notes.put("likeCounter", user.getLikeCounter());
+            notes.put("money", "$"+user.getMoneyAmount());
             notes.put("userLike", user.getUserLike());
 
             mSharedPref =

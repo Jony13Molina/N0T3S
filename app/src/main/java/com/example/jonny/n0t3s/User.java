@@ -19,9 +19,10 @@ public class User{
     public  String likeCounter = null;
     public boolean  userLike= false;
     public String userToken;
+    public String money;
 
     //constructors
-    public User(String userID, String timeStampMe, String details, String title, String email, String year)
+    public User(String userID, String timeStampMe, String details, String title, String email, String year, String money)
     {
         this.userID = userID;
         this.timeStampMe = timeStampMe;
@@ -29,13 +30,13 @@ public class User{
         this.ema = email;
         this.title = title;
         this.year = year;
+        this.money = money;
 
     }
-    public User(String title, String details, String year,String email, String timeStampMe, String likeCounter,String ema){
+    public User(String title, String details, String year, String timeStampMe, String likeCounter,String ema){
         this.title = title;
         this.details = details;
         this.year = year;
-        this.ema= email;
         this.timeStampMe = timeStampMe;
         this.likeCounter = likeCounter;
         this.ema = ema;
@@ -69,6 +70,12 @@ public class User{
         this.timeStampMe = timeStampMe;
 
     }
+    public void setMoneyAmount(String money){
+       this.money = money;
+
+    }
+
+
     public void setLikeCounter(String likeCounter){
         this.likeCounter =likeCounter;
     }
@@ -118,4 +125,5 @@ public class User{
     public String getUserToken(){
         return this.userToken;
     }
+    public String getMoneyAmount(){return this.money;}
 }

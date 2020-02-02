@@ -5,8 +5,8 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light">
 
 
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimary">@color/superBle</item>
+        <item name="colorPrimaryDark">@color/superBle</item>
         <item name="colorAccent">@color/delightfulBlue</item>
 
         <item name="android:navigationBarColor">@color/superBle</item>
@@ -34,10 +34,43 @@
     </style>
 
     <style name="MyDatePickerStyle" parent="@android:style/Widget.Material.DatePicker">
-        <item name="android:colorControlActivated">@color/delightfulBlue</item>
-        <item name="android:headerBackground"> @color/delightfulBlue</item>
+        <item name="android:colorControlActivated">@color/softeRealBlue</item>
+        <item name="android:headerBackground"> @color/softeRealBlue</item>
         . . .
         <item name="android:datePickerMode">spinner</item>
         <item name="android:calendarViewShown">false</item>
     </style>
+
+
+
+    <!--- Base Theme For Application -->
+    <style name="AppBaseTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/realBlue</item>
+        <item name="colorPrimaryDark">@color/realBlue</item>
+        <item name="android:navigationBarColor">@color/realBlue</item>
+        <item name="colorAccent">@color/softeRealBlue</item>
+
+
+    </style>
+
+
+    <!--PopUp Windows Activitites-->
+
+    <style name="AppBaseTheme.CutomThem" parent="Theme.AppCompat.DayNight.NoActionBar">
+       <item name="android:windowIsTranslucent">true</item>
+       <item name="android:windowCloseOnTouchOutside">true</item>
+
+
+    </style>
+
+
+    <!--For the Splash ScreeN-->
+
+    <style name="SpkashThem" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/newn0t3snoti</item>
+
+
+
+    </style>
+
 </resources>

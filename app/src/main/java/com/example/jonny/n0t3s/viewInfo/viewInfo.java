@@ -8,8 +8,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.text.InputType;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.EditText;
 
 import com.example.jonny.n0t3s.R;
 import com.example.jonny.n0t3s.User;
@@ -99,27 +103,40 @@ public class viewInfo extends AppCompatActivity implements viewInfoView,
     public void shareNotes(final int pos) {
 
 
-
         android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);
-        alertDialogBuilder.setTitle("Do you want to share this note?");
-        alertDialogBuilder.setPositiveButton("Share",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
+        final EditText inputAmount = new EditText(this);
+        inputAmount.setHint("Enter Amount For This Job");
+        inputAmount.setRawInputType(InputType.TYPE_CLASS_NUMBER);
+        inputAmount.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+        alertDialogBuilder.setView(inputAmount);
 
 
-                        myPresenter.shareNote(adapter.setUser(pos));
 
-                    }
-                });
-        alertDialogBuilder.setNegativeButton("Cancel",new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface arg0, int arg1)
-            {
-            }
-        });
-        android.app.AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
+            Utils.toastMessage("Please Enter Amount For This Job", this);
+
+
+
+
+            alertDialogBuilder.setTitle("Do you want to share this note publicly?");
+            alertDialogBuilder.setPositiveButton("Share",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+
+                            final String infoAmount= inputAmount.getText().toString();
+                            Log.e("This is the amount",infoAmount);
+                            myPresenter.shareNote(adapter.setUser(pos), infoAmount);
+
+                        }
+                    });
+            alertDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface arg0, int arg1) {
+                }
+            });
+            android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
 
 
     }

@@ -4,182 +4,267 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view_two"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="170dp"
     android:layout_margin="5dp"
     android:clickable="true"
+    android:contextClickable="true"
     android:focusable="true"
-    app:cardBackgroundColor="@color/superBle"
-    app:cardCornerRadius="10dp"
     android:foreground="?selectableItemBackground"
-    app:cardElevation="3dp"
+    android:foregroundTint="@color/nightBlack"
+    app:cardBackgroundColor="@color/plain"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="5dp"
     app:contentPadding="4dp"
     tools:context=".Main.MainActivity">
 
-    <RelativeLayout
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bodyDesign"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/customize_border_four">
+        android:layout_gravity="end"
+        android:paddingStart="0dp"
+        android:paddingLeft="20dp"
+        android:paddingEnd="0dp"
+        android:paddingRight="20dp">
+
 
         <RelativeLayout
-            android:id="@+id/titleDesign"
-            android:layout_width="match_parent"
-            android:layout_height="130dp"
-            android:background="@drawable/customize_border_six">
+            android:id="@+id/frameDesign"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/gradienttwo"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="0dp">
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/title"
+            android:layout_width="372dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
 
             <TextView
                 android:id="@+id/noTitle"
-                android:layout_width="match_parent"
+                android:layout_width="333dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:fontFamily="sans-serif-medium"
-                android:maxLines="20"
-                android:padding="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="3dp"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:gravity="start"
+                android:maxLines="30"
+                android:padding="5dp"
                 android:paddingBottom="2dp"
-                android:textSize="20sp"
+                android:textAlignment="textStart"
+                android:textColor="@color/nightBlack"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
-                android:layout_marginBottom="19dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/noteBy"
-                    android:layout_width="78dp"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-medium"
-                    android:textAlignment="center"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/noteNames"
-                    android:layout_width="200dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="40dp"
-                    android:textAlignment="textStart"
-                    android:fontFamily="sans-serif-medium"
-                    android:textSize="15sp"
-                    android:textStyle="italic" />
-
-            </LinearLayout>
-
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_alignParentBottom="true"
+            <TextView
+                android:id="@+id/postBy"
+                android:layout_width="70dp"
+                android:layout_height="20dp"
+                android:layout_below="@+id/noTitle"
                 android:layout_alignParentStart="true"
-                android:background="@color/superBle"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="301dp"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:textAlignment="textEnd"
+                android:textColor="@color/nightBlack"
+                android:textSize="12sp" />
 
-                />
+            <TextView
+                android:id="@+id/noteNames"
+                android:layout_width="172dp"
+                android:layout_height="20dp"
+                android:layout_below="@+id/noTitle"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="130dp"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:gravity="center"
+                android:maxLines="30"
+                android:textColor="@color/nightBlack"
+                android:textSize="12sp" />
 
+            <TextView
+                android:id="@+id/noteDate"
+                android:layout_width="88dp"
+                android:layout_height="40dp"
+                android:layout_alignTop="@+id/noteNames"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="221dp"
+                android:layout_marginTop="-9dp"
+                android:layout_toEndOf="@+id/noteNames"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:gravity="center_horizontal"
+                android:padding="10dp"
+                android:textAlignment="center"
+                android:textColor="@color/nightBlack"
+                android:textSize="12sp" />
 
         </RelativeLayout>
 
-
         <RelativeLayout
-            android:id="@+id/bodydesign"
-            android:layout_width="wrap_content"
-            android:layout_height="177dp"
-            android:layout_below="@+id/titleDesign"
-            android:layout_marginTop="-6dp"
-            android:background="@drawable/customize_border_four">
+            android:id="@+id/body"
+            android:layout_width="361dp"
+            android:layout_height="73dp"
+            android:layout_below="@+id/title"
+            android:layout_alignParentEnd="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.272"
+            app:layout_constraintStart_toEndOf="@+id/frameDesign"
+            app:layout_constraintTop_toBottomOf="@+id/title">
+
 
             <TextView
                 android:id="@+id/noteDesc"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="316dp"
+                android:layout_height="44dp"
+                android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="5dp"
-                android:maxLines="30"
-                android:padding="10dp"
-                android:paddingBottom="10dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="17dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginEnd="28dp"
+                android:fontFamily="@string/common_google_play_services_updating_text"
+                android:maxLines="60"
                 android:paddingTop="5dp"
-                android:textSize="15sp"
-                android:textStyle="italic" />
-
+                android:paddingBottom="10dp"
+                android:textAlignment="textStart"
+                android:textColor="@color/nightBlack"
+                android:textSize="12sp" />
 
             <RelativeLayout
-                android:id="@+id/layoutDate"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="32dp"
+                android:layout_below="@+id/noteDesc"
                 android:layout_alignParentStart="true"
-                android:layout_centerVertical="true">
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="11dp"
+                android:layout_marginEnd="0dp"
+                android:orientation="horizontal"
+                android:scaleType="fitEnd">
 
                 <TextView
-                    android:id="@+id/noteDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:id="@+id/moneyText"
+                    android:layout_width="227dp"
+                    android:layout_height="match_parent"
                     android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:padding="10dp"
-                    android:textSize="15sp"
-                    android:textStyle="italic" />
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginEnd="147dp"
+                    android:layout_marginBottom="2dp"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/nightBlack"
+                    android:textSize="12sp" />
+
             </RelativeLayout>
 
 
-            <LinearLayout
+        </RelativeLayout>
 
-                android:layout_width="match_parent"
-                android:layout_height="49dp"
+        <RelativeLayout
+            android:layout_width="369dp"
+            android:layout_height="24dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:scaleType="fitEnd"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/body">
+
+
+            <RelativeLayout
+                android:id="@+id/likeLayout"
+                android:layout_width="172dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:background="@drawable/customize_border_six">
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="1dp"
+                android:background="@drawable/gradientthree"
+                android:orientation="horizontal"
+                android:scaleType="fitEnd">
 
+                <TextView
+                    android:id="@+id/likeCounter"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginEnd="-43dp"
+                    android:layout_marginBottom="0dp"
+                    android:layout_toStartOf="@+id/likeItem"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center|end"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="5dp"
+                    android:textColor="@color/nightBlack"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/likeItem"
+                    android:layout_width="79dp"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="2dp"
+                    android:contentDescription="@string/Sharing"
+                    android:gravity="end"
+                    android:scaleType="fitEnd"
+                    android:src="@drawable/ic_thumbs_up"
+                    android:textStyle="italic" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/delLayout"
+                android:layout_width="172dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentBottom="true"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="1dp"
+                android:layout_toStartOf="@+id/likeLayout"
+                android:orientation="horizontal"
+                android:scaleType="fitStart">
 
                 <ImageView
                     android:id="@+id/delItem"
-                    android:layout_width="216dp"
-                    android:layout_height="30dp"
-                    android:layout_weight=".2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="0dp"
+                    android:background="@drawable/gradientthree"
                     android:contentDescription="@string/delete"
                     android:gravity="end"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="10dp"
                     android:scaleType="fitEnd"
                     android:src="@drawable/ic_delete" />
+            </RelativeLayout>
 
-                <RelativeLayout
-                    android:layout_width="100dp"
-                    android:layout_height="49dp"
-                    android:orientation="horizontal">
-
-
-                    <TextView
-                        android:id="@+id/likeCounter"
-                        android:layout_width="40dp"
-                        android:layout_height="30dp"
-                        android:layout_alignParentTop="true"
-                        android:layout_toStartOf="@+id/likeItem"
-                        android:fontFamily="sans-serif-medium"
-                        android:gravity="center|end"
-                        android:paddingEnd="5dp"
-                        android:paddingStart="20dp"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-
-                    <ImageView
-                        android:id="@+id/likeItem"
-                        android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentTop="true"
-                        android:contentDescription="@string/Sharing"
-                        android:gravity="end|center"
-                        android:scaleType="fitEnd"
-                        android:src="@drawable/ic_thumbs_up" />
-
-                </RelativeLayout>
-
-            </LinearLayout>
         </RelativeLayout>
 
-
-    </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.cardview.widget.CardView>

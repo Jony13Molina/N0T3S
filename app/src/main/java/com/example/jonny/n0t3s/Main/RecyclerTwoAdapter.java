@@ -64,7 +64,7 @@ public class RecyclerTwoAdapter extends RecyclerView.Adapter<RecyclerTwoAdapter.
     class ViewHolder extends RecyclerView.ViewHolder {
 
 
-        private TextView itemTitle, itemDesc, itemYears, itemName, postBy, likeC;
+        private TextView itemTitle, itemDesc, itemYears, itemName, postBy, likeC, moneyView;
 
         private ImageView deleteIcon, likeIcon;
 
@@ -76,7 +76,9 @@ public class RecyclerTwoAdapter extends RecyclerView.Adapter<RecyclerTwoAdapter.
             itemDesc = (TextView) itemView.findViewById(R.id.noteDesc);
             itemYears = (TextView) itemView.findViewById(R.id.noteDate);
             itemName = (TextView) itemView.findViewById(R.id.noteNames);
-            postBy = (TextView) itemView.findViewById(R.id.noteBy);
+            postBy = (TextView)itemView.findViewById(R.id.postBy);
+            moneyView =(TextView) itemView.findViewById(R.id.moneyText);
+
             //instatiate our imageviews
             deleteIcon = (ImageView) itemView.findViewById(R.id.delItem);
             likeIcon = (ImageView) itemView.findViewById(R.id.likeItem);
@@ -110,11 +112,11 @@ public class RecyclerTwoAdapter extends RecyclerView.Adapter<RecyclerTwoAdapter.
         int post = R.string.email_Address;
 
 
-
         viewHolder.itemTitle.setText(user.getTitle());
         viewHolder.itemDesc.setText(user.getDetails());
         viewHolder.itemYears.setText(user.getYear());
         viewHolder.itemName.setText(user.getEma());
+        viewHolder.moneyView.setText(user.getMoneyAmount());
         viewHolder.postBy.setText(post);
         viewHolder.likeC.setText(user.getLikeCounter());
 

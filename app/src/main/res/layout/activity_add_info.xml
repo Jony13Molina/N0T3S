@@ -4,37 +4,73 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradientfive"
     tools:context=".addInfo.UI.addInfo">
 
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/dateLayout"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="345dp"
+        android:layout_height="67dp"
+        android:layout_below="@+id/titleLayout"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="25dp"
+        app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout"
+        app:layout_constraintBottom_toTopOf="@+id/frameDesign"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.384"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/titleLayout"
+        app:layout_constraintVertical_bias="0.0">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/dateInfo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="24dp"
+            android:backgroundTintMode="screen"
+            android:drawableStart="@drawable/ic_year"
+            android:drawablePadding="5dp"
+            android:hint="Choose Date"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
+            android:textCursorDrawable="@drawable/cursor_color"
+            app:hintEnabled="true" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/titleLayout"
-        android:layout_width="360dp"
-        android:layout_height="64dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="345dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
         android:focusable="true"
         android:focusableInTouchMode="true"
         app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout"
-        app:layout_constraintBottom_toTopOf="@+id/detailLayout"
+        app:layout_constraintBottom_toTopOf="@+id/frameDesign"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.238">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/enterInfo"
             android:layout_width="match_parent"
-            android:layout_height="51dp"
+            android:layout_height="match_parent"
             android:backgroundTintMode="screen"
             android:completionHint="Enter Title"
-            android:drawableStart="@drawable/ic_title"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:drawablePadding="20dp"
+            android:drawableStart="@drawable/ic_descritiopn"
+            android:drawablePadding="5dp"
             android:hint="Enter Title"
             android:imeOptions="actionDone"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
             android:singleLine="true"
             android:textCursorDrawable="@drawable/cursor_color"
             app:hintEnabled="true" />
@@ -42,89 +78,114 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/detailLayout"
-        android:layout_width="360dp"
-        android:layout_height="69dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="36dp"
-        app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleLayout">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/plusInfo"
-            android:layout_width="match_parent"
-            android:layout_height="51dp"
-            android:backgroundTintMode="screen"
-            android:drawableStart="@drawable/ic_descritiopn"
-            android:hint="Details"
-            android:drawablePadding="20dp"
-            android:imeOptions="actionDone"
-            android:singleLine="true"
-            android:textCursorDrawable="@drawable/cursor_color"
-            app:hintEnabled="true" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <DatePicker
-        android:id="@+id/datePicker"
-        android:layout_width="wrap_content"
-        android:layout_height="261dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:calendarTextColor="@color/superBle"
-        android:calendarViewShown="false"
-        android:theme="@style/MyDatePickerStyle"
+    <RelativeLayout
+        android:id="@+id/frameDesign"
+        android:layout_width="0dp"
+        android:layout_height="556dp"
+        android:layout_marginTop="176dp"
+        android:background="@drawable/gradientadd_info"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/detailLayout"
-        app:layout_constraintVertical_bias="0.105" />
-
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/doneButton"
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@color/delightfulBlue"
-        android:clickable="true"
-        android:src="@drawable/ic_send_black"
-        app:backgroundTint="@color/delightfulBlue"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.945"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/datePicker"
-        app:rippleColor="@color/superBle" />
-
-    <Switch
-        android:id="@+id/privateSwitch"
-        android:layout_width="137dp"
-        android:layout_height="43dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:fontFamily="sans-serif-condensed"
-        android:text="Private"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/doneButton"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/datePicker" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/detailLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="375dp"
+            android:layout_height="221dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="27dp"
+            android:layout_marginEnd="39dp"
+            android:layout_marginBottom="318dp"
+            app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.485"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/plusInfo"
+                android:layout_width="match_parent"
+                android:layout_height="215dp"
+                android:backgroundTintMode="screen"
+                android:drawablePadding="5dp"
+                android:gravity="top|left"
+                android:hint="Details,Location, Time"
+                android:imeOptions="actionDone"
+                android:inputType="textMultiLine"
+                android:textCursorDrawable="@drawable/cursor_color"
+                app:hintEnabled="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/moneyInputLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="375dp"
+            android:layout_height="67dp"
+            android:layout_below="@+id/detailLayout"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="27dp"
+            android:layout_marginTop="-282dp"
+            android:layout_marginEnd="39dp"
+            app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.485"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/moneyInfo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:backgroundTintMode="screen"
+                android:drawableStart="@drawable/ic_moneytwo"
+                android:drawablePadding="5dp"
+                android:hint="Public? Enter Amount"
+                android:imeOptions="actionDone"
+                android:inputType="numberDecimal"
+                android:singleLine="true"
+                android:textCursorDrawable="@drawable/cursor_color"
+                app:hintEnabled="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <Switch
+            android:id="@+id/privateSwitch"
+            android:layout_width="138dp"
+            android:layout_height="50dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="273dp"
+            android:layout_marginBottom="69dp"
+            android:fontFamily="sans-serif-condensed"
+            android:text="Private"
+            android:textStyle="bold">
+
+        </Switch>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/doneButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="50dp"
+            android:layout_marginBottom="61dp"
+            android:background="@color/realBlue"
+            android:clickable="true"
+            android:src="@drawable/ic_donebutton"
+            app:backgroundTint="@color/softeRealBlue"
+            app:rippleColor="@color/realBlue" />
+
+
+    </RelativeLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

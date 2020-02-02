@@ -6,7 +6,7 @@ import java.util.Map;
 
 public interface addInfoInteractor {
 
-    void putNotes( String title, String details, String date,  Switch mySwitch );
+    void putNotes( String title, String details, String date,String money,  Switch mySwitch );
 
     void pushData(String id, String timeStamp, Switch mySwitch );
 

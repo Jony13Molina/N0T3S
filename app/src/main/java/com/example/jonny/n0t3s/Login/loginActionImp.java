@@ -1,14 +1,25 @@
 package com.example.jonny.n0t3s.Login;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.ContextWrapper;
+import android.content.DialogInterface;
 import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
-import android.util.Log;
 
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.text.TextUtils;
+import android.util.Log;
+import android.widget.EditText;
+
+import com.example.jonny.n0t3s.Login.UI.LoginActivity;
 import com.example.jonny.n0t3s.Main.MainActivity;
 import com.example.jonny.n0t3s.R;
 import com.example.jonny.n0t3s.User;
+import com.example.jonny.n0t3s.Utils;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -28,17 +39,24 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class loginActionImp extends FragmentActivity implements loginAction, GoogleApiClient.OnConnectionFailedListener {
 
-    private FirebaseAuth myAuthUser;
+    FirebaseAuth myAuthUser;
     FirebaseUser currUser;
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
     private static GoogleApiClient myClient;
 
 
+
+
     public loginActionImp(){
+
         myAuthUser  = FirebaseAuth.getInstance();
 
+
+
     }
+
+
 
 
 
@@ -146,4 +164,101 @@ public class loginActionImp extends FragmentActivity implements loginAction, Goo
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
     }
+
+
+
+
+    //Methods That handle Sign in for firebase
+
+    public void registerAccount(String email, String password, Context cont){
+
+        if(checkConnectionAndInput(email,password,cont)==false)
+        {
+            return;
+        }
+        // Creating a new user
+        Utils.toastMessage("Account Created",cont);
+        myAuthUser.createUserWithEmailAndPassword(email, password);
+
+    }
+
+    public void fireSignMe(String email, String password,final Context cont){
+
+        if(checkConnectionAndInput(email,password, cont)==false)
+        {
+            return;
+        }
+        myAuthUser.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        // If sign in fails, Log a message to the LogCat. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful())
+                        {
+                            // There was an error
+                            Utils.toastMessage("Incorrect Email/Password",cont);
+                        }
+                        else {
+                            changeToMainScreen(cont);
+                        }
+                    }
+                });
+
+
+    }
+
+
+    @Override
+    public boolean checkConnection(Context cont){
+
+        ConnectivityManager myConnection = (ConnectivityManager)cont.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = myConnection.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+        if(!isConnected){
+            Utils.toastMessage("Check Internet Connection", this);
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+
+    }
+
+    // Checks0 both input and connection and returns a boolean
+    public boolean checkConnectionAndInput(String email, String password, Context cont)
+    {
+        // Checks if fields are empty
+        if(TextUtils.isEmpty(email))
+        {
+            Utils.toastMessage("Please enter a valid email",cont);
+            return false;
+        }
+        if(TextUtils.isEmpty(password))
+        {
+            Utils.toastMessage("Please enter a valid password", cont);
+            return false;
+        }
+        // Check if there is internet connection
+        return checkConnection(cont);
+    }
+
+
+    //navigates to the main screen
+    public void changeToMainScreen(final Context cont)
+    {
+        Intent next_activity = new Intent(cont, MainActivity.class);
+        cont.startActivity(next_activity);
+        finish();
+    }
+
+    public void resetPass(final Context cont){
+
+
+    }
+
+
 }
