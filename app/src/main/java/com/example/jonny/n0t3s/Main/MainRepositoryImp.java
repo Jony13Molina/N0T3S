@@ -5,6 +5,7 @@ import android.content.ContextWrapper;
 
 import androidx.annotation.NonNull;
 
+import android.content.SharedPreferences;
 import android.content.res.AssetFileDescriptor;
 import android.util.Log;
 import android.widget.Toast;
@@ -17,6 +18,8 @@ import com.example.jonny.n0t3s.BuildConfig;
 import com.example.jonny.n0t3s.Notification;
 import com.example.jonny.n0t3s.User;
 import com.example.jonny.n0t3s.Utils;
+import com.example.jonny.n0t3s.tabView.MyTabAdapter;
+import com.example.jonny.n0t3s.tabView.applicantAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -27,8 +30,10 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 
 import org.json.JSONException;
@@ -38,6 +43,7 @@ import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -45,12 +51,14 @@ import java.util.Map;
 
 import static android.content.ContentValues.TAG;
 
+
 public class MainRepositoryImp extends ContextWrapper implements MainRepository {
 
     Context myCont;
     FirebaseUser fireUser = FirebaseAuth.getInstance().getCurrentUser();
     String userPath;
     String pathId;
+    FirebaseAuth mainUser;
     FirebaseFirestore myCollection =  FirebaseFirestore.getInstance();
     int likeCount;
     User myUser;
@@ -60,6 +68,7 @@ public class MainRepositoryImp extends ContextWrapper implements MainRepository 
 
 
 
+    private static final String sharedPref = "Time";
     final private String myServerKey = BuildConfig.ApiKey;
     final private String jsonContent = "application/json";
     final private String FCM_ADD = BuildConfig.FcmAdress;
@@ -143,7 +152,7 @@ public class MainRepositoryImp extends ContextWrapper implements MainRepository 
 
 
 
-        myCollection.collection("Notes").document(user.gettimeStampMe()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+       myCollection.collection("Notes").document(user.gettimeStampMe()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
@@ -160,18 +169,27 @@ public class MainRepositoryImp extends ContextWrapper implements MainRepository 
 
 
                         fireUser.getEmail();
+                        noti.setTimeStamp(user.gettimeStampMe());
+                        noti.setSenderEmail(fireUser.getEmail());
                         noti.setSenderNoti("Post:"+notiTitle);
                         noti.setMessageNoti(fireUser.getEmail()+" "+ "is interested in your post.");
                         user.setUserLike(false);
                         notifications.put("from", noti.getSenderNoti());
                         notifications.put("message", noti.getMessageNoti());
+                        notifications.put("email", noti.getSenderEmail());
+                        notifications.put("timeStamp", noti.getTimeStamp());
+
+                      //myAdapter.getData(noti.getTimeStamp());
+
+
+
+                        setTime(noti.getTimeStamp());
+
 
                         jsonNotification(noti.getSenderNoti(), noti.getMessageNoti(),token);
 
 
-                        myCollection.collection("Notification").document(
-                                user.gettimeStampMe()).
-                                collection("applicants").document(fireUser.getEmail()).set(notifications)
+                        myCollection.collection(user.getEma()).document(fireUser.getEmail()+user.gettimeStampMe()).set(notifications)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
@@ -283,6 +301,17 @@ public class MainRepositoryImp extends ContextWrapper implements MainRepository 
     }
 
 
+
+
+
+    public void setTime(String timeStamp){
+
+        SharedPreferences settings = myCont.
+                getSharedPreferences(sharedPref, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("time", timeStamp);
+        editor.commit();
+    }
 
 
 

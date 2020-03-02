@@ -7,10 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import androidx.annotation.NonNull;
 
-import com.example.jonny.n0t3s.tabView;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.example.jonny.n0t3s.tabView.tabView;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,14 +48,12 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
-import java.lang.reflect.Array;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
 
-import static android.content.ContentValues.TAG;
+
 
 public class MainActivity extends AppCompatActivity implements MainView,
         RecyclerTwoAdapter.RecyclerDeleteButton, RecyclerTwoAdapter.RecyclerLikeButton{
@@ -373,6 +368,7 @@ public class MainActivity extends AppCompatActivity implements MainView,
                                    myPresenter.sendNotification(noti, adapter.setUser(pos));
 
 
+
                                    myLikes.add(fireUser.getEmail());
 
                                }
@@ -496,6 +492,7 @@ public class MainActivity extends AppCompatActivity implements MainView,
                         startActivity(next_activity);
                         break;
 
+                        //transition over to applicnt/application tab view
                     case R.id.applicantsID:
                         next_activity = new Intent(MainActivity.this, tabView.class);
                         startActivity(next_activity);
@@ -506,6 +503,7 @@ public class MainActivity extends AppCompatActivity implements MainView,
                         finish();
                         System.exit(0);
                         break;
+
 
 
                 }
@@ -527,18 +525,21 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
 
 
-    //navigation drawer
+    //navigation drawer methods
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         toggle.syncState();
     }
+
+    //handling oriantation changes of the drawer
     @Override
     public void onConfigurationChanged(Configuration newCon){
         super.onConfigurationChanged(newCon);
         toggle.onConfigurationChanged(newCon);
     }
 
+    //handling item selection on the menu drawer
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         if(toggle.onOptionsItemSelected(item)){
@@ -549,7 +550,7 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
     //on back button pressed do nothing
 
-    //setting up the click listner
+    //on back button pressed do nothing
     @Override
     public void onBackPressed() {
         //do nothing
@@ -561,6 +562,8 @@ public class MainActivity extends AppCompatActivity implements MainView,
     public void setUserName(){
         mainUser = FirebaseAuth.getInstance();
         fireUser = mainUser.getCurrentUser();
+
+
 
          userName.setText(fireUser.getEmail());
     }

@@ -15,7 +15,7 @@
         android:roundIcon="@mipmap/ic_n0t3slogon_round"
         android:supportsRtl="true"
         android:theme="@style/AppBaseTheme">
-        <activity android:name=".tabView"></activity>
+        <activity android:name=".tabView.tabView"></activity>
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"

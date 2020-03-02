@@ -62,8 +62,7 @@
                 android:padding="5dp"
                 android:paddingBottom="2dp"
                 android:textAlignment="textStart"
-                android:textColor="@color/strongGold"
-                android:textFontWeight="3"
+                android:textColor="@color/nightBlack"
                 android:textSize="14sp"
                 android:textStyle="bold" />
 
@@ -80,7 +79,7 @@
                 android:layout_marginEnd="307dp"
                 android:fontFamily="sans-serif-condensed-medium"
                 android:textAlignment="textEnd"
-                android:textColor="@color/strongGold"
+                android:textColor="@color/nightBlack"
                 android:textSize="12sp" />
 
             <TextView
@@ -96,7 +95,7 @@
                 android:maxLines="30"
                 android:paddingStart="0dp"
                 android:paddingLeft="0dp"
-                android:textColor="@color/strongGold"
+                android:textColor="@color/nightBlack"
                 android:textSize="12sp" />
 
             <TextView
@@ -115,7 +114,7 @@
                 android:gravity="center_horizontal"
                 android:padding="10dp"
                 android:textAlignment="center"
-                android:textColor="@color/strongGold"
+                android:textColor="@color/nightBlack"
                 android:textSize="12sp" />
 
         </RelativeLayout>
@@ -176,7 +175,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="2dp"
-                android:background="@drawable/gradientfive"
+                android:background="@drawable/gradientthree"
                 android:orientation="horizontal"
                 android:scaleType="fitEnd">
 
@@ -206,7 +205,7 @@
                 android:layout_marginBottom="2dp"
                 android:layout_toStartOf="@+id/likeLayout"
                 android:layout_weight=".2"
-                android:background="@drawable/gradientfive"
+                android:background="@drawable/gradientthree"
                 android:contentDescription="@string/delete"
                 android:gravity="right"
                 android:paddingStart="0dp"
