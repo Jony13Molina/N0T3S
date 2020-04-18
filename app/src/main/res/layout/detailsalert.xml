@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:radius="5dp"
+
+    android:padding="15dp">
+
+
+    <TextView
+        android:id="@+id/alertTitle"
+        android:layout_width="312dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="You Have Agreed to These Terms"
+        android:fontFamily="sans-serif-medium"
+        android:textStyle="bold"
+        android:layout_marginStart="5dp" />
+
+    <TextView
+        android:id="@+id/detailsofPost"
+        android:layout_width="312dp"
+        android:paddingTop="15dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:layout_marginStart="5dp" />
+
+    <TextView
+        android:id="@+id/costofDetails"
+        android:layout_width="312dp"
+        android:paddingTop="15dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:layout_marginStart="5dp" />
+
+
+
+    <TextView
+        android:id="@+id/ButtonOk"
+        android:layout_width="312dp"
+        android:layout_height="wrap_content"
+        android:text="OK"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:textColor="@color/softeRealBlue"
+        android:backgroundTint="@color/superBle"
+        android:textAlignment="viewEnd"
+        android:textStyle="bold"
+        android:layout_marginStart="5dp" />
+
+
+</LinearLayout>

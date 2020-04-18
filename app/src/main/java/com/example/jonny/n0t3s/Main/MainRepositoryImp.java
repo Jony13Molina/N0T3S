@@ -6,7 +6,6 @@ import android.content.ContextWrapper;
 import androidx.annotation.NonNull;
 
 import android.content.SharedPreferences;
-import android.content.res.AssetFileDescriptor;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -18,33 +17,20 @@ import com.example.jonny.n0t3s.BuildConfig;
 import com.example.jonny.n0t3s.Notification;
 import com.example.jonny.n0t3s.User;
 import com.example.jonny.n0t3s.Utils;
-import com.example.jonny.n0t3s.tabView.MyTabAdapter;
-import com.example.jonny.n0t3s.tabView.applicantAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
-import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
 
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileDescriptor;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,9 +77,6 @@ public class MainRepositoryImp extends ContextWrapper implements MainRepository 
         pathId = "Notes";
 
 
-
-
-
         myCollection.collection(pathId).document(userPath).delete()
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -101,6 +84,9 @@ public class MainRepositoryImp extends ContextWrapper implements MainRepository 
                         myActi.deleteNote(userList, pos, adapter, myCont);
                     }
                 });
+
+
+
         Log.d("DDDD", user.getUserID());
     }
 
@@ -172,12 +158,14 @@ public class MainRepositoryImp extends ContextWrapper implements MainRepository 
                         noti.setTimeStamp(user.gettimeStampMe());
                         noti.setSenderEmail(fireUser.getEmail());
                         noti.setSenderNoti("Post:"+notiTitle);
+                        noti.setOwnerEmail(user.getEma());
                         noti.setMessageNoti(fireUser.getEmail()+" "+ "is interested in your post.");
                         user.setUserLike(false);
                         notifications.put("from", noti.getSenderNoti());
                         notifications.put("message", noti.getMessageNoti());
-                        notifications.put("email", noti.getSenderEmail());
+                        notifications.put("senderEmail", noti.getSenderEmail());
                         notifications.put("timeStamp", noti.getTimeStamp());
+                        notifications.put("ownerEmail", noti.getOwnerEmail());
 
                       //myAdapter.getData(noti.getTimeStamp());
 
@@ -213,6 +201,33 @@ public class MainRepositoryImp extends ContextWrapper implements MainRepository 
 
 
 
+
+
+
+                        //send to personal applications
+                        myCollection.collection("personalApplications"+fireUser.getEmail())
+                                .document(user.gettimeStampMe()).set(notifications)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Utils.toastMessage("Notification sent", myCont);
+                                        //Log.d("THIS IS THE TOKEN!!!!", user.getUserToken());
+
+
+
+
+
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+
+                                        Utils.toastMessage("Error!!!" + e.toString(), myCont);
+
+                                    }
+                                });
+
                     } else {
                         Log.d(TAG, "No such document");
                       }
@@ -221,6 +236,8 @@ public class MainRepositoryImp extends ContextWrapper implements MainRepository 
                 }
             }
         });
+
+
 
 
 

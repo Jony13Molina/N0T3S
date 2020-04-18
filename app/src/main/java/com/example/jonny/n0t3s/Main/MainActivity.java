@@ -1,6 +1,6 @@
 package com.example.jonny.n0t3s.Main;
 
-import android.app.AlertDialog;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,7 +25,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-
+import androidx.appcompat.app.AlertDialog;
 import com.example.jonny.n0t3s.BuildConfig;
 import com.example.jonny.n0t3s.Notification;
 import com.example.jonny.n0t3s.R;
@@ -309,8 +309,13 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
 
 
-       final DocumentReference myReference = myData.collection("Notification").document(user.gettimeStampMe()).
-                collection("applicants").document(fireUser.getEmail());
+
+
+
+
+        Log.d("this is the path", fireUser.getEmail()+user.getEma()+user.gettimeStampMe());
+       final DocumentReference myReference = myData.collection(user.getEma()).document(fireUser.getEmail()+user.gettimeStampMe());
+
 
 
        myReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -345,8 +350,7 @@ public class MainActivity extends AppCompatActivity implements MainView,
                }else{
 
 
-                   myData.collection("Notification").document(user.gettimeStampMe())
-                           .collection("applicants").document(fireUser.getEmail()).delete();
+
                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
                    alertDialogBuilder.setTitle("Are you interested in this post?");
                    alertDialogBuilder.setPositiveButton("Yes",
@@ -356,7 +360,7 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
                                    likeCount++;
 
-                               countVal = Integer.toString(likeCount);
+                                   countVal = Integer.toString(likeCount);
                                    user.setLikeCounter(countVal);
 
 

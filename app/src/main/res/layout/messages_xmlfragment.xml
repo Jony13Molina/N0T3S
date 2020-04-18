@@ -5,12 +5,14 @@
     android:layout_height="match_parent"
     tools:context=".tabView.MyTabAdapter">
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/messagesID"
+
+
+    <ListView
+
+        android:id="@+id/messages_viewitem"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textAlignment="center"
-        android:text="Messages Fragment "
-        android:textSize="16sp"
-        android:textStyle="bold"/>
+        android:paddingBottom="100dp">
+
+    </ListView>
 </FrameLayout>

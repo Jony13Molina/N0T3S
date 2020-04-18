@@ -1,9 +1,7 @@
 package com.example.jonny.n0t3s.tabView;
 
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -19,25 +17,22 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import com.example.jonny.n0t3s.Main.MainActivity;
-import com.example.jonny.n0t3s.Main.MainRepositoryImp;
 import com.example.jonny.n0t3s.Notification;
 import com.example.jonny.n0t3s.R;
 import com.example.jonny.n0t3s.Utils;
+import com.example.jonny.n0t3s.tabView.applicants.applicantAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-public class MyTabAdapter extends Fragment implements applicantAdapter.recyclerDeny, applicantAdapter.recyclerAccept{
+public class MyTabAdapter extends Fragment implements applicantAdapter.recyclerDeny, applicantAdapter.recyclerAccept {
     private static final String ARG_COUNT = "param1";
     private Integer counter;
     applicantAdapter adapter;
@@ -50,10 +45,13 @@ public class MyTabAdapter extends Fragment implements applicantAdapter.recyclerD
     FirebaseUser myUser;
 
     int pos;
+    int numOfTabs;
     SharedPreferences mSharedPref;
     public String myTime;
-    MainRepositoryImp myMainRe = new MainRepositoryImp(getContext());
+    //MainRepositoryImp myMainRe = new MainRepositoryImp(getContext());
     private static final String sharedPref = "time";
+
+
 
 
 
@@ -116,14 +114,14 @@ public class MyTabAdapter extends Fragment implements applicantAdapter.recyclerD
 
                 break;
             case 1:
-                TextView textApplications = view.findViewById(R.id.applicationsID);
-                textApplications.setText( String.valueOf(counter));
+                //TextView textApplications = view.findViewById(R.id.applicationsID);
+               // textApplications.setText( String.valueOf(counter));
                 break;
 
 
             case 2:
-                TextView textMessages = view.findViewById(R.id.messagesID);
-                textMessages.setText( String.valueOf(counter));
+               // TextView textMessages = view.findViewById(R.id.messagesID);
+                //textMessages.setText( String.valueOf(counter));
                 break;
 
 
@@ -209,13 +207,14 @@ public class MyTabAdapter extends Fragment implements applicantAdapter.recyclerD
                     public void onClick(DialogInterface dialog, int which) {
 
 
+
                         myData.collection(myUser.getEmail()).document(
                                 myNoti.getSenderEmail()+ myNoti.getTimeStamp()).delete()
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
 
-                                        completeDeny(adapter.getApplicantList(), position);
+                                        completeDeny( position);
                                     }
                                 });
                     }
@@ -231,7 +230,7 @@ public class MyTabAdapter extends Fragment implements applicantAdapter.recyclerD
 
     }
 
-    public void completeDeny(List<Notification> applicantList, int pos){
+    public void completeDeny( int pos){
         //applicantList.remove(pos);
         adapter.getItem(pos);
         adapter.remove(adapter.getItem(pos));

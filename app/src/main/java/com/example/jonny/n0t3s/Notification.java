@@ -2,18 +2,19 @@ package com.example.jonny.n0t3s;
 
 public class Notification {
 
-    String senderNoti, messageNoti, token, timeStamp, email;
+    String senderNoti, messageNoti, token, timeStamp, email, ownerEmail;
 
 
 
     public Notification(){
 
     }
-    public Notification(String senderN, String messageN,String timeStamp, String email){
+    public Notification(String senderN, String messageN,String timeStamp, String email, String ownerEmail){
         this.senderNoti = senderN;
         this.messageNoti = messageN;
         this.timeStamp = timeStamp;
         this.email = email;
+        this.ownerEmail = ownerEmail;
     }
 
     public void setMessageNoti(String messageN){
@@ -26,6 +27,9 @@ public class Notification {
 
 
 
+    public void setOwnerEmail(String email){
+        this.ownerEmail=email;
+    }
     public void setSenderEmail(String email){
         this.email = email;
 
@@ -43,6 +47,10 @@ public class Notification {
 
     }
 
+    //getters
+    public String getOwnerEmail(){
+        return this.ownerEmail;
+    }
     public String getSenderEmail(){
         return this.email;
     }

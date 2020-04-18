@@ -1,4 +1,4 @@
-package com.example.jonny.n0t3s.tabView;
+package com.example.jonny.n0t3s.tabView.applicants;
 
 import android.content.Context;
 import android.util.Log;
@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.jonny.n0t3s.Notification;
 import com.example.jonny.n0t3s.R;
 import com.example.jonny.n0t3s.User;
+import com.example.jonny.n0t3s.tabView.MyTabAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
@@ -40,8 +41,7 @@ public class applicantAdapter extends ArrayAdapter<Notification> {
     recyclerAccept myAccept;
     recyclerDeny myDeny;
     Notification myNotification;
-    FirebaseFirestore myData;
-    MyTabAdapter adpater;
+
     public interface recyclerAccept {
         void onClick(View view, int position);
     }
@@ -79,8 +79,7 @@ public class applicantAdapter extends ArrayAdapter<Notification> {
 
 
         //instiate our views
-        postName =
-                (TextView)listItemView.findViewById(R.id.nameID);
+        postName = (TextView)listItemView.findViewById(R.id.nameID);
         postTitle = (TextView)listItemView.findViewById(R.id.notesTitle);
         acceptApp = (TextView)listItemView.findViewById(R.id.acceptPost);
         declineApp = (TextView)listItemView.findViewById(R.id.declinePost);

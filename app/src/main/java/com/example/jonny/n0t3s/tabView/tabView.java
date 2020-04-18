@@ -2,8 +2,11 @@ package com.example.jonny.n0t3s.tabView;
 
 import android.os.Bundle;
 
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 
@@ -28,18 +31,13 @@ public class tabView extends AppCompatActivity {
         myTabs = findViewById(R.id.tabs);
 
 
-
-
-
-
-
-
         myPager.setAdapter(createCardAdapter());
-        new TabLayoutMediator(myTabs,myPager,
+        new TabLayoutMediator(myTabs, myPager,
                 new TabLayoutMediator.TabConfigurationStrategy() {
-                    @Override public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+                    @Override
+                    public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
 
-                        switch(position) {
+                        switch (position) {
                             case 0:
                                 tab.setText("Applicants");
 
@@ -56,21 +54,25 @@ public class tabView extends AppCompatActivity {
                     }
 
                 }).attach();
+
+
     }
+
     private ViewPagerAdapter createCardAdapter() {
         ViewPagerAdapter adapter = new ViewPagerAdapter(this);
         return adapter;
     }
-
-
-
-
-
-
-
-
-
-
-
 }
+
+
+
+
+
+
+
+
+
+
+
+
 

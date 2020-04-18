@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.app.AlertDialog;
 
 import android.text.InputType;
 import android.util.Log;
@@ -75,8 +76,7 @@ public class viewInfo extends AppCompatActivity implements viewInfoView,
     @Override
     public void initDel(final int pos) {
 
-
-        android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder((this));
         alertDialogBuilder.setTitle("Are you sure you want to delete this note?");
         alertDialogBuilder.setPositiveButton("Delete",
                 new DialogInterface.OnClickListener() {
@@ -92,7 +92,7 @@ public class viewInfo extends AppCompatActivity implements viewInfoView,
             {
             }
         });
-        android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+        AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
 
 
@@ -103,7 +103,7 @@ public class viewInfo extends AppCompatActivity implements viewInfoView,
     public void shareNotes(final int pos) {
 
 
-        android.app.AlertDialog.Builder alertDialogBuilder = new android.app.AlertDialog.Builder(this);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder((this));
         final EditText inputAmount = new EditText(this);
         inputAmount.setHint("Enter Amount For This Job");
         inputAmount.setRawInputType(InputType.TYPE_CLASS_NUMBER);
@@ -135,7 +135,7 @@ public class viewInfo extends AppCompatActivity implements viewInfoView,
                 public void onClick(DialogInterface arg0, int arg1) {
                 }
             });
-            android.app.AlertDialog alertDialog = alertDialogBuilder.create();
+            AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
 
 
