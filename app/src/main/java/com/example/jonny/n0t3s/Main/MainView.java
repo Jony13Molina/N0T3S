@@ -14,6 +14,6 @@ public interface MainView {
     void itemDelete(int pos);
     void dataListner();
     void deleteNote(List<User>userNotes, int pos, RecyclerTwoAdapter adapter, Context cont);
-    void updateMyLike(User user, int pos);
+    void updateMyLike( int pos);
 
 }

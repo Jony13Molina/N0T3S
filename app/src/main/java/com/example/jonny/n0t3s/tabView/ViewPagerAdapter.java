@@ -21,7 +21,7 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
                 case 1: // Fragment # 0 - This will show FirstFragment different title
                     return Applications.newInstance(1, "Applications");
                 case 2: // Fragment # 1 - This will show SecondFragment
-                    return Messages.newInstance(2, "Messages");
+                    return Messages.newInstance(2, "Accepted");
                 default:
                     return null;
 

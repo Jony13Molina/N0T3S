@@ -44,10 +44,10 @@ public class tabView extends AppCompatActivity {
 
                                 break;
                             case 1:
-                                tab.setText("Application");
+                                tab.setText("Applications");
                                 break;
                             case 2:
-                                tab.setText("Messages");
+                                tab.setText("Accepted");
                                 break;
                         }
 

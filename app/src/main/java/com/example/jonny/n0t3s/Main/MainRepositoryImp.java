@@ -46,13 +46,14 @@ public class MainRepositoryImp extends ContextWrapper implements MainRepository 
     String pathId;
     FirebaseAuth mainUser;
     FirebaseFirestore myCollection =  FirebaseFirestore.getInstance();
-    int likeCount;
     User myUser;
     public String token;
     MainActivity myActi;
     public String notiTitle;
 
 
+    String likeValue;
+    int likeCount = 0;
 
     private static final String sharedPref = "Time";
     final private String myServerKey = BuildConfig.ApiKey;
@@ -119,6 +120,8 @@ public class MainRepositoryImp extends ContextWrapper implements MainRepository 
 
         myCollection = FirebaseFirestore.getInstance();
 
+
+
         myCollection.collection(id).document(path).update("likeCounter", likeVal);
         myCollection.collection(id).document(path).update("userLike", likeState);
 
@@ -157,7 +160,7 @@ public class MainRepositoryImp extends ContextWrapper implements MainRepository 
                         fireUser.getEmail();
                         noti.setTimeStamp(user.gettimeStampMe());
                         noti.setSenderEmail(fireUser.getEmail());
-                        noti.setSenderNoti("Post:"+notiTitle);
+                        noti.setSenderNoti(notiTitle);
                         noti.setOwnerEmail(user.getEma());
                         noti.setMessageNoti(fireUser.getEmail()+" "+ "is interested in your post.");
                         user.setUserLike(false);
@@ -177,7 +180,7 @@ public class MainRepositoryImp extends ContextWrapper implements MainRepository 
                         jsonNotification(noti.getSenderNoti(), noti.getMessageNoti(),token);
 
 
-                        myCollection.collection(user.getEma()).document(fireUser.getEmail()+user.gettimeStampMe()).set(notifications)
+                        myCollection.collection("ApplicantsOf"+user.getEma()).document(fireUser.getEmail()+user.gettimeStampMe()).set(notifications)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {

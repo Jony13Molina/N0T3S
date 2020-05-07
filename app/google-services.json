@@ -15,7 +15,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "66501294310-j661rta7hjivt5qkctosl93qfb08sb64.apps.googleusercontent.com",
+          "client_id": "66501294310-41onjfi0ou36i9ni1bior8pmidg6jo3o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.jonny.n0t3s",
+            "certificate_hash": "c21cf4767e53e6efb0ea57f3c04f12d31cb80e37"
+          }
+        },
+        {
+          "client_id": "66501294310-pt10q7c8t50ejauqhqlan4c4pj7q97ph.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.jonny.n0t3s",
@@ -37,14 +45,14 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCgpMsr4n9m31rLDYD1chUx4kjIrb6DPT0"
+          "current_key": "AIzaSyAyAqB1OpEFt8ESrmInM6Zw_0N0UPk3H3s"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "66501294310-3g56kt1ardiqg3mfcke2kg97crqcaj72.apps.googleusercontent.com",
+              "client_id": "66501294310-5v18q7tdirhdqvndhddmkl8lvufio3l0.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import androidx.annotation.NonNull;
 
+import com.example.jonny.n0t3s.Login.UI.LoginActivity;
 import com.example.jonny.n0t3s.tabView.tabView;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -33,6 +34,10 @@ import com.example.jonny.n0t3s.User;
 import com.example.jonny.n0t3s.Utils;
 import com.example.jonny.n0t3s.addInfo.UI.addInfo;
 import com.example.jonny.n0t3s.viewInfo.viewInfo;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
@@ -68,10 +73,13 @@ public class MainActivity extends AppCompatActivity implements MainView,
     MainPresentImp myPresenter;
     User user;
     RecyclerTwoAdapter adapter;
-     String countVal;
-     int likeCount;
+
+    Intent next_activity = null;
     String userPath, pathId;
+    String countVal;
+    int likeCount = 0;
     boolean likeState = true;
+    GoogleApiClient mGoogleSignInClient;
     private static final String TAG = "MainActivity";
 
     private static final String sharedPref = "token";
@@ -89,6 +97,8 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
 
 
+    Notification noti = new Notification();
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -97,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements MainView,
         setContentView(R.layout.activity_main);
         recyclerView = findViewById(R.id.recyclerList);
         myData = FirebaseFirestore.getInstance();
-        //mainUser = FirebaseAuth.getInstance();
+        mainUser = FirebaseAuth.getInstance();
         fireUser = FirebaseAuth.getInstance().getCurrentUser();
         myPresenter = new MainPresentImp(this);
 
@@ -111,9 +121,24 @@ public class MainActivity extends AppCompatActivity implements MainView,
         userName = headerView.findViewById(R.id.nav_header_textView);
 
 
+
+//        mGoogleSignInClient.connect();
         setNavigation(toolbar,myView,recyclerView);
 
 
+
+        //get the googleapi client to sign in
+        mGoogleSignInClient = new GoogleApiClient.Builder(this) //Use app context to prevent leaks using activity
+                //.enableAutoManage(this /* FragmentActivity */, connectionFailedListener)
+                .addApi(Auth.GOOGLE_SIGN_IN_API)
+                .build();
+
+        mGoogleSignInClient.connect();
+
+
+
+
+        likeCount = 0;
 
         setUserName();
         getData();
@@ -208,7 +233,7 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
 
 
-            updateMyLike(user, pos);
+            updateMyLike(pos);
 
 
 
@@ -294,13 +319,19 @@ public class MainActivity extends AppCompatActivity implements MainView,
     }
 
     @Override
-    public void updateMyLike(final User user,final int  pos) {
+    public void updateMyLike(int  pos) {
+
+
         user.setUserLike(likeState);
 
 
+
+
+
+        user = adapter.setUser(pos);
         fireUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        user.setUserID(fireUser.getUid());
+       // user.setUserID(fireUser.getUid());
         userPath = user.gettimeStampMe();
         //Log.d("timestamo!!!!!!!!!!!!", user.gettimeStampMe());
         pathId = "Notes";
@@ -313,43 +344,28 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
 
 
+
         Log.d("this is the path", fireUser.getEmail()+user.getEma()+user.gettimeStampMe());
-       final DocumentReference myReference = myData.collection(user.getEma()).document(fireUser.getEmail()+user.gettimeStampMe());
+       final DocumentReference myReference = myData.collection("ApplicantsOf"+user.getEma()).document(fireUser.getEmail()+user.gettimeStampMe());
 
 
 
        myReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
            @Override
            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+
                if(documentSnapshot.exists()){
-                  /* Log.d("Document exists", myReference.toString());
-                   likeCount--;
-
-                   String countVal = Integer.toString(likeCount);
-                   user.setLikeCounter(countVal);
-
-                   fireUser = FirebaseAuth.getInstance().getCurrentUser();
-
-                   user.setUserID(fireUser.getUid());
-                   userPath = user.gettimeStampMe();
-
-
-                   //user.setUserLike(true);
-                   likeState = true;
-                   user.setUserLike(likeState);
-                   myPresenter.setLikeDatabase(pathId, userPath, countVal, user.getUserLike());
-
-                    */
-
-
-                   ///
-
-
                    Utils.toastMessage("You Have Already Liked This Post", MainActivity.this);
+
+                   //
 
                }else{
 
 
+
+
+
+                   ///
 
                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MainActivity.this);
                    alertDialogBuilder.setTitle("Are you interested in this post?");
@@ -358,22 +374,67 @@ public class MainActivity extends AppCompatActivity implements MainView,
                                @Override
                                public void onClick(DialogInterface dialog, int which) {
 
-                                   likeCount++;
-
-                                   countVal = Integer.toString(likeCount);
-                                   user.setLikeCounter(countVal);
-
-
-                                   likeState = false;
-                                   user.setUserLike(likeState);
-
-                                   myPresenter.setLikeDatabase(pathId, userPath, countVal, user.getUserLike());
-                                   Notification noti = new Notification();
-                                   myPresenter.sendNotification(noti, adapter.setUser(pos));
 
 
 
-                                   myLikes.add(fireUser.getEmail());
+
+
+
+                                   //listen to the value of likeCounter in our adatabase and update accordingly
+                                   myData.collection(pathId).document(userPath).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                       @Override
+                                       public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                           if (task.isSuccessful()) {
+                                               DocumentSnapshot document = task.getResult();
+                                               if (document.exists()) {
+
+                                                   String cVal =  (String) document.getString("likeCounter");
+
+                                                   int cValue = Integer.parseInt(cVal) ;
+
+                                                   if(cValue == 0){
+                                                       likeCount++;
+
+                                                       countVal = Integer.toString(likeCount);
+                                                       user.setLikeCounter(countVal);
+
+
+                                                       myPresenter.setLikeDatabase(pathId, userPath, user.getLikeCounter(), user.getUserLike());
+                                                       likeState = true;
+
+
+                                                       user.setUserLike(likeState);
+                                                   }else {
+                                                       likeCount = 1;
+                                                       likeCount = likeCount+cValue;
+                                                       countVal = Integer.toString(likeCount);
+                                                       user.setLikeCounter(countVal);
+
+
+                                                       myPresenter.setLikeDatabase(pathId, userPath, user.getLikeCounter(), user.getUserLike());
+                                                       likeState = true;
+
+
+                                                       user.setUserLike(likeState);
+
+                                                   }
+
+                                               }
+                                           }
+
+                                       }
+                                   });
+
+
+
+
+
+
+
+                                   //myLikes.add(fireUser.getEmail());
+
+                                   myPresenter.sendNotification(noti, user);
+
 
                                }
                            });
@@ -385,7 +446,7 @@ public class MainActivity extends AppCompatActivity implements MainView,
                    AlertDialog alertDialog = alertDialogBuilder.create();
                    alertDialog.show();
 
-                   Log.d("else it doesnt exists", "dont exit");
+
                }
            }
        });
@@ -503,8 +564,9 @@ public class MainActivity extends AppCompatActivity implements MainView,
                         break;
 
                     case R.id.exitApp:
-                        //close app
-                        finish();
+                        //logout
+                        logOut();
+                        //finish();
                         System.exit(0);
                         break;
 
@@ -525,6 +587,22 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
 
 
+    public void logOut(){
+
+
+        if(Auth.GoogleSignInApi != null){
+            Auth.GoogleSignInApi.signOut(mGoogleSignInClient).setResultCallback(new ResultCallback<Status>() {
+                @Override
+                public void onResult(@NonNull Status status) {
+                    FirebaseAuth.getInstance().signOut();
+
+                    next_activity = new Intent(MainActivity.this, tabView.class);
+                    startActivity(next_activity);
+                }
+            });
+        }
+
+    }
 
 
 
@@ -570,10 +648,12 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
 
          userName.setText(fireUser.getEmail());
+
+
+
+
+
     }
-
-
-
 
 
 

@@ -10,6 +10,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:gravity="start"
+        android:fontFamily="sans-serif-black"
+        android:textStyle="italic"
         android:text="500"
         android:layout_gravity="center_vertical"
         android:id="@+id/nameID"/>
@@ -19,6 +21,8 @@
         android:layout_width="65dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
+        android:fontFamily="sans-serif-black"
+        android:textStyle="bold"
         android:layout_weight="1"
         android:gravity="start"
         android:lines="1"
@@ -27,10 +31,9 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:padding="3dp"
         android:layout_gravity="center_vertical"
-        android:drawableStart="@drawable/ic_complete_circle"
+        android:drawableStart="@drawable/twotone_check_quality"
         android:id="@+id/acceptPost"/>
 
     <TextView
@@ -40,7 +43,7 @@
         android:layout_margin="3dp"
         android:layout_gravity="center_vertical"
 
-        android:drawableStart="@drawable/ic_delete"
+        android:drawableStart="@drawable/twotone_thumbdown_ic"
         android:id="@+id/declinePost"/>
 
 

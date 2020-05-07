@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/newNote"
+        android:icon="@mipmap/add_item"
+        android:title="New" />
     <group
         android:id="@+id/menu_top"
         android:checkableBehavior="none" >
-
-        <item android:id="@+id/newNote"
-            android:icon="@mipmap/add_item"
-            android:title="New" />
         <item android:id="@+id/privateList"
             android:icon="@mipmap/ic_listpriva"
             android:title="Personal List" />
@@ -23,15 +22,19 @@
         <item android:id="@+id/applicantsID"
             android:icon="@mipmap/ic_user"
             android:title="Applicants/Applications" />
+
+
         <item android:id="@+id/topUsers"
             android:icon="@mipmap/ic_topusers"
             android:title="Top Users" />
 
-        <item android:id="@+id/exitApp"
-            android:title="LogOut"
-            android:icon="@mipmap/exit_ic"/>
 
     </group>
+
+    <item android:id="@+id/exitApp"
+        android:title="LogOut"
+        android:icon="@mipmap/twotone_exit_to_app_black_18"/>
+
 
 
 </menu>

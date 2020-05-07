@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import com.example.jonny.n0t3s.Main.MainActivity;
 import com.example.jonny.n0t3s.Notification;
 import com.example.jonny.n0t3s.R;
 import com.example.jonny.n0t3s.Utils;
@@ -21,14 +22,19 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.annotation.Nullable;
 
 
 public class Applicants extends Fragment implements applicantAdapter.recyclerAccept, applicantAdapter.recyclerDeny {
@@ -43,10 +49,13 @@ public class Applicants extends Fragment implements applicantAdapter.recyclerAcc
     Notification myNoti = new Notification();
     FirebaseUser myUser;
 
+
     String myDetails;
     String myTitle;
     String myCost;
     String time;
+    String postOwnerEmail;
+    String senderEmail;
     private String title;
     private int page;
 
@@ -109,7 +118,7 @@ public class Applicants extends Fragment implements applicantAdapter.recyclerAcc
         myUser = mainUser.getCurrentUser();
 
         //String mydata;
-        myData.collection(myUser.getEmail()).get()
+        myData.collection("ApplicantsOf"+myUser.getEmail()).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -119,7 +128,7 @@ public class Applicants extends Fragment implements applicantAdapter.recyclerAcc
 
                             for(DocumentSnapshot myDoc: task.getResult()){
                                 Notification myApplicants = myDoc.toObject(Notification.class);
-                                myApplicants.setMessageNoti((String)myDoc.get("ownerEmail"));
+                                myApplicants.setMessageNoti((String)myDoc.get("senderEmail"));
                                 myApplicants.setSenderNoti((String) myDoc.get("from"));
 
 
@@ -177,7 +186,7 @@ public class Applicants extends Fragment implements applicantAdapter.recyclerAcc
 
                         Log.d("my path is this brotha", myNoti.getSenderEmail()+myNoti.getTimeStamp());
 
-                        myData.collection(myUser.getEmail()).document(
+                        myData.collection("ApplicantsOf"+myUser.getEmail()).document(
                                 myNoti.getSenderEmail()+ myNoti.getTimeStamp()).delete()
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
@@ -211,7 +220,7 @@ public class Applicants extends Fragment implements applicantAdapter.recyclerAcc
 
     //this will take care of all the accepting logic
     //deletting post and notifying the post owner and applicant
-    public void acceptApplicant(int position){
+    public void acceptApplicant(final int position){
 
         //send the notification to the post owner and also to the applicant
 
@@ -226,9 +235,10 @@ public class Applicants extends Fragment implements applicantAdapter.recyclerAcc
 
                         String myTime = myNoti.getTimeStamp();
 
-                        completeAccept(myTime, myNoti);
-                        Utils.toastMessage("Applicant was accepted", getContext());
-                       // deleteNotePublic(myTime);
+                        completeAccept(myTime, myNoti, position);
+
+                        //upDateApplicant(myNoti, position);
+                        //eleteNotePublic(myTime);
 
                         //accept should remove the post and update messages list on messages fragment
                     }
@@ -243,70 +253,150 @@ public class Applicants extends Fragment implements applicantAdapter.recyclerAcc
 
     }
 
-    public void completeAccept(String timeStamp, final Notification myNoti ){
+    //this will delete the accepted pplicant from our review to reduce useless items on our list
+    public void upDateApplicant(Notification myNoti, final int pos){
 
-        myData.collection("Notes").document(timeStamp).get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+
+        mainUser = FirebaseAuth.getInstance();
+
+        myUser = mainUser.getCurrentUser();
+        myData.collection(myUser.getEmail()).document(
+                myNoti.getSenderEmail()+ myNoti.getTimeStamp()).delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if(task.isSuccessful()){
+                    public void onComplete(@NonNull Task<Void> task) {
 
-
-                            DocumentSnapshot document = task.getResult();
-                            if(document!=null){
-
-                               myDetails= (String) document.get("details");
-                                myTitle = (String) document.get("title");
-                                myCost =  (String) document.get("money");
-                                time = (String) document.get("timeStampMe");
-
-                                myNoti.setSenderNoti(myTitle);
-                                myNoti.setMessageNoti(myDetails);
-                                myNoti.setTimeStamp(time);
-
-
-                                //Log.d("this to agreement", myDetails);
-                                notificationAgreement.put("from", myNoti.getSenderNoti());
-                                notificationAgreement.put("message", myNoti.getMessageNoti());
-                                notificationAgreement.put("money", myCost);
-                                notificationAgreement.put("timeStamp", myNoti.getTimeStamp());
-
-                                myData.collection("notiAgreement").document(myNoti.getTimeStamp()).set(notificationAgreement)
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
-                                                Utils.toastMessage("Applicant Accepted", getContext());
-                                                //Log.d("THIS IS THE TOKEN!!!!", user.getUserToken());
-
-
-
-
-
-                                            }
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-
-                                                Utils.toastMessage("Error!!!" + e.toString(), getContext());
-
-                                            }
-                                        });
-
-                            }
-
-
-
-
-
-
-                        }else {
-                            Log.d("TAG", "Error Getting Docs", task.getException());
-                        }
-
+                        completeDeny(pos);
                     }
-
                 });
+    }
+
+    public void completeAccept(final String timeStamp, final Notification myNoti, final int pos ){
+
+
+        mainUser = FirebaseAuth.getInstance();
+
+
+        myUser = mainUser.getCurrentUser();
+
+
+        final DocumentReference myReference = myData.collection("Notes").document(myNoti.getTimeStamp());
+
+
+        myReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+
+
+                if(documentSnapshot.exists()){
+                    //let user know their operation completed succesfully
+                    Utils.toastMessage("Applicant was accepted", getContext());
+                    myData.collection("Notes").document(timeStamp).get()
+                            .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if(task.isSuccessful()){
+
+
+
+
+
+
+                                        DocumentSnapshot document = task.getResult();
+                                        if(document != null) {
+
+                                            myDetails = (String) document.get("details");
+                                            myTitle = (String) document.get("title");
+                                            myCost = (String) document.get("money");
+                                            time = (String) document.get("timeStampMe");
+                                            postOwnerEmail = (String) document.get("ema");
+
+
+                                            //get user senderEmail
+
+                                            senderEmail = myNoti.getSenderEmail();
+                                            myNoti.setSenderNoti(myTitle);
+                                            myNoti.setMessageNoti(myDetails);
+                                            myNoti.setTimeStamp(time);
+                                            myNoti.setOwnerEmail(postOwnerEmail);
+
+
+                                            //Log.d("this to agreement", myDetails);
+                                            notificationAgreement.put("from", myNoti.getSenderNoti());
+                                            notificationAgreement.put("message", myNoti.getMessageNoti());
+                                            notificationAgreement.put("money", myCost);
+                                            notificationAgreement.put("timeStamp", myNoti.getTimeStamp());
+                                            notificationAgreement.put("senderEmail", senderEmail);
+                                            notificationAgreement.put("ownerEmail", myNoti.getOwnerEmail());
+
+                                            myData.collection("notiAgreement" + myNoti.getOwnerEmail()).document(myNoti.getTimeStamp()).set(notificationAgreement)
+                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                            Utils.toastMessage("Applicant Accepted", getContext());
+                                                            //Log.d("THIS IS THE TOKEN!!!!", user.getUserToken());
+
+
+                                                        }
+                                                    })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+
+                                                            Utils.toastMessage("Error!!!" + e.toString(), getContext());
+
+                                                        }
+                                                    });
+
+
+                                            myData.collection("notiAgreement" + myNoti.getSenderEmail()).document(myNoti.getTimeStamp()).set(notificationAgreement)
+                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void aVoid) {
+                                                            Utils.toastMessage("Applicant Accepted", getContext());
+                                                            //Log.d("THIS IS THE TOKEN!!!!", user.getUserToken());
+
+
+                                                        }
+                                                    })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+
+                                                            Utils.toastMessage("Error!!!" + e.toString(), getContext());
+
+                                                        }
+                                                    });
+
+
+                                            deleteNotePublic(myNoti.getTimeStamp());
+                                            upDateApplicant(myNoti,pos);
+                                        }
+                                        if(document == null){
+                                            Utils.toastMessage("Error", getContext());
+                                        }
+
+
+
+
+                                    }else {
+                                        Log.d("TAG", "Error Getting Docs", task.getException());
+                                    }
+
+                                }
+
+                            });
+
+                }else{
+                    Utils.toastMessage("You Have Already Accepted an Applicant", getContext());
+
+
+
+                }
+            }
+        });
+
 
     }
 

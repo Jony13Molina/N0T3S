@@ -1,10 +1,10 @@
 package com.example.jonny.n0t3s.Login.UI;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.net.ConnectivityManager;
@@ -96,6 +96,13 @@ public class LoginActivity extends AppCompatActivity
     }
 
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        passwordText.setText("");
+        usernameText.setText("");
+
+    }
 
 
     @Override
@@ -145,6 +152,7 @@ public class LoginActivity extends AppCompatActivity
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         ActResult(requestCode, resultCode, data);
     }
 
@@ -209,7 +217,9 @@ public class LoginActivity extends AppCompatActivity
 
    @Override
     public void resetPassword(){
-       AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+        androidx.appcompat.app.AlertDialog.Builder alertDialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(this);
+
        final EditText inputEmail = new EditText(this);
        inputEmail.setHint("example@example.com");
        inputEmail.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
@@ -231,7 +241,7 @@ public class LoginActivity extends AppCompatActivity
                                    public void onComplete(@NonNull Task<Void> task) {
                                        if (task.isSuccessful()) {
                                            System.out.println("Email Sent");
-                                           Utils.toastMessage("Reset Password By Email",LoginActivity.this);
+                                           Utils.toastMessage("Reset Link Was Sent to The Email Associated With The Account",LoginActivity.this);
                                        }else{
                                            Utils.toastMessage("No Account With That Email", LoginActivity.this);
                                            System.out.println("You failed");
@@ -247,6 +257,7 @@ public class LoginActivity extends AppCompatActivity
            @Override
            public void onClick(DialogInterface arg0, int arg1) {}
        });
+
        AlertDialog alertDialog = alertDialogBuilder.create();
        alertDialog.show();
 

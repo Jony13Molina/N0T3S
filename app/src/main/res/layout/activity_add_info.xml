@@ -33,7 +33,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="24dp"
             android:backgroundTintMode="screen"
-            android:drawableStart="@drawable/ic_year"
+            android:drawableStart="@drawable/twotone_date"
             android:drawablePadding="5dp"
             android:hint="Choose Date"
             android:imeOptions="actionDone"
@@ -65,7 +65,7 @@
             android:layout_height="match_parent"
             android:backgroundTintMode="screen"
             android:completionHint="Enter Title"
-            android:drawableStart="@drawable/ic_descritiopn"
+            android:drawableStart="@drawable/twotone_title"
             android:drawablePadding="5dp"
             android:hint="Enter Title"
             android:imeOptions="actionDone"
@@ -180,7 +180,7 @@
             android:layout_marginBottom="61dp"
             android:background="@color/realBlue"
             android:clickable="true"
-            android:src="@drawable/ic_donebutton"
+            android:src="@drawable/ic_outlinedone"
             app:backgroundTint="@color/softeRealBlue"
             app:rippleColor="@color/realBlue" />
 

@@ -30,10 +30,12 @@ public class messagesAdapter extends ArrayAdapter<Notification> {
     TextView postName,
             postTitle,
             ratingApp,
-            detailsApp;
+            detailsApp,
+            appDone;
 
-   recyclerDetails myDetails;
+    recyclerDetails myDetails;
     recyclerRating myRating;
+    recyclerCompleted recyclerC;
     Notification myNotification;
     FirebaseFirestore myData;
 
@@ -46,6 +48,10 @@ public class messagesAdapter extends ArrayAdapter<Notification> {
         void onMyClick(View v, int pos);
     }
 
+    public interface recyclerCompleted{
+        void onMyClickButton(View v, int pos);
+    }
+
 
 
   public void setRecyclerDetails(recyclerDetails listener){
@@ -55,6 +61,10 @@ public class messagesAdapter extends ArrayAdapter<Notification> {
   public void setRecyclerRating(recyclerRating listener){
 
         this.myRating = listener;
+  }
+
+  public void setRecyclerCompleted(recyclerCompleted listener){
+        this.recyclerC = listener;
   }
 
     public messagesAdapter(@NonNull Context context, List<Notification> myApplicants) {
@@ -82,6 +92,7 @@ public class messagesAdapter extends ArrayAdapter<Notification> {
         postTitle = (TextView)listItemView.findViewById(R.id.detailsPost);
         detailsApp = (TextView)listItemView.findViewById(R.id.notificationDetails);
         ratingApp = (TextView)listItemView.findViewById(R.id.notificationRating);
+        appDone = (TextView)listItemView.findViewById(R.id.notificationCompleted);
 
         //postName.setText(currentApplicant.getSenderEmail());
         postTitle.setText(currentApplicant.getMessageNoti());
@@ -114,6 +125,18 @@ public class messagesAdapter extends ArrayAdapter<Notification> {
             }
 
 
+        });
+
+
+        //set Completed button
+        appDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(recyclerC != null){
+                    recyclerC.onMyClickButton(v,position);
+                }
+            }
         });
 
         return listItemView;

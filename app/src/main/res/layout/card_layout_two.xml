@@ -139,7 +139,7 @@
                 android:layout_marginStart="17dp"
                 android:layout_marginTop="0dp"
                 android:layout_marginEnd="28dp"
-                android:fontFamily="@string/common_google_play_services_updating_text"
+                android:fontFamily="sans-serif-condensed-medium"
                 android:maxLines="60"
                 android:paddingTop="5dp"
                 android:paddingBottom="10dp"
@@ -230,7 +230,7 @@
                     android:contentDescription="@string/Sharing"
                     android:gravity="end"
                     android:scaleType="fitEnd"
-                    android:src="@drawable/ic_thumbs_up"
+                    android:src="@drawable/twotone_thumb_up_black_18dp"
                     android:textStyle="italic" />
 
 
@@ -259,7 +259,7 @@
                     android:paddingStart="0dp"
                     android:paddingEnd="10dp"
                     android:scaleType="fitEnd"
-                    android:src="@drawable/ic_delete" />
+                    android:src="@drawable/twotone_delete_forever_black_18dp" />
             </RelativeLayout>
 
         </RelativeLayout>

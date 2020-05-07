@@ -19,6 +19,8 @@ import com.example.jonny.n0t3s.Notification;
 import com.example.jonny.n0t3s.R;
 import com.example.jonny.n0t3s.Utils;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,9 +29,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class Messages extends Fragment implements messagesAdapter.recyclerDetails, messagesAdapter.recyclerRating{
+public class Messages extends Fragment implements messagesAdapter.recyclerDetails, messagesAdapter.recyclerRating, messagesAdapter.recyclerCompleted{
     messagesAdapter adapter;
 
 
@@ -53,6 +57,9 @@ public class Messages extends Fragment implements messagesAdapter.recyclerDetail
     FirebaseAuth mainUser;
 
     FirebaseUser myUser;
+
+    ///maps
+    final Map<String, Object> userRating  = new HashMap<>();
 
     public Messages() {
         // Required empty public constructor
@@ -101,7 +108,7 @@ public class Messages extends Fragment implements messagesAdapter.recyclerDetail
         myUser = mainUser.getCurrentUser();
 
         //String mydata;
-        myData.collection("notiAgreement").get()
+        myData.collection("notiAgreement"+myUser.getEmail()).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -125,6 +132,7 @@ public class Messages extends Fragment implements messagesAdapter.recyclerDetail
                             adapter = new messagesAdapter(getContext(), userList);
                             adapter.setRecyclerDetails(Messages.this);
                             adapter.setRecyclerRating(Messages.this);
+                            adapter.setRecyclerCompleted(Messages.this);
                             agreementList.setAdapter(adapter);
 
 
@@ -161,7 +169,6 @@ public class Messages extends Fragment implements messagesAdapter.recyclerDetail
         myNpotesDetails = (TextView) alertTextOne.findViewById(R.id.detailsofPost);
 
 
-        tittleAlert= (TextView)  alertTextOne.findViewById(R.id.alertTitle);
 
         moneyAlert= (TextView) alertTextOne.findViewById(R.id.costofDetails);
         buttonOK = (TextView) alertTextOne.findViewById(R.id.ButtonOk);
@@ -172,7 +179,7 @@ public class Messages extends Fragment implements messagesAdapter.recyclerDetail
         myNoti = adapter.setNoti(pos);
 
 
-        myData.collection("notiAgreement").document(myNoti.getTimeStamp()).get()
+        myData.collection("notiAgreement"+myUser.getEmail()).document(myNoti.getTimeStamp()).get()
                 .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -187,7 +194,7 @@ public class Messages extends Fragment implements messagesAdapter.recyclerDetail
                             myDetails= (String) document.get("message");
                             myCost =  (String) document.get("money");
 
-                            //set the string values to mour textviews
+                            //set the string values to our textviews
                             myNpotesDetails.setText(myDetails);
                             moneyAlert.setText(myCost);
 
@@ -233,27 +240,117 @@ public class Messages extends Fragment implements messagesAdapter.recyclerDetail
         ratingAlert = (View) getLayoutInflater().inflate(R.layout.ratinglayout, null);
         myRatingAction = (RatingBar) ratingAlert.findViewById(R.id.ratingBar);
 
+        myNoti = adapter.setNoti(position);
+
+        mainUser = FirebaseAuth.getInstance();
+
+        myUser = mainUser.getCurrentUser();
 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Rate Applicant");
 
 
-        builder.setMessage("Thank you for rating us , it will help us to provide you the best service .");
+        //Log.d("ownerEMeail", myNoti.getOwnerEmail());
 
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                Float value = myRatingAction.getRating();
-                Utils.toastMessage(value.toString(),getContext());
-            }
-        });
-        builder.setCancelable(false);
-        builder.setView(ratingAlert);
-        builder.show();
+        if(myUser.getEmail().equals(myNoti.getSenderEmail())) {
+            builder.setTitle("Rate Employer");
+            builder.setMessage("Rating Users Allows Us to Make a User Friendly Community.");
+
+
+            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    Float value = myRatingAction.getRating();
+
+                    Utils.toastMessage(value.toString(), getContext());
+                    sendRating(value,myNoti.getOwnerEmail(), myNoti.getTimeStamp());
+                }
+            });
+            builder.setCancelable(false);
+            builder.setView(ratingAlert);
+            builder.show();
+
+        }else if(myUser.getEmail().equals(myNoti.getOwnerEmail())){
+
+            builder.setTitle("Rate Applicant");
+            builder.setMessage("Rating Users Allows Us to Make a User Friendly Community.");
+
+
+            builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    Float value = myRatingAction.getRating();
+
+                    Utils.toastMessage(value.toString(), getContext());
+                    sendRating(value,myNoti.getSenderEmail(),myNoti.getTimeStamp());
+                }
+            });
+            builder.setCancelable(false);
+            builder.setView(ratingAlert);
+            builder.show();
+
+        }
 
     }
 
+    //send rating to database
 
+    public void sendRating(Float ratingValue, String userEmail,String timeStamp){
+
+
+        userRating.put("ratingValue", ratingValue);
+        userRating.put("userEmail", userEmail);
+        myData.collection("userRatings").document(userEmail+timeStamp).set(userRating)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Utils.toastMessage("Rating submitted successfully ", getContext());
+
+                        /************rating psudoCode
+                         * send rating to database and divide by num of current rating
+                         * ratings/totalNumRatings, get total number of ratings by creating a counter and updating
+                         * wil require fetching data too
+                         *
+                         * get database collection rating ratingCounter+=totalNumberRatings
+                         */
+//Log.d("THIS IS THE TOKEN!!!!", user.getUserToken());
+
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                        Utils.toastMessage("Error!!!" + e.toString(), getContext());
+
+                    }
+                });
+    }
+
+    //this will start the action to indicate completed chore/job
+
+    public void beginCompletedAction(int position){
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+        alertDialogBuilder.setTitle("Has this job been completed?");
+        alertDialogBuilder.setPositiveButton("Yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+
+
+
+                    }
+                });
+        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface arg0, int arg1) {
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+    //clicking action buttons for rating and details
     @Override
     public void onClick(View view, int position) {
 
@@ -264,6 +361,12 @@ public class Messages extends Fragment implements messagesAdapter.recyclerDetail
     public void onMyClick(View v, int pos) {
         beginRatingAction(pos);
 
+    }
+
+    @Override
+    public void onMyClickButton(View v, int pos) {
+
+        beginCompletedAction(pos);
     }
 }
 

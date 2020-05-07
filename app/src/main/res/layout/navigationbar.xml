@@ -18,7 +18,7 @@
         android:id="@+id/nav_header_imageView"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:src="@mipmap/account" />
+        android:src="@mipmap/twotone_assignment_ind_black_48" />
 
     <TextView
         android:id="@+id/nav_header_textView"
