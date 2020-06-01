@@ -15,11 +15,13 @@
         android:roundIcon="@mipmap/ic_n0t3slogon_round"
         android:supportsRtl="true"
         android:theme="@style/AppBaseTheme">
-        <activity android:name=".tabView.tabView"></activity>
+        <activity android:name=".rating.ratingActivity"></activity>
+        <activity android:name=".jobsCompleted.jobsCompleted" />
+        <activity android:name=".tabView.tabView" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_notificationlogo"></meta-data>
+            android:resource="@drawable/ic_notificationlogo" />
 
         <activity
             android:name=".Login.UI.LoginActivity"

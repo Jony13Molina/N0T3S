@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 
 import android.util.Log;
 
+import com.example.jonny.n0t3s.Month;
 import com.example.jonny.n0t3s.User;
 import com.example.jonny.n0t3s.Utils;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -16,12 +17,15 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class viewReposatoryImp extends ContextWrapper implements viewReposatory {
@@ -39,6 +43,11 @@ public class viewReposatoryImp extends ContextWrapper implements viewReposatory 
     FirebaseFirestore myCollection = FirebaseFirestore.getInstance();
     viewInfo myView;
 
+    Month myMonth;
+
+    int jobCount;
+
+    final Map<String, Object> completedJobs  = new HashMap<>();
     public viewReposatoryImp(Context base) {
         super(base);
         myContext = base;
@@ -71,9 +80,63 @@ public class viewReposatoryImp extends ContextWrapper implements viewReposatory 
         userPath = myUser.getUserID() + myUser.gettimeStampMe();
         itemDelete(userNotes, myUser.getUserID(), userPath, pos, adapter);
 
+
+        //this is to get the current month date
+        String monthName;
+        Calendar calendar = Calendar.getInstance();
+        int month = calendar.get(Calendar.MONTH);
+
+        monthName = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
+        jobCount++;
+        updateCompletedJob(fireUser.getEmail(),monthName,jobCount);
         Log.d("This is the path!", userPath);
     }
 
+    //
+    public void updateCompletedJob(final String email, final String month, final int count){
+
+        myCollection.collection("CompletedJobs"+email).document("comJobs"+month).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    String cVal =  (String) document.getString("jobCompCount");
+                    int cValue = Integer.parseInt(cVal) ;
+
+
+
+                    cValue+=count;
+                    String myCount = String.valueOf(cValue);
+                    completedJobs.put("monthName", month);
+                    completedJobs.put("jobCompCount", myCount);
+                    myCollection.collection("CompletedJobs"+email)
+                            .document("comJobs"+month).update("jobCompCount", myCount);
+
+                }else {
+
+                    myMonth.setMonthName(month);
+
+                    String myCount = String.valueOf(count);
+                    myMonth.setJobCompCount(myCount);
+                    completedJobs.put("monthName", myMonth.getMonthName());
+                    completedJobs.put("jobCompCount", myMonth.getJobCompCount());
+                    myCollection.collection("CompletedJobs"+email)
+                            .document("comJobs"+email).set(completedJobs)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+
+                                @Override
+                                public void onSuccess(Void aVoid) {
+
+                                    Log.d("this is completed","complete");
+                                }
+                            });
+
+                }
+            }
+        });
+    }
     //share notes
     @Override
     public void shareThisNote(User user,String moneyInput) {

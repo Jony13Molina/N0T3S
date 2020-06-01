@@ -59,7 +59,7 @@ public class Applicants extends Fragment implements applicantAdapter.recyclerAcc
     private String title;
     private int page;
 
-    ///maps
+    ///storing ntofication agreement
     final Map<String, Object> notificationAgreement  = new HashMap<>();
 
     public static Applicants newInstance(int page, String title) {
@@ -208,6 +208,7 @@ public class Applicants extends Fragment implements applicantAdapter.recyclerAcc
 
     }
 
+    //this is called with denied
     public void completeDeny( int pos){
         //applicantList.remove(pos);
         adapter.getItem(pos);
@@ -216,6 +217,16 @@ public class Applicants extends Fragment implements applicantAdapter.recyclerAcc
         Utils.toastMessage("Applicant was removed", getContext());
     }
 
+    //this is called with applicant update
+
+
+    public void completeUpdate( int pos){
+        //applicantList.remove(pos);
+        adapter.getItem(pos);
+        adapter.remove(adapter.getItem(pos));
+        adapter.notifyDataSetChanged();
+        Utils.toastMessage("Applicant was accepted", getContext());
+    }
 
 
     //this will take care of all the accepting logic
@@ -267,7 +278,7 @@ public class Applicants extends Fragment implements applicantAdapter.recyclerAcc
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
 
-                        completeDeny(pos);
+                        completeUpdate(pos);
                     }
                 });
     }
@@ -291,7 +302,7 @@ public class Applicants extends Fragment implements applicantAdapter.recyclerAcc
 
                 if(documentSnapshot.exists()){
                     //let user know their operation completed succesfully
-                    Utils.toastMessage("Applicant was accepted", getContext());
+                    //Utils.toastMessage("Applicant was accepted", getContext());
                     myData.collection("Notes").document(timeStamp).get()
                             .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
@@ -329,6 +340,9 @@ public class Applicants extends Fragment implements applicantAdapter.recyclerAcc
                                             notificationAgreement.put("timeStamp", myNoti.getTimeStamp());
                                             notificationAgreement.put("senderEmail", senderEmail);
                                             notificationAgreement.put("ownerEmail", myNoti.getOwnerEmail());
+                                            notificationAgreement.put("postOwnerCompleted", "No");
+                                            notificationAgreement.put("applicantCompleted", "No");
+
 
                                             myData.collection("notiAgreement" + myNoti.getOwnerEmail()).document(myNoti.getTimeStamp()).set(notificationAgreement)
                                                     .addOnSuccessListener(new OnSuccessListener<Void>() {

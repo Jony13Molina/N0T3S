@@ -77,8 +77,8 @@ public class viewInfo extends AppCompatActivity implements viewInfoView,
     public void initDel(final int pos) {
 
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder((this));
-        alertDialogBuilder.setTitle("Are you sure you want to delete this note?");
-        alertDialogBuilder.setPositiveButton("Delete",
+        alertDialogBuilder.setTitle("Was this job completed?");
+        alertDialogBuilder.setPositiveButton("Yes",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -86,7 +86,7 @@ public class viewInfo extends AppCompatActivity implements viewInfoView,
                         myPresenter.startDelete(adapter.getUserNotes(), adapter.setUser(pos),adapter, pos);
                     }
                 });
-        alertDialogBuilder.setNegativeButton("Cancel",new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface arg0, int arg1)
             {
@@ -185,7 +185,7 @@ public class viewInfo extends AppCompatActivity implements viewInfoView,
         userNotes.remove(pos);
         adapter.notifyItemRemoved(pos);
         adapter.notifyItemRangeChanged(pos, userNotes.size());
-        Utils.toastMessage("Note was deleted", cont);
+        Utils.toastMessage("This job was completed successfully ", cont);
     }
 
 

@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
+import com.example.jonny.n0t3s.Month;
 import com.example.jonny.n0t3s.Notification;
 import com.example.jonny.n0t3s.R;
 import com.example.jonny.n0t3s.Utils;
@@ -29,8 +30,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class Messages extends Fragment implements messagesAdapter.recyclerDetails, messagesAdapter.recyclerRating, messagesAdapter.recyclerCompleted{
@@ -43,10 +46,14 @@ public class Messages extends Fragment implements messagesAdapter.recyclerDetail
     ListView agreementList;
 
 
+    Month myMonth = new Month();
+    String applicantCom;
+    String ownerCom;
     RatingBar myRatingAction;
     Notification myNoti = new Notification();
     View alertTextOne, ratingAlert;
 
+    int jobCount;
 
     private TextView myNpotesDetails, buttonOK, tittleAlert, moneyAlert;
 
@@ -58,8 +65,10 @@ public class Messages extends Fragment implements messagesAdapter.recyclerDetail
 
     FirebaseUser myUser;
 
-    ///maps
+    ///sstoring userRating
     final Map<String, Object> userRating  = new HashMap<>();
+    final Map<String, Object> completedJobs  = new HashMap<>();
+
 
     public Messages() {
         // Required empty public constructor
@@ -293,49 +302,239 @@ public class Messages extends Fragment implements messagesAdapter.recyclerDetail
 
     //send rating to database
 
-    public void sendRating(Float ratingValue, String userEmail,String timeStamp){
+    public void sendRating(final Float ratingValue, final String userEmail,final String timeStamp){
 
 
-        userRating.put("ratingValue", ratingValue);
-        userRating.put("userEmail", userEmail);
-        myData.collection("userRatings").document(userEmail+timeStamp).set(userRating)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Utils.toastMessage("Rating submitted successfully ", getContext());
 
-                        /************rating psudoCode
-                         * send rating to database and divide by num of current rating
-                         * ratings/totalNumRatings, get total number of ratings by creating a counter and updating
-                         * wil require fetching data too
-                         *
-                         * get database collection rating ratingCounter+=totalNumberRatings
-                         */
+
+
+        //listen to the value of likeCounter in our adatabase and update accordingly
+        myData.collection("userRatings").document(userEmail+timeStamp).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+
+
+                        String rVal =  (String) document.getString("ratingValue");
+
+
+                        double rValue = Integer.parseInt(rVal);
+
+
+
+                        if (rValue == 0) {
+
+
+                            userRating.put("ratingValue", ratingValue);
+                            userRating.put("userEmail", userEmail);
+                            myData.collection("userRatings").document(userEmail).set(userRating)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Utils.toastMessage("Rating submitted successfully ", getContext());
+
 //Log.d("THIS IS THE TOKEN!!!!", user.getUserToken());
 
 
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
 
-                        Utils.toastMessage("Error!!!" + e.toString(), getContext());
+                                            Utils.toastMessage("Error!!!" + e.toString(), getContext());
+
+                                        }
+                                    });
+
+
+
+
+
+                        } else {
+
+                            double numRating;
+                            double finalNumRating;
+                            numRating = rValue/5;
+                            numRating = Math.ceil(numRating);
+
+
+                            finalNumRating = rValue/numRating;
+
+                            userRating.put("ratingValue", finalNumRating);
+                            userRating.put("userEmail", userEmail);
+                            myData.collection("userRatings").document(userEmail).set(userRating)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Utils.toastMessage("Rating submitted successfully ", getContext());
+
+//Log.d("THIS IS THE TOKEN!!!!", user.getUserToken());
+
+
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+
+                                            Utils.toastMessage("Error!!!" + e.toString(), getContext());
+
+                                        }
+                                    });
+
+
+                        }
+
+
+                    }else{
+
+                        userRating.put("ratingValue", ratingValue);
+                        userRating.put("userEmail", userEmail);
+                        myData.collection("userRatings").document(userEmail).set(userRating)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Utils.toastMessage("Rating submitted successfully ", getContext());
+
+//Log.d("THIS IS THE TOKEN!!!!", user.getUserToken());
+
+
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+
+                                        Utils.toastMessage("Error!!!" + e.toString(), getContext());
+
+                                    }
+                                });
 
                     }
-                });
+                }
+
+            }
+        });
+
     }
 
     //this will start the action to indicate completed chore/job
+    //will delete record once the two parties select completed action
 
-    public void beginCompletedAction(int position){
+    public void beginCompletedAction(final int position){
 
+
+        myNoti = adapter.setNoti(position);
+
+        mainUser = FirebaseAuth.getInstance();
+
+        myUser = mainUser.getCurrentUser();
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
-        alertDialogBuilder.setTitle("Has this job been completed?");
+        alertDialogBuilder.setTitle("Has this job been completed");
         alertDialogBuilder.setPositiveButton("Yes",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+
+
+
+                        //update completed agreement from applicant side
+                        myData.collection("notiAgreement"+myUser.getEmail()).document(myNoti.getTimeStamp()).update("applicantCompleted", "Yes");
+
+                        //update applicant agreement from owner side
+                        myData.collection("notiAgreement"+myUser.getEmail()).document(myNoti.getTimeStamp()).update("postOwnerCompleted", "Yes");
+
+
+                        updateCompleted(myUser.getEmail());
+
+                        myData.collection("notiAgreement"+myNoti.getSenderEmail()).document(myNoti.getTimeStamp()).get()
+                                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+
+                                        DocumentSnapshot document = task.getResult();
+
+                                        if(task.isSuccessful()){
+
+                                            //get money plus details and set them to the according string
+
+
+
+                                            applicantCom = (String) document.getString("applicantCompleted");
+
+
+                                            myData.collection("notiAgreement"+myNoti.getOwnerEmail()).document(myNoti.getTimeStamp()).get()
+                                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+
+                                                            DocumentSnapshot document = task.getResult();
+
+                                                            if(task.isSuccessful()){
+
+                                                                //get money plus details and set them to the according string
+
+
+
+                                                                ownerCom = (String) document.getString("postOwnerCompleted");
+
+                                                                if(applicantCom.equals("Yes") && ownerCom.equals("Yes")){
+
+
+                                                                    myData.collection("notiAgreement"+myNoti.getOwnerEmail()).document(
+                                                                            myNoti.getTimeStamp()).delete()
+                                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                @Override
+                                                                                public void onComplete(@NonNull Task<Void> task) {
+
+
+                                                                                    myData.collection("notiAgreement"+myNoti.getSenderEmail()).document(
+                                                                                            myNoti.getTimeStamp()).delete()
+                                                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                                @Override
+                                                                                                public void onComplete(@NonNull Task<Void> task) {
+
+                                                                                                    continueCompleteAction(position);
+
+                                                                                                }
+                                                                                            });
+                                                                                }
+                                                                            });
+
+
+                                                                    //continueCompleteAction(position);
+                                                                }
+
+
+                                                            }else {
+                                                                Log.d("TAG", "Error Getting Docs", task.getException());
+                                                            }
+
+                                                        }
+                                                    });
+
+                                        }else {
+                                            Log.d("TAG", "Error Getting Docs", task.getException());
+                                        }
+
+                                    }
+                                });
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -349,6 +548,81 @@ public class Messages extends Fragment implements messagesAdapter.recyclerDetail
         });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }
+
+
+    public void updateCompleted(String userEmail){
+
+
+        String monthName;
+        Calendar calendar = Calendar.getInstance();
+        int month = calendar.get(Calendar.MONTH);
+
+        monthName = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
+
+        jobCount ++;
+        uploadCompleted(monthName , jobCount);
+
+    }
+
+    public void uploadCompleted(final String monthName, final int count ){
+
+        mainUser = FirebaseAuth.getInstance();
+
+        myUser = mainUser.getCurrentUser();
+        myData.collection("CompletedJobs"+myUser.getEmail()).document("comJobs"+monthName).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    String cVal =  (String) document.getString("jobCompCount");
+                    int cValue = Integer.parseInt(cVal) ;
+
+
+
+                        cValue+=count;
+                        String myCount = String.valueOf(cValue);
+                        completedJobs.put("monthName", monthName);
+                        completedJobs.put("jobCompCount", myCount);
+                        myData.collection("CompletedJobs"+myUser.getEmail())
+                                .document("comJobs"+monthName).update("jobCompCount", myCount);
+
+                }else {
+
+                    myMonth.setMonthName(monthName);
+
+                    String myCount = String.valueOf(count);
+                    myMonth.setJobCompCount(myCount);
+                    completedJobs.put("monthName", myMonth.getMonthName());
+                    completedJobs.put("jobCompCount", myMonth.getJobCompCount());
+                    myData.collection("CompletedJobs"+myUser.getEmail())
+                            .document("comJobs"+monthName).set(completedJobs)
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+
+                                @Override
+                                public void onSuccess(Void aVoid) {
+
+                                    Log.d("this is completed","complete");
+                                }
+                            });
+
+                    }
+            }
+        });
+    }
+
+
+    public void continueCompleteAction(int pos){
+
+
+
+
+        adapter.getItem(pos);
+        adapter.remove(adapter.getItem(pos));
+        adapter.notifyDataSetChanged();
+        Utils.toastMessage("Both parties have completed this job", getContext());
     }
     //clicking action buttons for rating and details
     @Override

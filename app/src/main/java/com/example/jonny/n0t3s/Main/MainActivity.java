@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import androidx.annotation.NonNull;
 
 import com.example.jonny.n0t3s.Login.UI.LoginActivity;
+import com.example.jonny.n0t3s.jobsCompleted.jobsCompleted;
 import com.example.jonny.n0t3s.tabView.tabView;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -405,6 +406,7 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
                                                        user.setUserLike(likeState);
                                                    }else {
+
                                                        likeCount = 1;
                                                        likeCount = likeCount+cValue;
                                                        countVal = Integer.toString(likeCount);
@@ -563,6 +565,11 @@ public class MainActivity extends AppCompatActivity implements MainView,
                         startActivity(next_activity);
                         break;
 
+                    case R.id.completeList:
+                        next_activity = new Intent(MainActivity.this, jobsCompleted.class);
+
+                        startActivity(next_activity);
+                        break;
                     case R.id.exitApp:
                         //logout
                         logOut();
