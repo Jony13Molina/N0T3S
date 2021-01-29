@@ -18,7 +18,7 @@
         android:id="@+id/nav_header_imageView"
         android:layout_width="64dp"
         android:layout_height="64dp"
-        android:src="@mipmap/twotone_assignment_ind_black_48" />
+        android:src="@drawable/ic_baseline_account_circle_24" />
 
     <TextView
         android:id="@+id/nav_header_textView"
@@ -32,7 +32,7 @@
         android:textStyle="bold" />
 
     <LinearLayout
-        android:layout_width="50dp"
+        android:layout_width="385dp"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
         android:orientation="horizontal">
@@ -44,7 +44,8 @@
             android:layout_height="34dp"
             android:layout_gravity="right"
             android:layout_marginTop="20dp"
-            android:text="5.0"
+            android:maxLength="4"
+            android:text="0.0"
             android:textColor="@color/nightBlack"
             android:textSize="14sp"
             android:textStyle="bold" />
@@ -55,6 +56,17 @@
             android:layout_height="21dp"
             android:layout_gravity="right"
             android:src="@mipmap/ic_rateicon" />
+
+        <TextView
+            android:id="@+id/nav_header_strikeCount"
+            android:layout_width="150dp"
+            android:layout_height="34dp"
+            android:layout_gravity="left"
+            android:maxLength="20"
+            android:text="Strikes"
+            android:textColor="@color/nightBlack"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
 
     </LinearLayout>

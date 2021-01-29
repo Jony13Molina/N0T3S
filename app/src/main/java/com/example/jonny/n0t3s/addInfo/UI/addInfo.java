@@ -1,13 +1,10 @@
 package com.example.jonny.n0t3s.addInfo.UI;
 
-import com.example.jonny.n0t3s.Login.UI.LoginActivity;
-import com.example.jonny.n0t3s.Utils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;

@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.jonny.n0t3s.R;
 import com.example.jonny.n0t3s.User;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -22,7 +23,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     User user;
     private Context myContext;
     FirebaseFirestore myCollection;
-    FirebaseUser fireUser;
+    FirebaseUser fireUser = FirebaseAuth.getInstance().getCurrentUser();
     String userPath;
     String likeCount;
 
@@ -70,7 +71,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             itemDesc = (TextView) itemView.findViewById(R.id.itemDesc);
             itemYears = (TextView) itemView.findViewById(R.id.itemYear);
             itemName = (TextView) itemView.findViewById(R.id.itemNames);
-            postBy = (TextView) itemView.findViewById(R.id.postBy);
+            //postBy = (TextView) itemView.findViewById(R.id.postBy);
             //instatiate our imageviews
             deleteIcon = (ImageView) itemView.findViewById(deleteItem);
             shareIcon = (ImageView) itemView.findViewById(R.id.shareItem);
@@ -131,8 +132,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         viewHolder.itemTitle.setText(user.getTitle());
         viewHolder.itemDesc.setText(user.getDetails());
         viewHolder.itemYears.setText(user.getYear());
-        viewHolder.itemName.setText(user.getEma());
-        viewHolder.postBy.setText(post);
+        viewHolder.itemName.setText(user.getName());
+        //viewHolder.postBy.setText(post);
 
 
 

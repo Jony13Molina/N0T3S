@@ -3,10 +3,14 @@ package com.example.jonny.n0t3s.Login;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.view.View;
+import android.widget.ProgressBar;
+
 import androidx.fragment.app.FragmentActivity;
 
 import com.example.jonny.n0t3s.Login.UI.LoginView;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 public class LoginPresenterImpl extends FragmentActivity implements LoginPresenter {
@@ -14,7 +18,7 @@ public class LoginPresenterImpl extends FragmentActivity implements LoginPresent
     private LoginView mLoginView;
     private loginInteractor mLoginInteractor;
     Context myContext;
-    GoogleApiClient client;
+    GoogleSignInClient client;
 
     public LoginPresenterImpl(LoginView view, Context context){
         mLoginView = view;
@@ -25,7 +29,7 @@ public class LoginPresenterImpl extends FragmentActivity implements LoginPresent
 
 
     @Override
-    public GoogleApiClient handleGoogleClient(Context context, GoogleApiClient client){
+    public GoogleSignInClient handleGoogleClient(Context context, GoogleSignInClient client){
         client =mLoginInteractor.beginGoogleClient(context, client);
         return client;
     }
@@ -36,13 +40,10 @@ public class LoginPresenterImpl extends FragmentActivity implements LoginPresent
         mLoginInteractor.loginRes();
     }
 
+
     @Override
-    public void handleActResult(int rqCode, int rsCode,Intent data, Context cont){
-        mLoginInteractor.actRes(rqCode,rsCode, data, cont);
-    }
-    @Override
-    public void handleClientSignRequest(GoogleSignInAccount account, Context cont){
-        mLoginInteractor.doSignIn(account, cont);
+    public void handleClientSignRequest(GoogleSignInAccount account, Context cont, ProgressBar myBar){
+        mLoginInteractor.doSignIn(account, cont, myBar);
     }
 
     @SuppressLint("MissingSuperCall")
@@ -72,8 +73,8 @@ public class LoginPresenterImpl extends FragmentActivity implements LoginPresent
 
 
     @Override
-    public void fireLogIn(String email, String password, Context cont){
-        mLoginInteractor.fireSignIn(email, password, cont);
+    public void fireLogIn(String email, String password, Context cont, ProgressBar myBar, View myView){
+        mLoginInteractor.fireSignIn(email, password, cont, myBar, myView);
     }
 
 

@@ -1,11 +1,11 @@
 package com.example.jonny.n0t3s.Login.UI;
 
-import android.content.Context;
 import android.content.Intent;
 
+import android.view.View;
+import android.widget.ProgressBar;
+
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 public interface LoginView {
 
@@ -15,7 +15,6 @@ public interface LoginView {
 
     void googleClient();
 
-    void ActResult(int rqCode, int rsCode, Intent data);
 
 
     void handleLogIn(GoogleSignInAccount account);
@@ -26,7 +25,7 @@ public interface LoginView {
 
     void registerUser();
 
-    void fireLogin();
+    void fireLogin(ProgressBar myBar, View myView);
 
     void checkConnection();
 

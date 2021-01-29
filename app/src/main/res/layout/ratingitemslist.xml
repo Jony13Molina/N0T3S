@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/plain"
+    >
+
+
+        <TextView
+            android:id="@+id/userEmail"
+            android:layout_width="301dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:layout_weight="3"
+            android:fontFamily="sans-serif-black"
+            android:lines="2"
+            android:gravity="center"
+            android:textSize="14sp"
+            android:textStyle="italic"
+            tools:text="455" />
+
+
+        <TextView
+            android:id="@+id/ratingNum"
+            android:layout_width="49dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif-black"
+            android:gravity="center"
+            android:maxLength="4"
+            android:textStyle="italic"
+            tools:text="455" />
+
+        <TextView
+            android:id="@+id/ratingIcon"
+            android:layout_width="51dp"
+            android:layout_height="60dp"
+            android:layout_weight="3"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="3dp"
+            android:drawableStart="@drawable/ic_baseline_grade_24"
+            android:gravity=""
+            android:padding="3dp" />
+
+
+</LinearLayout>

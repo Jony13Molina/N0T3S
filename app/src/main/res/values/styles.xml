@@ -51,6 +51,7 @@
         <item name="colorAccent">@color/softeRealBlue</item>
 
 
+
     </style>
 
 
@@ -66,11 +67,20 @@
 
     <!--For the Splash ScreeN-->
 
-    <style name="SpkashThem" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:windowBackground">@drawable/newn0t3snoti</item>
 
 
 
+    <style name="SplashTheme" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">@color/realBlue</item>
+        <item name="colorPrimaryDark">@color/realBlue</item>
+        <item name="android:navigationBarColor">@color/realBlue</item>
+        <item name="colorAccent">@color/softeRealBlue</item>
+        <item name="android:windowBackground">@drawable/splashlogo</item>
     </style>
+
+
+    <!--for the buttons-->
+
+
 
 </resources>

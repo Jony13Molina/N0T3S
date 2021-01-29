@@ -2,8 +2,12 @@ package com.example.jonny.n0t3s.Login;
 
 import android.content.Context;
 import android.content.Intent;
+import android.view.View;
+import android.widget.ProgressBar;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 public class loginInteractorImp implements loginInteractor {
@@ -24,7 +28,7 @@ public class loginInteractorImp implements loginInteractor {
 
 
     @Override
-    public GoogleApiClient beginGoogleClient(Context cont, GoogleApiClient client){
+    public GoogleSignInClient beginGoogleClient(Context cont, GoogleSignInClient client){
        client =  myLoginAction.googleLogIn(cont);
 
        return client;
@@ -37,15 +41,11 @@ public class loginInteractorImp implements loginInteractor {
     public void loginRes(){
         myLoginAction.startLogin();
     }
-    @Override
-    public void actRes(int rqCode, int rsCode, Intent data, Context cont) {
-        myLoginAction.signInReq(rqCode, rsCode, data, cont);
 
-    }
 
     @Override
-    public void doSignIn(GoogleSignInAccount account, Context cont) {
-        myLoginAction.carrySignIn(account, cont);
+    public void doSignIn(GoogleSignInAccount account, Context cont,ProgressBar myBar) {
+        myLoginAction.carrySignIn(account, cont, myBar);
 
     }
 
@@ -54,8 +54,8 @@ public class loginInteractorImp implements loginInteractor {
         myLoginAction.authUser();
     }
     @Override
-    public void fireSignIn(String email, String password, Context  cont){
-        myLoginAction.fireSignMe(email, password, cont);
+    public void fireSignIn(String email, String password, Context  cont, ProgressBar myBar, View mView){
+        myLoginAction.fireSignMe(email, password, cont,myBar, mView);
     }
     @Override
     public void registerAccount(String email, String password, Context cont){

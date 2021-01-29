@@ -1,0 +1,41 @@
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ListView
+
+
+        android:id="@+id/ratingitemslist"
+        android:layout_width="match_parent"
+        android:layout_height="343dp"
+
+        android:layout_gravity="bottom|end"
+        android:paddingTop="38dp"
+
+        >
+
+    </ListView>
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:theme="@style/AppBaseTheme">
+
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_rating"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@color/softeRealBlue"
+        app:layout_anchor="@+id/appBarLayout2"
+        app:layout_anchorGravity="center"
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:popupTheme="@style/AppBaseTheme" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

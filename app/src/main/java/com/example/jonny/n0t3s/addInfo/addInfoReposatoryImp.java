@@ -33,9 +33,10 @@ public class addInfoReposatoryImp extends ContextWrapper implements addInfoRespo
     public static Context cont;
 
 
-    FirebaseUser mainUser;
+    FirebaseUser mainUser = FirebaseAuth.getInstance().getCurrentUser();
     FirebaseFirestore myCollection;
-    public String myToken;
+
+
 
     SharedPreferences mSharedPref;
     User user = new User ();
@@ -52,21 +53,7 @@ public class addInfoReposatoryImp extends ContextWrapper implements addInfoRespo
     }
 
 
-    public void setToken(){
-        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener((Activity) cont,  new OnSuccessListener<InstanceIdResult>() {
-            @Override
-            public void onSuccess(InstanceIdResult instanceIdResult) {
-                myToken = instanceIdResult.getToken();
-                Log.e("Token",myToken);
 
-                mSharedPref =
-                        cont.getSharedPreferences(cont.getPackageName(), Activity.MODE_PRIVATE);
-                SharedPreferences.Editor editor = mSharedPref.edit();
-                editor.putString("token", myToken);
-                editor.commit();
-            }
-        });
-    }
 
 
     @Override
@@ -74,7 +61,9 @@ public class addInfoReposatoryImp extends ContextWrapper implements addInfoRespo
 
 
 
+
         //set User values
+        user.setName(mainUser.getDisplayName());
         user.setTitle(title);
         user.setDetails(details);
 
@@ -90,16 +79,17 @@ public class addInfoReposatoryImp extends ContextWrapper implements addInfoRespo
         user.setUserLike(false);
 
 
-        setToken();
 
 
         //writing to database photo name, photographer, and year taken
-        if (!user.getTitle().equals("") && !user.equals("")) {
+        if (!user.getTitle().equals("") && !user.equals("") && !user.getDetails().equals("") &&
+                !mySwitch.isChecked() && !user.getMoneyAmount().equals("")) {
 
             //notes.put("userID",mainUser.getUid());
 
             notes.put("title", user.getTitle());
 
+            notes.put("name",  user.getName());
             notes.put("details", user.getDetails());
             notes.put("year", user.getYear());
             notes.put("ema", user.getEma());
@@ -110,9 +100,7 @@ public class addInfoReposatoryImp extends ContextWrapper implements addInfoRespo
 
             mSharedPref =
                     cont.getSharedPreferences(cont.getPackageName(), Activity.MODE_PRIVATE);
-            String toekn = mSharedPref.getString("token", myToken);
-            user.setUserToken(toekn);
-            notes.put("token", user.getUserToken());
+
 
 
             user.setUserID(mainUser.getUid());
@@ -120,15 +108,47 @@ public class addInfoReposatoryImp extends ContextWrapper implements addInfoRespo
             FirebaseMessaging.getInstance().subscribeToTopic("/topics/userID").addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void aVoid) {
-                    Toast.makeText(getApplicationContext(),"Success"+user.gettimeStampMe(),Toast.LENGTH_LONG).show();
+                  
                 }
             });
             pushNoteData(user.getUserID(), user.gettimeStampMe(),mySwitch);
 
 
-        }else{
-        toastMessage = "Please don't leave any fields blank";
-        Utils.toastMessage( toastMessage, cont);
+        }else if(!user.getTitle().equals("") && !user.equals("") &&
+                mySwitch.isChecked()&& !user.getDetails().equals("") ){
+
+            //notes.put("userID",mainUser.getUid());
+
+            notes.put("title", user.getTitle());
+            notes.put("name",  user.getName());
+            notes.put("details", user.getDetails());
+            notes.put("year", user.getYear());
+            notes.put("ema", user.getEma());
+            notes.put("timeStampMe", user.gettimeStampMe());
+            notes.put("likeCounter", user.getLikeCounter());
+            notes.put("money", "$"+user.getMoneyAmount());
+            notes.put("userLike", user.getUserLike());
+
+
+
+            user.setUserID(mainUser.getUid());
+
+            FirebaseMessaging.getInstance().subscribeToTopic("/topics/userID").addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+
+                }
+            });
+            pushNoteData(user.getUserID(), user.gettimeStampMe(),mySwitch);
+
+        }else if(!mySwitch.isChecked() ){
+            toastMessage = "Please don't leave any any fields blank when making a public post";
+            Utils.toastMessage( toastMessage, cont);
+
+        } else {
+
+            toastMessage = "Please don't leave title, date, and details empty when making a private post";
+            Utils.toastMessage( toastMessage, cont);
         // Toast.makeText(this, "Please don't live any fields blank",Toast.LENGTH_LONG).show();
     }
 
@@ -161,7 +181,7 @@ public class addInfoReposatoryImp extends ContextWrapper implements addInfoRespo
                             }
                         });
             } else {
-                myCollection.collection("Notes").document(timeStamp).set(notes)
+                myCollection.collection("Notes").document(timeStamp+user.getTitle()).set(notes)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {

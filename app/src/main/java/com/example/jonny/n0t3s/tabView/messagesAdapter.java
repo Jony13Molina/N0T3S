@@ -18,12 +18,6 @@ import java.util.List;
 
 public class messagesAdapter extends ArrayAdapter<Notification> {
 
-
-
-
-
-
-
     public List<Notification> applicantList;
     private Context adapterCont;
 
@@ -36,6 +30,7 @@ public class messagesAdapter extends ArrayAdapter<Notification> {
     recyclerDetails myDetails;
     recyclerRating myRating;
     recyclerCompleted recyclerC;
+    recyclerMessage recyclerMsg;
     Notification myNotification;
     FirebaseFirestore myData;
 
@@ -43,6 +38,9 @@ public class messagesAdapter extends ArrayAdapter<Notification> {
         void onClick(View view, int position);
     }
 
+    public interface  recyclerMessage{
+        void onMsgClick(View v, int pos);
+    }
 
     public interface recyclerRating{
         void onMyClick(View v, int pos);
@@ -53,7 +51,9 @@ public class messagesAdapter extends ArrayAdapter<Notification> {
     }
 
 
-
+   public void setRecyclerMsg(recyclerMessage listener){
+        this.recyclerMsg = listener;
+    }
   public void setRecyclerDetails(recyclerDetails listener){
         this.myDetails = listener;
 
@@ -99,6 +99,16 @@ public class messagesAdapter extends ArrayAdapter<Notification> {
 
 
 
+        //postTextClickListner
+        postTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(recyclerMsg != null){
+                    recyclerMsg.onMsgClick(v, position);
+                }
+            }
+        });
+
         //get the details from the owner
         detailsApp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -112,13 +122,14 @@ public class messagesAdapter extends ArrayAdapter<Notification> {
         });
 
 
-        //set rating code
+        //set rating button
         ratingApp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(myRating != null){
                     myRating.onMyClick(v, position);
                 }
+
 
 
 

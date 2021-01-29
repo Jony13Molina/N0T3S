@@ -4,9 +4,6 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.widget.Switch;
 
-import com.example.jonny.n0t3s.addInfo.addInfoInteractorImp;
-import com.example.jonny.n0t3s.addInfo.addInfoPresenter;
-
 public class addInfoPresenterImp extends ContextWrapper implements addInfoPresenter {
 
     Context cont;

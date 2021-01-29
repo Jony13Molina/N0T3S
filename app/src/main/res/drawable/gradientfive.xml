@@ -8,6 +8,7 @@
 
         android:endColor="@color/gold"
 
+
         />
 
     <corners android:radius="5dp"/>

@@ -7,6 +7,7 @@ package com.example.jonny.n0t3s.tabView;
         import android.view.View;
         import android.view.ViewGroup;
         import android.widget.ListView;
+        import android.widget.TextView;
 
         import androidx.annotation.NonNull;
         import androidx.appcompat.app.AlertDialog;
@@ -39,6 +40,7 @@ public class Applications extends Fragment implements applicantionsAdapter.recyc
     ListView myApplicants;
     Notification myNoti = new Notification();
     FirebaseUser myUser;
+    TextView emptyApplications, myHeader;
     public Applications() {
         // Required empty public constructor
     }
@@ -71,6 +73,14 @@ public class Applications extends Fragment implements applicantionsAdapter.recyc
         myApplicants = (ListView) applicationsView.findViewById(R.id.applicationsview);
         getData();
 
+        View myView = getLayoutInflater().inflate(R.layout.headerlist_view,null);
+        myHeader = myView.findViewById(R.id.headerTitle);
+        //TextView textView = new TextView(ratingActivity.this);
+
+        myHeader.setText("Possible Earnings");
+
+        myApplicants.addHeaderView(myHeader);
+        emptyApplications = applicationsView.findViewById(R.id.emptyApplications);
 
         return applicationsView;
     }
@@ -103,6 +113,11 @@ public class Applications extends Fragment implements applicantionsAdapter.recyc
 
                             }
 
+                            if(userList.isEmpty()){
+                                emptyApplications.setVisibility(View.VISIBLE);
+                            }else {
+                                emptyApplications.setVisibility(View.INVISIBLE);
+                            }
 
 
                             adapter = new applicantionsAdapter(getContext(), userList);

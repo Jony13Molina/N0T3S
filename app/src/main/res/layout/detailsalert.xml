@@ -29,7 +29,23 @@
         android:fontFamily="sans-serif-condensed-medium"
         android:layout_marginStart="5dp" />
 
+    <TextView
+        android:id="@+id/ownerEmail"
+        android:layout_width="312dp"
+        android:paddingTop="15dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:layout_marginStart="5dp" />
 
+    <TextView
+        android:id="@+id/senderEmail"
+        android:layout_width="312dp"
+        android:paddingTop="15dp"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:layout_marginStart="5dp" />
 
     <TextView
         android:id="@+id/ButtonOk"

@@ -1,7 +1,5 @@
 package com.example.jonny.n0t3s.viewInfo;
 
-import android.content.Context;
-
 import com.example.jonny.n0t3s.User;
 import com.google.firebase.firestore.FirebaseFirestore;
 
