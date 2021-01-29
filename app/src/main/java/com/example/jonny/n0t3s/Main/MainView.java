@@ -2,7 +2,6 @@ package com.example.jonny.n0t3s.Main;
 
 import android.content.Context;
 
-import com.example.jonny.n0t3s.Notification;
 import com.example.jonny.n0t3s.User;
 
 import java.util.List;

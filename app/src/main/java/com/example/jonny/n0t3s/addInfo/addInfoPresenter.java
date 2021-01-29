@@ -2,8 +2,6 @@ package com.example.jonny.n0t3s.addInfo;
 
 import android.widget.Switch;
 
-import java.util.Map;
-
 public interface addInfoPresenter {
 
 

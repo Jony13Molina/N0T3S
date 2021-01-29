@@ -7,12 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
-import com.example.jonny.n0t3s.Main.MainActivity;
 import com.example.jonny.n0t3s.Notification;
 import com.example.jonny.n0t3s.R;
 import com.example.jonny.n0t3s.Utils;
@@ -54,8 +54,10 @@ public class Applicants extends Fragment implements applicantAdapter.recyclerAcc
     String myTitle;
     String myCost;
     String time;
-    String postOwnerEmail;
-    String senderEmail;
+    String postOwnerEmail, ownerName;
+    String senderEmail, receiverName;
+    TextView emptyText, myHeader;
+
     private String title;
     private int page;
 
@@ -100,7 +102,15 @@ public class Applicants extends Fragment implements applicantAdapter.recyclerAcc
             myApplicants = (ListView) applicantView.findViewById(R.id.applicantsView);
             getData();
 
+            emptyText = applicantView.findViewById(R.id.emptyApplicantposts);
 
+            View myView = getLayoutInflater().inflate(R.layout.headerviewapplicants,null);
+            myHeader = myView.findViewById(R.id.headerApplicants);
+            //TextView textView = new TextView(ratingActivity.this);
+
+            myHeader.setText("My Applicants");
+
+            myApplicants.addHeaderView(myHeader);
             return applicantView;
 
 
@@ -137,6 +147,12 @@ public class Applicants extends Fragment implements applicantAdapter.recyclerAcc
 
                             }
 
+
+                            if(userList.isEmpty()){
+                                emptyText.setVisibility(View.VISIBLE);
+                            }else {
+                                emptyText.setVisibility(View.INVISIBLE);
+                            }
 
 
 
@@ -220,12 +236,11 @@ public class Applicants extends Fragment implements applicantAdapter.recyclerAcc
     //this is called with applicant update
 
 
-    public void completeUpdate( int pos){
-        //applicantList.remove(pos);
+    public void completeUpdate( final  int pos){
         adapter.getItem(pos);
         adapter.remove(adapter.getItem(pos));
         adapter.notifyDataSetChanged();
-        Utils.toastMessage("Applicant was accepted", getContext());
+        //Utils.toastMessage("Applicant was removed", getContext());
     }
 
 
@@ -264,7 +279,7 @@ public class Applicants extends Fragment implements applicantAdapter.recyclerAcc
 
     }
 
-    //this will delete the accepted pplicant from our review to reduce useless items on our list
+    //this will delete the accepted applicant from our review to reduce useless items on our list
     public void upDateApplicant(Notification myNoti, final int pos){
 
 
@@ -272,7 +287,7 @@ public class Applicants extends Fragment implements applicantAdapter.recyclerAcc
         mainUser = FirebaseAuth.getInstance();
 
         myUser = mainUser.getCurrentUser();
-        myData.collection(myUser.getEmail()).document(
+        myData.collection("ApplicantsOf"+myUser.getEmail()).document(
                 myNoti.getSenderEmail()+ myNoti.getTimeStamp()).delete()
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -292,7 +307,7 @@ public class Applicants extends Fragment implements applicantAdapter.recyclerAcc
         myUser = mainUser.getCurrentUser();
 
 
-        final DocumentReference myReference = myData.collection("Notes").document(myNoti.getTimeStamp());
+        final DocumentReference myReference = myData.collection("Notes").document(myNoti.getTimeStamp()+myNoti.getSenderNoti());
 
 
         myReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -303,7 +318,7 @@ public class Applicants extends Fragment implements applicantAdapter.recyclerAcc
                 if(documentSnapshot.exists()){
                     //let user know their operation completed succesfully
                     //Utils.toastMessage("Applicant was accepted", getContext());
-                    myData.collection("Notes").document(timeStamp).get()
+                    myData.collection("ApplicantsOf"+myUser.getEmail()).document(myNoti.getSenderEmail()+myNoti.getTimeStamp()).get()
                             .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -317,11 +332,13 @@ public class Applicants extends Fragment implements applicantAdapter.recyclerAcc
                                         DocumentSnapshot document = task.getResult();
                                         if(document != null) {
 
-                                            myDetails = (String) document.get("details");
-                                            myTitle = (String) document.get("title");
+                                            myDetails = (String) document.get("message");
+                                            myTitle = (String) document.get("from");
                                             myCost = (String) document.get("money");
-                                            time = (String) document.get("timeStampMe");
-                                            postOwnerEmail = (String) document.get("ema");
+                                            time = (String) document.get("timeStamp");
+                                            postOwnerEmail = (String) document.get("ownerEmail");
+                                            ownerName = (String) document.get("ownerName");
+                                            receiverName = (String) document.get("receiverName");
 
 
                                             //get user senderEmail
@@ -332,7 +349,10 @@ public class Applicants extends Fragment implements applicantAdapter.recyclerAcc
                                             myNoti.setTimeStamp(time);
                                             myNoti.setOwnerEmail(postOwnerEmail);
 
+                                            myNoti.setOwnerName(ownerName);
+                                            myNoti.setReceiverName(receiverName);
 
+                                            myNoti.setButtonState(false);
                                             //Log.d("this to agreement", myDetails);
                                             notificationAgreement.put("from", myNoti.getSenderNoti());
                                             notificationAgreement.put("message", myNoti.getMessageNoti());
@@ -340,8 +360,11 @@ public class Applicants extends Fragment implements applicantAdapter.recyclerAcc
                                             notificationAgreement.put("timeStamp", myNoti.getTimeStamp());
                                             notificationAgreement.put("senderEmail", senderEmail);
                                             notificationAgreement.put("ownerEmail", myNoti.getOwnerEmail());
+                                            notificationAgreement.put("ownerName", myNoti.getOwnerName());
+                                            notificationAgreement.put("receiverName", myNoti.getReceiverName());
                                             notificationAgreement.put("postOwnerCompleted", "No");
                                             notificationAgreement.put("applicantCompleted", "No");
+                                            notificationAgreement.put("buttonState",myNoti.getButtonState());
 
 
                                             myData.collection("notiAgreement" + myNoti.getOwnerEmail()).document(myNoti.getTimeStamp()).set(notificationAgreement)
@@ -368,7 +391,7 @@ public class Applicants extends Fragment implements applicantAdapter.recyclerAcc
                                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                         @Override
                                                         public void onSuccess(Void aVoid) {
-                                                            Utils.toastMessage("Applicant Accepted", getContext());
+                                                           // Utils.toastMessage("Applicant Accepted", getContext());
                                                             //Log.d("THIS IS THE TOKEN!!!!", user.getUserToken());
 
 
@@ -384,7 +407,7 @@ public class Applicants extends Fragment implements applicantAdapter.recyclerAcc
                                                     });
 
 
-                                            deleteNotePublic(myNoti.getTimeStamp());
+                                            deleteNotePublic(myNoti.getTimeStamp(), myNoti.getSenderNoti());
                                             upDateApplicant(myNoti,pos);
                                         }
                                         if(document == null){
@@ -403,7 +426,7 @@ public class Applicants extends Fragment implements applicantAdapter.recyclerAcc
                             });
 
                 }else{
-                    Utils.toastMessage("You Have Already Accepted an Applicant", getContext());
+                    Utils.toastMessage("Remainder, you can only accept one applicant per chore", getContext());
 
 
 
@@ -414,11 +437,11 @@ public class Applicants extends Fragment implements applicantAdapter.recyclerAcc
 
     }
 
-    public void deleteNotePublic(String timeStamp){
+    public void deleteNotePublic(String timeStamp, String title){
 
 
 
-        myData.collection("Notes").document(timeStamp).delete();
+        myData.collection("Notes").document(timeStamp+title).delete();
 
     }
 

@@ -16,11 +16,26 @@
             android:id="@+id/applicantsView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:headerDividersEnabled="false"
+            android:dividerHeight="2dp"
             android:paddingBottom="100dp">
 
         </ListView>
 
 
+        <TextView
+            android:id="@+id/emptyApplicantposts"
+            android:layout_width="423dp"
+            android:layout_height="113dp"
+            android:layout_gravity="center"
+            android:fontFamily="sans-serif-black"
+            android:gravity="center"
+            android:text="You don't have applicants yet!"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
 

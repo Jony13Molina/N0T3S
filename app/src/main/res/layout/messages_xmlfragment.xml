@@ -12,7 +12,20 @@
         android:id="@+id/messages_viewitem"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:headerDividersEnabled="false"
+        android:dividerHeight="2dp"
         android:paddingBottom="100dp">
 
     </ListView>
+
+    <TextView
+        android:id="@+id/msgEmpty"
+        android:layout_width="423dp"
+        android:layout_height="113dp"
+        android:layout_gravity="center"
+        android:fontFamily="sans-serif-black"
+        android:gravity="center"
+        android:text="There are no messages yet!"
+        android:textSize="20dp"
+        />
 </FrameLayout>

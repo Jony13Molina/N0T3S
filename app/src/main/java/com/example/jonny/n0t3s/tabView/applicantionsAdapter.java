@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 
 import com.example.jonny.n0t3s.Notification;
 import com.example.jonny.n0t3s.R;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
@@ -70,8 +69,9 @@ class applicantionsAdapter extends ArrayAdapter<Notification> {
         postTitle = (TextView)listItemView.findViewById(R.id.notesPost);
         declineApp = (TextView)listItemView.findViewById(R.id.deleteApp);
 
-        postName.setText(currentApplicant.getSenderNoti());
-        postTitle.setText(currentApplicant.getMessageNoti());
+
+        postName.setText(currentApplicant.getMoneyAmount());
+        postTitle.setText(currentApplicant.getSenderNoti());
 
 
 

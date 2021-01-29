@@ -1,4 +1,4 @@
-package com.example.jonny.n0t3s;
+package com.ch0r3w.jonny.n0t3s;
 
 import android.content.Context;
 import androidx.test.platform.app.InstrumentationRegistry;

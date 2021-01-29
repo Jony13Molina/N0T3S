@@ -24,7 +24,9 @@ import com.google.android.gms.tasks.Task;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 
@@ -56,9 +58,7 @@ public class MainRepositoryImp extends ContextWrapper implements MainRepository 
     int likeCount = 0;
 
     private static final String sharedPref = "Time";
-    final private String myServerKey = BuildConfig.ApiKey;
-    final private String jsonContent = "application/json";
-    final private String FCM_ADD = BuildConfig.FcmAdress;
+
 
 
 
@@ -74,7 +74,7 @@ public class MainRepositoryImp extends ContextWrapper implements MainRepository 
 
 
         user.setUserID(fireUser.getUid());
-        userPath = user.gettimeStampMe();
+        userPath = user.gettimeStampMe()+user.getTitle();
         pathId = "Notes";
 
 
@@ -141,7 +141,7 @@ public class MainRepositoryImp extends ContextWrapper implements MainRepository 
 
 
 
-       myCollection.collection("Notes").document(user.gettimeStampMe()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+       myCollection.collection("Notes").document(user.gettimeStampMe()+user.getTitle()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
@@ -160,8 +160,11 @@ public class MainRepositoryImp extends ContextWrapper implements MainRepository 
                         fireUser.getEmail();
                         noti.setTimeStamp(user.gettimeStampMe());
                         noti.setSenderEmail(fireUser.getEmail());
+                        noti.setOwnerName(user.getName());
+                        noti.setReceiverName(fireUser.getDisplayName());
                         noti.setSenderNoti(notiTitle);
                         noti.setOwnerEmail(user.getEma());
+                        noti.setMoneyAmount(user.getMoneyAmount());
                         noti.setMessageNoti(fireUser.getEmail()+" "+ "is interested in your post.");
                         user.setUserLike(false);
                         notifications.put("from", noti.getSenderNoti());
@@ -169,6 +172,9 @@ public class MainRepositoryImp extends ContextWrapper implements MainRepository 
                         notifications.put("senderEmail", noti.getSenderEmail());
                         notifications.put("timeStamp", noti.getTimeStamp());
                         notifications.put("ownerEmail", noti.getOwnerEmail());
+                        notifications.put("money", noti.getMoneyAmount());
+                        notifications.put("ownerName", noti.getOwnerName());
+                        notifications.put("receiverName", noti.getReceiverName());
 
                       //myAdapter.getData(noti.getTimeStamp());
 
@@ -177,14 +183,14 @@ public class MainRepositoryImp extends ContextWrapper implements MainRepository 
                         setTime(noti.getTimeStamp());
 
 
-                        jsonNotification(noti.getSenderNoti(), noti.getMessageNoti(),token);
+
 
 
                         myCollection.collection("ApplicantsOf"+user.getEma()).document(fireUser.getEmail()+user.gettimeStampMe()).set(notifications)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-                                        Utils.toastMessage("Notification sent", myCont);
+                                        Utils.toastMessage("Notification was sent to post owner", myCont);
                                         //Log.d("THIS IS THE TOKEN!!!!", user.getUserToken());
 
 
@@ -213,7 +219,7 @@ public class MainRepositoryImp extends ContextWrapper implements MainRepository 
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-                                        Utils.toastMessage("Notification sent", myCont);
+                                       // Utils.toastMessage("Notification sent to post owner", myCont);
                                         //Log.d("THIS IS THE TOKEN!!!!", user.getUserToken());
 
 
@@ -254,71 +260,9 @@ public class MainRepositoryImp extends ContextWrapper implements MainRepository 
 
 
 
-    public void jsonNotification(String NOTI_TITLE, String NOTI_MESSAGE, String NOTI_TOPIC){
-
-
-        JSONObject jsonNoti = new JSONObject();
-        JSONObject jsonNotiMsg = new JSONObject();
-
-        Log.d("this is the title!!!", NOTI_TITLE);
-
-        try {
-            jsonNotiMsg.put("title", NOTI_TITLE);
-            jsonNotiMsg.put("body", NOTI_MESSAGE);
-
-
-            Log.d("You are in here", NOTI_TITLE);
-
-            jsonNoti.put("to",NOTI_TOPIC);
-
-            jsonNoti.put("notification", jsonNotiMsg);
-
-            Log.d("This is the json noti", jsonNoti.toString());
-        } catch (JSONException e) {
-            Log.e(TAG, "onCreate: " + e.getMessage() );
-        }
-        sendJsonNoti(jsonNoti);
-    }
 
 
 
-    public  void sendJsonNoti(JSONObject userNoti) {
-
-        Log.d("this us the noti", userNoti.toString());
-
-
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(FCM_ADD, userNoti,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.d(TAG, "onResponse: " + response.toString());
-
-
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText( getApplicationContext(), "Request error", Toast.LENGTH_LONG).show();
-                        Log.i(TAG, "onErrorResponse: Didn't work");
-                    }
-                }){
-            @Override
-            public Map<String, String>  getHeaders() throws AuthFailureError{
-                Map<String, String> params = new HashMap<>();
-
-
-                    params.put("Authorization", myServerKey);
-
-                params.put("Content-Type", jsonContent);
-                return params;
-            }
-        };
-        MyRequestQueue.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectRequest);
-
-
-    }
 
 
 

@@ -35,7 +35,7 @@ public class viewReposatoryImp extends ContextWrapper implements viewReposatory 
     public static Context myContext;
     String userPath;
 
-    String myToken;
+
     SharedPreferences mSharedPref;
     List<User> myUserList;
     List<User> userList;
@@ -43,10 +43,11 @@ public class viewReposatoryImp extends ContextWrapper implements viewReposatory 
     FirebaseFirestore myCollection = FirebaseFirestore.getInstance();
     viewInfo myView;
 
-    Month myMonth;
+    Month myMonth = new Month();
 
     int jobCount;
 
+    private Map<String, String> monthData = new HashMap<>();
     final Map<String, Object> completedJobs  = new HashMap<>();
     public viewReposatoryImp(Context base) {
         super(base);
@@ -55,21 +56,7 @@ public class viewReposatoryImp extends ContextWrapper implements viewReposatory 
 
     }
 
-    public void setToken(){
-        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener((Activity) myContext,  new OnSuccessListener<InstanceIdResult>() {
-            @Override
-            public void onSuccess(InstanceIdResult instanceIdResult) {
-                myToken = instanceIdResult.getToken();
-                Log.e("Token",myToken);
 
-                mSharedPref =
-                        myContext.getSharedPreferences(myContext.getPackageName(), Activity.MODE_PRIVATE);
-                SharedPreferences.Editor editor = mSharedPref.edit();
-                editor.putString("token",myToken);
-                editor.commit();
-            }
-        });
-    }
 
     //delete note at position
     @Override
@@ -84,9 +71,9 @@ public class viewReposatoryImp extends ContextWrapper implements viewReposatory 
         //this is to get the current month date
         String monthName;
         Calendar calendar = Calendar.getInstance();
-        int month = calendar.get(Calendar.MONTH);
 
-        monthName = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
+
+        monthName = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault())+calendar.get(Calendar.YEAR);
         jobCount++;
         updateCompletedJob(fireUser.getEmail(),monthName,jobCount);
         Log.d("This is the path!", userPath);
@@ -116,14 +103,14 @@ public class viewReposatoryImp extends ContextWrapper implements viewReposatory 
 
                 }else {
 
-                    myMonth.setMonthName(month);
+                    myMonth.setMonthName(month);    
 
                     String myCount = String.valueOf(count);
                     myMonth.setJobCompCount(myCount);
                     completedJobs.put("monthName", myMonth.getMonthName());
                     completedJobs.put("jobCompCount", myMonth.getJobCompCount());
                     myCollection.collection("CompletedJobs"+email)
-                            .document("comJobs"+email).set(completedJobs)
+                            .document("comJobs"+month).set(completedJobs)
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
 
                                 @Override
@@ -144,33 +131,32 @@ public class viewReposatoryImp extends ContextWrapper implements viewReposatory 
         Map<String, Object> notes = new HashMap<>();
         //notes.put("userID",mainUser.getUid());
 
+        moneyInput = "$"+moneyInput;
 
-        setToken();
+
         Log.e("money amount 1000000", moneyInput);
 
-        notes.put("token", user.getUserToken());
+
+
         user.setUserLike(false);
         notes.put("title", user.getTitle());
+        notes.put("name", user.getName());
         notes.put("details", user.getDetails());
         notes.put("year", user.getYear());
         notes.put("ema", user.getEma());
         notes.put("timeStampMe", user.gettimeStampMe());
-        notes.put("likeCounter", user.getLikeCounter());
+        notes.put("likeCounter", "0");
         notes.put("money",  moneyInput);
         notes.put("userLike", user.getUserLike());
 
 
 
-        mSharedPref =
-                myContext.getSharedPreferences(myContext.getPackageName(), Activity.MODE_PRIVATE);
-        String toekn = mSharedPref.getString("token", myToken);
-        notes.put("token", toekn);
 
-        myCollection.collection("Notes").document(user.gettimeStampMe()).set(notes)
+        myCollection.collection("Notes").document(user.gettimeStampMe()+user.getTitle()).set(notes)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Utils.toastMessage("Special Note Shared", myContext);
+                           Utils.toastMessage("Special Note Shared", myContext);
 
 
                     }

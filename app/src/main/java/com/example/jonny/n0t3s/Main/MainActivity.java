@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 
 import com.example.jonny.n0t3s.Login.UI.LoginActivity;
 import com.example.jonny.n0t3s.jobsCompleted.jobsCompleted;
+import com.example.jonny.n0t3s.rating.ratingActivity;
+import com.example.jonny.n0t3s.reportUser;
 import com.example.jonny.n0t3s.tabView.tabView;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -36,6 +38,9 @@ import com.example.jonny.n0t3s.Utils;
 import com.example.jonny.n0t3s.addInfo.UI.addInfo;
 import com.example.jonny.n0t3s.viewInfo.viewInfo;
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
@@ -75,25 +80,24 @@ public class MainActivity extends AppCompatActivity implements MainView,
     User user;
     RecyclerTwoAdapter adapter;
 
+    int likeCount = 0;
     Intent next_activity = null;
     String userPath, pathId;
     String countVal;
-    int likeCount = 0;
+
     boolean likeState = true;
-    GoogleApiClient mGoogleSignInClient;
+    GoogleSignInClient mGoogleSignInClient;
     private static final String TAG = "MainActivity";
 
-    private static final String sharedPref = "token";
+
 
     List <String> myLikes = new ArrayList<>();
 
-    final private String myServerKey = BuildConfig.ApiKey;
-    final private String jsonContent = "application/json";
-    final private String fcmSendAdress = BuildConfig.FcmAdress;
+
 
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
-    private TextView userName;
+    private TextView userName, ratingField, emptyPosts;
     private View headerView;
 
 
@@ -106,6 +110,9 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        //getWindow().
         recyclerView = findViewById(R.id.recyclerList);
         myData = FirebaseFirestore.getInstance();
         mainUser = FirebaseAuth.getInstance();
@@ -116,10 +123,15 @@ public class MainActivity extends AppCompatActivity implements MainView,
         //variables for the drawer
         NavigationView myView = findViewById(R.id.nav_view);
 
+
         Toolbar toolbar = findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
         headerView = myView.getHeaderView(0);
         userName = headerView.findViewById(R.id.nav_header_textView);
+        ratingField = headerView.findViewById(R.id.nav_header_numRate);
+        emptyPosts = findViewById(R.id.emptyPublicposts);
+
+
 
 
 
@@ -129,17 +141,14 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
 
         //get the googleapi client to sign in
-        mGoogleSignInClient = new GoogleApiClient.Builder(this) //Use app context to prevent leaks using activity
-                //.enableAutoManage(this /* FragmentActivity */, connectionFailedListener)
-                .addApi(Auth.GOOGLE_SIGN_IN_API)
-                .build();
-
-        mGoogleSignInClient.connect();
 
 
 
 
-        likeCount = 0;
+
+
+
+        //likeCount = 0;
 
         setUserName();
         getData();
@@ -149,12 +158,17 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
 
 
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
 
-        setToken();
 
 
 
 
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
 
     }
@@ -181,7 +195,18 @@ public class MainActivity extends AppCompatActivity implements MainView,
     protected void onDestroy() {
         super.onDestroy();
 
-        firestoreUpdate.remove();
+
+    }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if (firestoreUpdate!= null) {
+            firestoreUpdate.remove();
+            firestoreUpdate = null;
+        }
     }
 
     //get the data from database to populate our list
@@ -191,29 +216,48 @@ public class MainActivity extends AppCompatActivity implements MainView,
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()){
+                        if(task.isSuccessful()) {
 
-                            List<User> userList = new ArrayList<>();
 
-                            for(DocumentSnapshot myDoc: task.getResult()){
+
+                                List<User> userList = new ArrayList<>();
+
+                                for (DocumentSnapshot myDoc : task.getResult()) {
                                 User myUser = myDoc.toObject(User.class);
                                 myUser.setUserID(myDoc.getId());
                                 userList.add(myUser);
 
-                            }
+                                }
 
-                            adapter = new RecyclerTwoAdapter(userList, MainActivity.this, myData);
-                            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-                            adapter.setRecyclerButton(MainActivity.this);
-                            adapter.setRecyclerDeleteListener(MainActivity.this);
-                            recyclerView.setLayoutManager(mLayoutManager);
-                            recyclerView.setItemAnimator(new DefaultItemAnimator());
-                            recyclerView.setAdapter(adapter);
-                        }else {
-                            Log.d("TAG", "Error Getting Docs", task.getException());
+                                adapter = new RecyclerTwoAdapter(userList, MainActivity.this, myData);
+                                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+                                adapter.setRecyclerButton(MainActivity.this);
+                                adapter.setRecyclerDeleteListener(MainActivity.this);
+                                recyclerView.setLayoutManager(mLayoutManager);
+                                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                                recyclerView.setAdapter(adapter);
+
+
+
+                                if(userList.isEmpty()){
+                                    emptyPosts.setVisibility(View.VISIBLE);
+                                }else {
+                                    emptyPosts.setVisibility(View.INVISIBLE);
+                                }
+
+
+
+
+
+
+
+
+                        } else {
+                                Log.d("TAG", "Error Getting Docs", task.getException());
+                            }
                         }
 
-                    }
+
                 });
     }
 
@@ -302,6 +346,11 @@ public class MainActivity extends AppCompatActivity implements MainView,
                             userList.add(myUserNotes);
                         }
 
+                        if(userList.isEmpty()){
+                            emptyPosts.setVisibility(View.VISIBLE);
+                        }else {
+                            emptyPosts.setVisibility(View.INVISIBLE);
+                        }
                         adapter = new RecyclerTwoAdapter(userList, MainActivity.this, myData);
                         adapter.setRecyclerDeleteListener(MainActivity.this);
                         adapter.setRecyclerButton(MainActivity.this);
@@ -323,6 +372,7 @@ public class MainActivity extends AppCompatActivity implements MainView,
     public void updateMyLike(int  pos) {
 
 
+
         user.setUserLike(likeState);
 
 
@@ -333,7 +383,7 @@ public class MainActivity extends AppCompatActivity implements MainView,
         fireUser = FirebaseAuth.getInstance().getCurrentUser();
 
        // user.setUserID(fireUser.getUid());
-        userPath = user.gettimeStampMe();
+        userPath = user.gettimeStampMe()+user.getTitle();
         //Log.d("timestamo!!!!!!!!!!!!", user.gettimeStampMe());
         pathId = "Notes";
 
@@ -355,14 +405,7 @@ public class MainActivity extends AppCompatActivity implements MainView,
            @Override
            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
 
-               if(documentSnapshot.exists()){
-                   Utils.toastMessage("You Have Already Liked This Post", MainActivity.this);
-
-                   //
-
-               }else{
-
-
+               if(!documentSnapshot.exists()){
 
 
 
@@ -391,15 +434,19 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
                                                    String cVal =  (String) document.getString("likeCounter");
 
+
                                                    int cValue = Integer.parseInt(cVal) ;
 
                                                    if(cValue == 0){
+                                                       likeCount = 0;
                                                        likeCount++;
+
 
                                                        countVal = Integer.toString(likeCount);
                                                        user.setLikeCounter(countVal);
 
 
+                                                       Log.d("this is 1st like", countVal);
                                                        myPresenter.setLikeDatabase(pathId, userPath, user.getLikeCounter(), user.getUserLike());
                                                        likeState = true;
 
@@ -412,6 +459,7 @@ public class MainActivity extends AppCompatActivity implements MainView,
                                                        countVal = Integer.toString(likeCount);
                                                        user.setLikeCounter(countVal);
 
+                                                       Log.d("this is any like", countVal);
 
                                                        myPresenter.setLikeDatabase(pathId, userPath, user.getLikeCounter(), user.getUserLike());
                                                        likeState = true;
@@ -449,6 +497,17 @@ public class MainActivity extends AppCompatActivity implements MainView,
                    alertDialog.show();
 
 
+                   //
+
+               }else{
+
+
+
+
+                   Utils.toastMessage("Post Was Liked, You Can Only Like A Post Once!", MainActivity.this);
+
+
+
                }
            }
        });
@@ -468,32 +527,10 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
 
 
-    //methods that handle view and clicking actions for menu and note
 
 
-    public void setToken(){
-        FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w(TAG, "getInstanceId failed", task.getException());
-                            return;
-                        }
 
-                        // Get new Instance ID token
-                        String token = task.getResult().getToken();
 
-                        SharedPreferences settings = getApplicationContext().
-                                getSharedPreferences(sharedPref, Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = settings.edit();
-                        editor.putString("token", token);
-                        editor.commit();
-
-                    }
-                });
-
-    }
 
 
     //onClick methods for the actions on the notes card
@@ -570,6 +607,16 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
                         startActivity(next_activity);
                         break;
+                    case R.id.topUsers:
+                        next_activity = new Intent(MainActivity.this, ratingActivity.class);
+
+                        startActivity(next_activity);
+                        break;
+
+                    case R.id.reportUsers:
+                        next_activity = new Intent(MainActivity.this, reportUser.class);
+                        startActivity(next_activity);
+                        break;
                     case R.id.exitApp:
                         //logout
                         logOut();
@@ -596,18 +643,20 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
     public void logOut(){
 
+        mGoogleSignInClient.signOut()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        next_activity = new Intent(MainActivity.this, LoginActivity.class);
+                        next_activity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(next_activity);
+                        finish();
+                    }
+                });
 
-        if(Auth.GoogleSignInApi != null){
-            Auth.GoogleSignInApi.signOut(mGoogleSignInClient).setResultCallback(new ResultCallback<Status>() {
-                @Override
-                public void onResult(@NonNull Status status) {
-                    FirebaseAuth.getInstance().signOut();
 
-                    next_activity = new Intent(MainActivity.this, tabView.class);
-                    startActivity(next_activity);
-                }
-            });
-        }
+
+        
 
     }
 
@@ -648,17 +697,31 @@ public class MainActivity extends AppCompatActivity implements MainView,
 
     //set username
     //method to get the user name from firebase and then to set it on to the textview
-    public void setUserName(){
+    public void setUserName() {
         mainUser = FirebaseAuth.getInstance();
         fireUser = mainUser.getCurrentUser();
 
 
+        userName.setText(fireUser.getEmail());
 
-         userName.setText(fireUser.getEmail());
+        myData.collection("userRatings").document(fireUser.getEmail()).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
 
 
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
 
+                    Double cVal =  (Double) document.get("ratingValue");
+
+                    String myCount = String.valueOf(cVal);
+
+                    ratingField.setText(myCount);
+
+                }
+            }
+        });
 
     }
 

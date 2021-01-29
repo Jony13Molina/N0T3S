@@ -76,7 +76,7 @@ public class RecyclerTwoAdapter extends RecyclerView.Adapter<RecyclerTwoAdapter.
             itemDesc = (TextView) itemView.findViewById(R.id.noteDesc);
             itemYears = (TextView) itemView.findViewById(R.id.noteDate);
             itemName = (TextView) itemView.findViewById(R.id.noteNames);
-            postBy = (TextView)itemView.findViewById(R.id.postBy);
+            //postBy = (TextView)itemView.findViewById(R.id.postBy);
             moneyView =(TextView) itemView.findViewById(R.id.moneyText);
 
             //instatiate our imageviews
@@ -115,9 +115,9 @@ public class RecyclerTwoAdapter extends RecyclerView.Adapter<RecyclerTwoAdapter.
         viewHolder.itemTitle.setText(user.getTitle());
         viewHolder.itemDesc.setText(user.getDetails());
         viewHolder.itemYears.setText(user.getYear());
-        viewHolder.itemName.setText(user.getEma());
+        viewHolder.itemName.setText(user.getName());
         viewHolder.moneyView.setText(user.getMoneyAmount());
-        viewHolder.postBy.setText(post);
+ //       viewHolder.postBy.setText(post);
         viewHolder.likeC.setText(user.getLikeCounter());
 
         //deleteicon listener deletes the data

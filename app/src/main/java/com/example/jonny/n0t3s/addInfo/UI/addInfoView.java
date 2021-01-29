@@ -4,8 +4,6 @@ import android.widget.Switch;
 
 import com.example.jonny.n0t3s.User;
 
-import java.util.Map;
-
 public interface addInfoView {
 
 

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_view_two"
     android:layout_width="match_parent"
-    android:layout_height="170dp"
+    android:layout_height="200dp"
     android:layout_margin="5dp"
     android:clickable="true"
     android:contextClickable="true"
@@ -31,21 +31,23 @@
 
         <RelativeLayout
             android:id="@+id/frameDesign"
-            android:layout_width="10dp"
+            android:layout_width="20dp"
             android:layout_height="match_parent"
             android:background="@drawable/gradienttwo"
             android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="0dp">
+            app:layout_constraintTop_toTopOf="parent">
 
         </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/title"
-            android:layout_width="372dp"
-            android:layout_height="wrap_content"
+            android:layout_width="354dp"
+            android:layout_height="48dp"
             android:layout_alignParentEnd="true"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.589"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -56,12 +58,14 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="3dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="12dp"
                 android:fontFamily="sans-serif-condensed-medium"
-                android:gravity="start"
                 android:maxLines="30"
-                android:padding="5dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
                 android:paddingBottom="2dp"
                 android:textAlignment="textStart"
                 android:textColor="@color/nightBlack"
@@ -69,49 +73,43 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/postBy"
-                android:layout_width="70dp"
-                android:layout_height="20dp"
+                android:id="@+id/noteNames"
+                android:layout_width="157dp"
+                android:layout_height="wrap_content"
                 android:layout_below="@+id/noTitle"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="0dp"
-                android:layout_marginEnd="301dp"
-                android:fontFamily="sans-serif-condensed-medium"
-                android:textAlignment="textEnd"
-                android:textColor="@color/nightBlack"
-                android:textSize="12sp" />
-
-            <TextView
-                android:id="@+id/noteNames"
-                android:layout_width="172dp"
-                android:layout_height="20dp"
-                android:layout_below="@+id/noTitle"
-                android:layout_alignParentEnd="true"
+                android:layout_alignParentBottom="true"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="0dp"
-                android:layout_marginEnd="130dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="187dp"
+                android:layout_marginBottom="5dp"
                 android:fontFamily="sans-serif-condensed-medium"
-                android:gravity="center"
                 android:maxLines="30"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:textAlignment="textStart"
                 android:textColor="@color/nightBlack"
                 android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/noteDate"
-                android:layout_width="88dp"
-                android:layout_height="40dp"
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/noteNames"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginStart="221dp"
-                android:layout_marginTop="-9dp"
+                android:layout_alignParentBottom="true"
+
+                android:layout_marginStart="184dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginEnd="0dp"
+                android:layout_marginBottom="4dp"
                 android:layout_toEndOf="@+id/noteNames"
                 android:fontFamily="sans-serif-condensed-medium"
-                android:gravity="center_horizontal"
-                android:padding="10dp"
-                android:textAlignment="center"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:textAlignment="textStart"
                 android:textColor="@color/nightBlack"
                 android:textSize="12sp" />
 
@@ -119,29 +117,31 @@
 
         <RelativeLayout
             android:id="@+id/body"
-            android:layout_width="361dp"
-            android:layout_height="73dp"
+            android:layout_width="355dp"
+            android:layout_height="101dp"
             android:layout_below="@+id/title"
             android:layout_alignParentEnd="true"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.272"
+            app:layout_constraintHorizontal_bias="0.166"
             app:layout_constraintStart_toEndOf="@+id/frameDesign"
             app:layout_constraintTop_toBottomOf="@+id/title">
 
 
             <TextView
                 android:id="@+id/noteDesc"
-                android:layout_width="316dp"
+                android:layout_width="339dp"
                 android:layout_height="44dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
-                android:layout_marginStart="17dp"
-                android:layout_marginTop="0dp"
-                android:layout_marginEnd="28dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginEnd="4dp"
                 android:fontFamily="sans-serif-condensed-medium"
                 android:maxLines="60"
+                android:paddingStart="10dp"
                 android:paddingTop="5dp"
+                android:paddingEnd="10dp"
                 android:paddingBottom="10dp"
                 android:textAlignment="textStart"
                 android:textColor="@color/nightBlack"
@@ -154,8 +154,10 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
-                android:layout_marginTop="11dp"
-                android:layout_marginEnd="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginEnd="-8dp"
+                android:layout_marginBottom="4dp"
                 android:orientation="horizontal"
                 android:scaleType="fitEnd">
 
@@ -166,9 +168,9 @@
                     android:layout_alignParentStart="true"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginStart="18dp"
-                    android:layout_marginEnd="147dp"
-                    android:layout_marginBottom="2dp"
+                    android:layout_marginStart="11dp"
+                    android:layout_marginEnd="155dp"
+                    android:layout_marginBottom="0dp"
                     android:textAlignment="textStart"
                     android:textColor="@color/nightBlack"
                     android:textSize="12sp" />
@@ -179,8 +181,8 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:layout_width="369dp"
-            android:layout_height="24dp"
+            android:layout_width="387dp"
+            android:layout_height="41dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
@@ -188,13 +190,17 @@
             android:scaleType="fitEnd"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/body">
+
+            app:layout_constraintStart_toStartOf="parent"
+
+            app:layout_constraintTop_toBottomOf="@+id/body"
+            app:layout_constraintVertical_bias="1.0">
 
 
             <RelativeLayout
                 android:id="@+id/likeLayout"
-                android:layout_width="172dp"
-                android:layout_height="match_parent"
+                android:layout_width="159dp"
+                android:layout_height="25dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
                 android:layout_marginEnd="8dp"
@@ -238,8 +244,8 @@
 
             <RelativeLayout
                 android:id="@+id/delLayout"
-                android:layout_width="172dp"
-                android:layout_height="match_parent"
+                android:layout_width="186dp"
+                android:layout_height="35dp"
                 android:layout_alignParentBottom="true"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="1dp"
@@ -249,10 +255,12 @@
 
                 <ImageView
                     android:id="@+id/delItem"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="159dp"
+                    android:layout_height="25dp"
                     android:layout_alignParentStart="true"
-                    android:layout_marginStart="0dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginStart="13dp"
+                    android:layout_marginBottom="0dp"
                     android:background="@drawable/gradientthree"
                     android:contentDescription="@string/delete"
                     android:gravity="end"

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:id="@+id/fragmentCreateAccount"
+    android:layout_height="match_parent"
+    android:background="@drawable/listratingbackgnd">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="381dp"
+        android:layout_height="329dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/shadowdrawable"
+        android:layout_gravity="center"
+        >
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            android:layout_width="339dp"
+            android:layout_height="53dp"
+            android:hint="@string/enteruserName"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.619"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.239">
+
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/enterEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/realBlue"
+                android:drawableEnd="@drawable/twotone_account_box_black_18"
+                android:inputType="textEmailAddress"
+                tools:layout_editor_absoluteX="-3dp"
+                tools:layout_editor_absoluteY="454dp" />
+
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout3"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            android:layout_width="342dp"
+            android:layout_height="52dp"
+            android:hint="@string/passwordPrompt"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.487"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
+            app:layout_constraintVertical_bias="0.291"
+            app:passwordToggleDrawable="@drawable/twotone_visibility_black_18dp"
+            app:passwordToggleEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/passwordtext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/realBlue"
+                android:inputType="textPassword"
+                tools:layout_editor_absoluteX="54dp"
+                tools:layout_editor_absoluteY="443dp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/createUser"
+        style="@style/Widget.MaterialComponents.Button.TextButton.Dialog"
+        android:layout_width="341dp"
+        android:layout_height="42dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="80dp"
+        android:layout_marginStart="30dp"
+        android:text="@string/createAccount"
+        android:textColor="@color/nightBlack"
+        app:icon="@drawable/ic_baseline_person_add_24"
+        app:iconTint="@color/nightBlack"
+
+        app:strokeColor="@color/realBlue" />
+
+
+</FrameLayout>

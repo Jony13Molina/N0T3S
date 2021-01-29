@@ -15,7 +15,7 @@
         android:paddingLeft="20dp"
         android:layout_weight="1"
         android:fontFamily="sans-serif-black"
-        android:textStyle="italic"
+        android:textStyle="normal"
         android:gravity="start"
         android:lines="1"
         tools:text="455" />
@@ -28,7 +28,7 @@
         android:padding="3dp"
         android:layout_margin="3dp"
         android:layout_gravity="center_vertical"
-        android:drawableStart="@drawable/twotone_assignment_turned_in_black_18"
+        android:drawableStart="@drawable/ic_baseline_check_box_24"
         android:id="@+id/notificationCompleted"/>
 
     <TextView
@@ -37,7 +37,7 @@
         android:padding="3dp"
         android:layout_margin="3dp"
         android:layout_gravity="center_vertical"
-        android:drawableStart="@drawable/twotone_details"
+        android:drawableStart="@drawable/ic_baseline_details_24"
         android:id="@+id/notificationDetails"/>
 
 
@@ -47,7 +47,7 @@
         android:padding="3dp"
         android:layout_margin="3dp"
         android:layout_gravity="center_vertical"
-        android:drawableStart="@drawable/twotone_grade"
+        android:drawableStart="@drawable/ic_baseline_grade_24"
         android:id="@+id/notificationRating"/>
 
 

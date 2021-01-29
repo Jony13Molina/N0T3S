@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="0dp"
+    android:paddingBottom="0dp"
+    android:background="@drawable/gradient"
+    tools:context=".Main.MainActivity">
+
+
+    <TextView
+        android:id="@+id/titleReport"
+        android:layout_width="406dp"
+        android:layout_height="88dp"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="start"
+        android:lines="1"
+        android:paddingLeft="20dp"
+        android:textAlignment="textStart"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.024"
+        tools:text="Make Report" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/containerReport"
+        android:layout_width="387dp"
+        android:layout_height="451dp"
+        android:background="@drawable/shadowdrawable"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.533"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.498">
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/nameOfPerson"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="375dp"
+            android:layout_height="69dp"
+            android:layout_below="@+id/titleLayout"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginBottom="56dp"
+            app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout"
+            app:layout_constraintBottom_toTopOf="@+id/detailsLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.536"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/nameInfo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="24dp"
+                android:backgroundTintMode="screen"
+                android:drawablePadding="5dp"
+                android:hint="Name"
+                android:imeOptions="actionDone"
+                android:singleLine="true"
+                android:textCursorDrawable="@drawable/cursor_color"
+                app:hintEnabled="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/detailsLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="375dp"
+            android:layout_height="221dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="27dp"
+            android:layout_marginEnd="39dp"
+            android:layout_marginBottom="68dp"
+            app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.388"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/detailsInfo"
+                android:layout_width="match_parent"
+                android:layout_height="215dp"
+                android:backgroundTintMode="screen"
+                android:drawablePadding="5dp"
+                android:gravity="top|left"
+                android:hint="Reason for report"
+                android:imeOptions="actionDone"
+                android:inputType="textMultiLine"
+                android:textCursorDrawable="@drawable/cursor_color"
+                app:hintEnabled="true" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/reportButton"
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton.Icon"
+        android:layout_width="344dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="52dp"
+        android:background="@drawable/buttonlayouttwo"
+        android:gravity="center"
+        android:text="@string/reportUser"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button"
+        app:icon="@drawable/ic_baseline_send_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.507"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

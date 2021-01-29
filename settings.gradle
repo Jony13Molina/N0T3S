@@ -1,1 +1,2 @@
 include ':app'
+rootProject.name='N0T3S'

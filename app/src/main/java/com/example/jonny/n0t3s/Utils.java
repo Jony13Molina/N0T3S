@@ -3,10 +3,6 @@ package com.example.jonny.n0t3s;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.example.jonny.n0t3s.Main.MainPresentImp;
-
-import io.opencensus.common.Function;
-
 public class Utils {
 
     //-------------------------------------------------------------------------------

@@ -2,6 +2,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:id="@+id/toolbarPost"
     android:layout_height="match_parent">
 
     <androidx.core.widget.NestedScrollView
@@ -11,15 +12,29 @@
 
         <!-- Your scrolling content -->
 
+
+
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerList"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="548dp"
+
             app:itemIconTint="@color/softGray" />
     </androidx.core.widget.NestedScrollView>
+
+    <TextView
+        android:id="@+id/emptyPublicposts"
+        android:layout_width="423dp"
+        android:layout_height="113dp"
+        android:layout_gravity="center"
+        android:fontFamily="sans-serif-black"
+        android:gravity="center"
+        android:text="There are no public chores yet!"
+        android:textSize="20dp"
+        />
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -30,7 +45,7 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_main"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="50dp"
             android:background="@color/softeRealBlue"
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/AppBaseTheme" />

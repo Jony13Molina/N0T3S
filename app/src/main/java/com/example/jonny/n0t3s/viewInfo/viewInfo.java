@@ -12,10 +12,12 @@ import androidx.appcompat.app.AlertDialog;
 
 import android.text.InputType;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
+import com.example.jonny.n0t3s.Main.MainActivity;
+import com.example.jonny.n0t3s.Main.RecyclerTwoAdapter;
 import com.example.jonny.n0t3s.R;
 import com.example.jonny.n0t3s.User;
 import com.example.jonny.n0t3s.Utils;
@@ -24,11 +26,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 
 public class viewInfo extends AppCompatActivity implements viewInfoView,
@@ -41,10 +48,12 @@ public class viewInfo extends AppCompatActivity implements viewInfoView,
     viewPresentImp myPresenter;
     FirebaseFirestore myCollection;
 
+    ListenerRegistration firestoreUpdate;
 
     public List<User> userList;
     User user;
 
+    TextView emptyPosts;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,8 +66,10 @@ public class viewInfo extends AppCompatActivity implements viewInfoView,
         //mainUser = FirebaseAuth.getInstance();
         fireUser = FirebaseAuth.getInstance().getCurrentUser();
 
+        emptyPosts = findViewById(R.id.emptyPrivateposts);
         myPresenter = new viewPresentImp(this);
         myPresenter.getNoteData();
+
 
 
 
@@ -69,7 +80,33 @@ public class viewInfo extends AppCompatActivity implements viewInfoView,
         //recyclerView.setAdapter(adapter);
         getDataNotes();
 
+        dataListner();
 
+    }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+        getDataNotes();
+    }
+
+    //get all data that was newly added or shared ti the public list
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getDataNotes();
+
+
+    }
+
+    //stop the listener when the activity is destroyed
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        firestoreUpdate.remove();
     }
 
 
@@ -163,6 +200,11 @@ public class viewInfo extends AppCompatActivity implements viewInfoView,
                                 // adapter.setuserNotes(userList);
                             }
 
+                            if(userList.isEmpty()){
+                                emptyPosts.setVisibility(View.VISIBLE);
+                            }else {
+                                emptyPosts.setVisibility(View.INVISIBLE);
+                            }
                             // adapter.setuserNotes(userList);
                             adapter = new RecyclerAdapter(userList, viewInfo.this);
                             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -178,6 +220,40 @@ public class viewInfo extends AppCompatActivity implements viewInfoView,
                     }
                 });
 
+    }
+
+
+
+    public void dataListner() {
+        firestoreUpdate = myData.collection("Notes")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            //Log.e(TAG, "Listen failed!", e);
+                            return;
+                        }
+                        List<User> userList = new ArrayList<>();
+
+                        for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                            User myUserNotes = doc.toObject(User.class);
+                            myUserNotes.setUserID(doc.getId());
+                            userList.add(myUserNotes);
+                        }
+
+                        if(userList.isEmpty()){
+                            emptyPosts.setVisibility(View.VISIBLE);
+                        }else {
+                            emptyPosts.setVisibility(View.INVISIBLE);
+                        }
+
+                        adapter = new RecyclerAdapter(userList, viewInfo.this);
+
+                        adapter.setCustomButtonListner(viewInfo.this);
+                        adapter.setRecyclerDeleteListener(viewInfo.this);
+                        recyclerView.setAdapter(adapter);
+                    }
+                });
     }
 
     public void itemDelete(List<User>userNotes,int pos, RecyclerAdapter adapter, Context cont){

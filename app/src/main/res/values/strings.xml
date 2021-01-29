@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">N0T3S</string>
+    <string name="app_name">CH0R3S</string>
     <string name="dropDownT">SELECT A YEAR.....</string>
     <string name="email_Address">Post By:</string>
     <string name="emailAddress">Post By:</string>
@@ -8,6 +8,21 @@
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
     <string name="messaging_token">This is your token called from get!!!!!! %s</string>
+    <string name="login_image">This is Login Image</string>
+    <string name="usernamePrompt"> Enter username  </string>
+    <string name="passwordPrompt">Enter Password</string>
+    <string name="forgotPasswd">Forgot Password?</string>
+    <string name="createAccount">Create new Account</string>
+    <string name="loginFirebase">Login</string>
+    <string name="enteruserName">Enter a non Gmail account </string>
+    <string name="enterPassword"> Enter a PassWord</string>
+    <string name="enterName">Enter Name</string>
+    <string name="enterEmail">Enter Email</string>
+    <string name="enterPasswd">Enter a Password</string>
+    <string name="signUP">Sign Up</string>
+    <string name="reportUser">Report User</string>
+
+    "
     <string-array name="Year">
         <item>1979</item>
         <item>1980</item>
@@ -54,4 +69,11 @@
         <item>2021</item>
         <item>2022</item>
     </string-array>
+    <string name="title_activity_sign_up">SignUp</string>
+    <!--
+    This string is used for square devices and overridden by hello_world in
+    values-round/strings.xml for round devices.
+    -->
+    <string name="hello_world">Hello Square World!</string>
+    <string name="title_activity_report_user">reportUser</string>
 </resources>

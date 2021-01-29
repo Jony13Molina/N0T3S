@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/newNote"
-        android:icon="@mipmap/add_item"
+        android:icon="@drawable/ic_baseline_add_box_24"
         android:title="New" />
     <group
         android:id="@+id/menu_top"
         android:checkableBehavior="none" >
         <item android:id="@+id/privateList"
-            android:icon="@mipmap/ic_listpriva"
+            android:icon="@drawable/ic_baseline_list_24"
             android:title="Personal List" />
 
         <item android:id="@+id/applicantsID"
-            android:icon="@mipmap/ic_user"
-            android:title="Applicants/Applications" />
+            android:icon="@drawable/ic_baseline_assignment_24"
+            android:title="To Do" />
 
     </group>
 
@@ -23,19 +23,24 @@
 
 
         <item android:id="@+id/completeList"
-            android:icon="@mipmap/ic_done"
+            android:icon="@drawable/ic_baseline_bar_chart_24"
             android:title="Completed Chores" />
 
         <item android:id="@+id/topUsers"
-            android:icon="@mipmap/ic_topusers"
+            android:icon="@drawable/ic_baseline_show_chart_24"
             android:title="Top Users" />
+
+        <item android:id="@+id/reportUsers"
+              android:icon="@drawable/ic_baseline_report_24"
+              android:title="Report Users"
+            />
 
 
     </group>
 
     <item android:id="@+id/exitApp"
         android:title="LogOut"
-        android:icon="@mipmap/twotone_exit_to_app_black_18"/>
+        android:icon="@drawable/ic_baseline_exit_to_app_24"/>
 
 
 

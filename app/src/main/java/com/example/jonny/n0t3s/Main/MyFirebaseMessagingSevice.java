@@ -1,11 +1,8 @@
 package com.example.jonny.n0t3s.Main;
 
-import android.app.Activity;
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -17,20 +14,15 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.jonny.n0t3s.R;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-import org.apache.http.Consts;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-
-import static android.content.ContentValues.TAG;
 
 public class MyFirebaseMessagingSevice extends FirebaseMessagingService {
 
